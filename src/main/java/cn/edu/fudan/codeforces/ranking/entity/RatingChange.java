@@ -19,17 +19,11 @@ package cn.edu.fudan.codeforces.ranking.entity;
 public class RatingChange {
 
     private Integer contestId;
-
     private String contestName;
-
     private String handle;
-
     private Integer rank;
-
     private Integer ratingUpdateTimeSeconds;
-
     private Integer oldRating;
-
     private Integer newRating;
 
     public Integer getContestId() {

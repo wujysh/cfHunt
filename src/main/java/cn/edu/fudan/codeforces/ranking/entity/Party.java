@@ -22,23 +22,12 @@ import java.util.List;
 public class Party {
 
     private Integer contestId;
-
     private List<String> members;
-
-    private enum ParticipantType {
-        CONTESTANT, PRACTICE, VIRTUAL, MANAGER, OUT_OF_COMPETITION
-    }
-
     private ParticipantType participantType;
-
     private Integer teamId;
-
     private String teamName;
-
     private Boolean ghost;
-
     private Integer room;
-
     private Integer startTimeSeconds;
 
     public Integer getContestId() {
@@ -104,4 +93,9 @@ public class Party {
     public void setStartTimeSeconds(Integer startTimeSeconds) {
         this.startTimeSeconds = startTimeSeconds;
     }
+
+    private enum ParticipantType {
+        CONTESTANT, PRACTICE, VIRTUAL, MANAGER, OUT_OF_COMPETITION
+    }
+
 }

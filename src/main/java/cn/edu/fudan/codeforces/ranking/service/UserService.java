@@ -1,10 +1,17 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.User;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +21,10 @@ import java.util.List;
 @Service
 public class UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
     private static Configuration conf;
+    private static String tablenameUser = "codeforces:user";
+    private static HTable tableUser;
 
     static {
         conf = HBaseConfiguration.create();
@@ -25,12 +35,7 @@ public class UserService {
         conf = HBaseConfiguration.create(conf);
     }
 
-    private static String tablenameUser = "codeforces:user";
-    private static HTable tableUser;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
-
-    public List<User> listUsers(Integer page, Integer max) {
+    public List<User> listUsers(Integer page, Integer max) throws IOException {
         ArrayList<User> ans = new ArrayList<>();
         int cnt = 0;
 
@@ -52,7 +57,7 @@ public class UserService {
         return ans;
     }
 
-    public User getUser(String handle) {
+    public User getUser(String handle) throws IOException {
         Connection conn = ConnectionFactory.createConnection(conf);
         tableUser = (HTable) conn.getTable(TableName.valueOf(tablenameUser));
 

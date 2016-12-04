@@ -20,19 +20,10 @@ import java.util.List;
 public class Problem {
 
     private Integer contestId;
-
     private String index;
-
     private String name;
-
-    private enum Type {
-        PROGRAMMING, QUESTION
-    }
-
     private Type type;
-
     private Float points;
-
     private List<String> tags;
 
     public Integer getContestId() {
@@ -124,4 +115,9 @@ public class Problem {
 
         return sb.toString();
     }
+
+    private enum Type {
+        PROGRAMMING, QUESTION
+    }
+
 }

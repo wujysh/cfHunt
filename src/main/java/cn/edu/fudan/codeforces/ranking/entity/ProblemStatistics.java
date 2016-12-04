@@ -17,9 +17,7 @@ import cn.edu.fudan.codeforces.ranking.util.StringUtil;
 public class ProblemStatistics {
 
     private Integer contestId;
-
     private String index;
-
     private Integer solvedCount;
 
     public Integer getContestId() {

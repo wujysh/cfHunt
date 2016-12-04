@@ -24,35 +24,16 @@ package cn.edu.fudan.codeforces.ranking.entity;
 public class Submission {
 
     private Integer id;
-
     private Integer contestId;
-
     private Integer creationTimeSeconds;
-
     private Integer relativeTimeSeconds;
-
     private Problem problem;
-
     private Party author;
-
     private String programmingLanguage;
-
-    private enum Verdict {
-        FAILED, OK, PARTIAL, COMPILATION_ERROR, RUNTIME_ERROR, WRONG_ANSWER, PRESENTATION_ERROR, TIME_LIMIT_EXCEEDED, MEMORY_LIMIT_EXCEEDED, IDLENESS_LIMIT_EXCEEDED, SECURITY_VIOLATED, CRASHED, INPUT_PREPARATION_CRASHED, CHALLENGED, SKIPPED, TESTING, REJECTED
-    }
-
     private Verdict verdict;
-
-    private enum Testset {
-        SAMPLES, PRETESTS, TESTS, CHALLENGES, TESTS1, TESTS2, TESTS3, TESTS4, TESTS5, TESTS6, TESTS7, TESTS8, TESTS9, TESTS10
-    }
-
     private Testset testset;
-
     private Integer passedTestCount;
-
     private Integer timeConsumedMillis;
-
     private Integer memoryConsumedBytes;
 
     public Submission() {
@@ -120,6 +101,10 @@ public class Submission {
         return verdict;
     }
 
+    public void setVerdict(Verdict verdict) {
+        this.verdict = verdict;
+    }
+
     public void setVerdict(String verdict) {
         if (verdict.equals("FAILED")) {
             this.verdict = Verdict.FAILED;
@@ -158,12 +143,12 @@ public class Submission {
         }
     }
 
-    public void setVerdict(Verdict verdict) {
-        this.verdict = verdict;
-    }
-
     public Testset getTestset() {
         return testset;
+    }
+
+    public void setTestset(Testset testset) {
+        this.testset = testset;
     }
 
     public void setTestset(String testset) {
@@ -196,10 +181,6 @@ public class Submission {
         } else if (testset.equals("TESTS10")) {
             this.testset = Testset.TESTS10;
         }
-    }
-
-    public void setTestset(Testset testset) {
-        this.testset = testset;
     }
 
     public Integer getPassedTestCount() {
@@ -286,6 +267,14 @@ public class Submission {
         sb.append("--------------------------------------------------");
 
         return sb.toString();
+    }
+
+    private enum Verdict {
+        FAILED, OK, PARTIAL, COMPILATION_ERROR, RUNTIME_ERROR, WRONG_ANSWER, PRESENTATION_ERROR, TIME_LIMIT_EXCEEDED, MEMORY_LIMIT_EXCEEDED, IDLENESS_LIMIT_EXCEEDED, SECURITY_VIOLATED, CRASHED, INPUT_PREPARATION_CRASHED, CHALLENGED, SKIPPED, TESTING, REJECTED
+    }
+
+    private enum Testset {
+        SAMPLES, PRETESTS, TESTS, CHALLENGES, TESTS1, TESTS2, TESTS3, TESTS4, TESTS5, TESTS6, TESTS7, TESTS8, TESTS9, TESTS10
     }
 
 }

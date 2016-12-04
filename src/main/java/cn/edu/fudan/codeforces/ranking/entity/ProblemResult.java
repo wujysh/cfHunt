@@ -17,9 +17,7 @@ package cn.edu.fudan.codeforces.ranking.entity;
 public class ProblemResult {
 
     private Float points;
-
     private Integer penalty;
-
     private Integer rejectedAttemptCount;
     private Type type;
     private Integer bestSubmissionTimeSeconds;

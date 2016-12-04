@@ -22,19 +22,12 @@ import java.util.List;
 public class RanklistRow {
 
     private Party party;
-
     private Integer rank;
-
     private Float points;
-
     private Integer penalty;
-
     private Integer successfulHackCount;
-
     private Integer unsuccessfulHackCount;
-
     private List<ProblemResult> problemResults;
-
     private Integer lastSubmissionTimeSeconds;
 
     public Party getParty() {

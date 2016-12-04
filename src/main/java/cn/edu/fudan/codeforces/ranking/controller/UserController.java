@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class UserController {
 
     @RequestMapping("/list")
     public ModelAndView listUsers(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                 @RequestParam(value = "max", defaultValue = "20") Integer max) {
+                                 @RequestParam(value = "max", defaultValue = "20") Integer max) throws IOException {
         ModelAndView mav = new ModelAndView("user/list");
         List<User> users = userService.listUsers(page, max);
         mav.addObject("users", users);
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping("/info")
-    public ModelAndView userInfo(@RequestParam("handle") String handle) {
+    public ModelAndView userInfo(@RequestParam("handle") String handle) throws IOException {
         ModelAndView mav = new ModelAndView("user/info");
         User user = userService.getUser(handle);
         mav.addObject("user", user);

@@ -20,11 +20,8 @@ package cn.edu.fudan.codeforces.ranking.entity;
 public class Hack {
 
     private Integer id;
-
     private Integer creationTimeSeconds;
-
     private Party hacker;
-
     private Party defender;
     private Verdict verdict;
     private Problem problem;

@@ -29,45 +29,21 @@ package cn.edu.fudan.codeforces.ranking.entity;
 public class Contest {
 
     private Integer id;
-
     private String name;
-
-    public enum Type {
-        CF, IOI, ICPC
-    }
-
     private Type type;
-
-    public enum Phase {
-        BEFORE, CODING, PENDING_SYSTEM_TEST, SYSTEM_TEST, FINISHED
-    }
-
     private Phase phase;
-
     private Boolean frozen;
-
     private Integer durationSeconds;
-
     private Integer startTimeSeconds;
-
     private Integer relativeTimeSeconds;
-
     private String preparedBy;
-
     private String websiteUrl;
-
     private String description;
-
     private Integer difficulty;
-
     private String kind;
-
     private String icpcRegion;
-
     private String country;
-
     private String city;
-
     private String season;
 
     public Integer getId() {
@@ -90,6 +66,10 @@ public class Contest {
         return type;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     public void setType(String type) {
         if (type.equals("CF")) {
             this.type = Type.CF;
@@ -100,12 +80,12 @@ public class Contest {
         }
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public Phase getPhase() {
         return phase;
+    }
+
+    public void setPhase(Phase phase) {
+        this.phase = phase;
     }
 
     public void setPhase(String phase) {
@@ -120,10 +100,6 @@ public class Contest {
         } else if (phase.equals("FINISHED")) {
             this.phase = Phase.FINISHED;
         }
-    }
-
-    public void setPhase(Phase phase) {
-        this.phase = phase;
     }
 
     public Boolean getFrozen() {
@@ -288,6 +264,14 @@ public class Contest {
         sb.append("--------------------------------------------------");
 
         return sb.toString();
+    }
+
+    public enum Type {
+        CF, IOI, ICPC
+    }
+
+    public enum Phase {
+        BEFORE, CODING, PENDING_SYSTEM_TEST, SYSTEM_TEST, FINISHED
     }
 
 }

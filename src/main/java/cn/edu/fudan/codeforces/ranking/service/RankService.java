@@ -1,13 +1,11 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
-import cn.edu.fudan.codeforces.ranking.entity.Contest;
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
 import cn.edu.fudan.codeforces.ranking.entity.RanklistRow;
 import cn.edu.fudan.codeforces.ranking.entity.Submission;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,7 @@ import java.util.List;
 @Service
 public class RankService {
 
-    public List<RanklistRow> getRank(String contestIdStr, String rtime, Integer page, Integer max) {
+    public List<RanklistRow> getRank(String contestIdStr, String rtime, Integer page, Integer max) throws IOException {
         ArrayList<RanklistRow> ans = new ArrayList<>();
 
         ProblemService ps = new ProblemService();

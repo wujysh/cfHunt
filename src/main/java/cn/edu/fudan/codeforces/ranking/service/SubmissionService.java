@@ -1,10 +1,17 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.Submission;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +21,10 @@ import java.util.List;
 @Service
 public class SubmissionService {
 
+    private static final Logger logger = LoggerFactory.getLogger(SubmissionService.class.getName());
     private static Configuration conf;
+    private static String tablenameSubmission = "codeforces:submission";
+    private static HTable tableSubmission;
 
     static {
         conf = HBaseConfiguration.create();
@@ -25,12 +35,7 @@ public class SubmissionService {
         conf = HBaseConfiguration.create(conf);
     }
 
-    private static String tablenameSubmission = "codeforces:submission";
-    private static HTable tableSubmission;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
-
-    public List<Submission> getSubmissions(String contestIdStr, String rtime) {
+    public List<Submission> getSubmissions(String contestIdStr, String rtime) throws IOException {
         Connection conn = ConnectionFactory.createConnection(conf);
         tableSubmission = (HTable) conn.getTable(TableName.valueOf(tablenameSubmission));
 

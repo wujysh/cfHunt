@@ -1,10 +1,17 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +21,10 @@ import java.util.List;
 @Service
 public class ProblemService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProblemService.class.getName());
     private static Configuration conf;
+    private static String tablenameProblem = "codeforces:problem";
+    private static HTable tableProblem;
 
     static {
         conf = HBaseConfiguration.create();
@@ -25,12 +35,7 @@ public class ProblemService {
         conf = HBaseConfiguration.create(conf);
     }
 
-    private static String tablenameProblem = "codeforces:problem";
-    private static HTable tableProblem;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
-
-    public List<Problem> listProblems(Integer page, Integer max) {
+    public List<Problem> listProblems(Integer page, Integer max) throws IOException {
         ArrayList<Problem> ans = new ArrayList<>();
         int cnt = 0;
 
@@ -52,7 +57,7 @@ public class ProblemService {
         return ans;
     }
 
-    public List<Problem> getProblemForContest(String contestIdStr) {
+    public List<Problem> getProblemForContest(String contestIdStr) throws IOException {
         ArrayList<Problem> ans = new ArrayList<>();
 
         Connection conn = ConnectionFactory.createConnection(conf);
@@ -77,7 +82,7 @@ public class ProblemService {
     }
 
 
-    public Problem getProblem(String contestIdStr, String problemIdx) {
+    public Problem getProblem(String contestIdStr, String problemIdx) throws IOException {
         Connection conn = ConnectionFactory.createConnection(conf);
         tableProblem = (HTable) conn.getTable(TableName.valueOf(tablenameProblem));
 

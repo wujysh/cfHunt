@@ -1,10 +1,17 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.Contest;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.Cell;
+import org.apache.hadoop.hbase.HBaseConfiguration;
+import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +21,10 @@ import java.util.List;
 @Service
 public class ContestService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ContestService.class.getName());
     private static Configuration conf;
+    private static String tablenameContest = "codeforces:contest";
+    private static HTable tableContest;
 
     static {
         conf = HBaseConfiguration.create();
@@ -25,12 +35,7 @@ public class ContestService {
         conf = HBaseConfiguration.create(conf);
     }
 
-    private static String tablenameContest = "codeforces:contest";
-    private static HTable tableContest;
-
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
-
-    public List<Contest> listContests(Integer page, Integer max) {
+    public List<Contest> listContests(Integer page, Integer max) throws IOException {
         ArrayList<Contest> ans = new ArrayList<>();
         int cnt = 0;
 
@@ -52,7 +57,7 @@ public class ContestService {
         return ans;
     }
 
-    public Contest getContest(String contestIdStr) {
+    public Contest getContest(String contestIdStr) throws IOException {
         Connection conn = ConnectionFactory.createConnection(conf);
         tableContest = (HTable) conn.getTable(TableName.valueOf(tablenameContest));
 
