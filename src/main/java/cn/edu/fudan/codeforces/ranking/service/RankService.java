@@ -13,7 +13,7 @@ import java.util.List;
  * Created by house on 12/4/16.
  */
 @Service
-public class RankService {
+public class RankService extends BaseService {
 
     public List<RanklistRow> getRank(String contestIdStr, String rtime, Integer page, Integer max) throws IOException {
         ArrayList<RanklistRow> ans = new ArrayList<>();

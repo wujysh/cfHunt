@@ -1,9 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.Contest;
-import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.Cell;
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -19,21 +17,11 @@ import java.util.List;
  * Created by house on 12/4/16.
  */
 @Service
-public class ContestService {
+public class ContestService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContestService.class.getName());
-    private static Configuration conf;
     private static String tablenameContest = "codeforces:contest";
     private static HTable tableContest;
-
-    static {
-        conf = HBaseConfiguration.create();
-        conf.set("hbase.zookeeper.quorum", "10.141.208.43,10.141.208.44,10.141.208.45");
-        conf.set("hbase.zookeeper.property.clientPort", "2181");
-        conf.set("hbase.master.port", "60000");
-        conf.setLong("hbase.rpc.timeout", Long.parseLong("60000"));
-        conf = HBaseConfiguration.create(conf);
-    }
 
     public List<Contest> listContests(Integer page, Integer max) throws IOException {
         ArrayList<Contest> ans = new ArrayList<>();
