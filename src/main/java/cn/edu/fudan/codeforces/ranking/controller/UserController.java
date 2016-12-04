@@ -31,7 +31,7 @@ public class UserController {
 
     @RequestMapping("/list")
     public ModelAndView listUsers(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                 @RequestParam(value = "max", defaultValue = "20") Integer max) throws IOException {
+                                  @RequestParam(value = "max", defaultValue = "20") Integer max) throws IOException {
         ModelAndView mav = new ModelAndView("user/list");
         List<User> users = userService.listUsers(page, max);
         mav.addObject("users", users);
