@@ -1,12 +1,10 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
-/**
- * Created by wujy on 16-1-16.
- */
-
-import cn.edu.fudan.codeforces.ranking.entity.enums.ParticipantType;
-
 import java.util.List;
+
+/**
+ * Created by house on 12/4/16.
+ */
 
 /**
  * Represents a party, participating in a contest.
@@ -25,7 +23,11 @@ public class Party {
 
     private Integer contestId;
 
-    private List<Member> members;
+    private List<String> members;
+
+    private enum ParticipantType {
+        CONTESTANT, PRACTICE, VIRTUAL, MANAGER, OUT_OF_COMPETITION
+    }
 
     private ParticipantType participantType;
 
@@ -47,11 +49,11 @@ public class Party {
         this.contestId = contestId;
     }
 
-    public List<Member> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(List<String> members) {
         this.members = members;
     }
 

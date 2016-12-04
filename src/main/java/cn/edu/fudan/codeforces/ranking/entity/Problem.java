@@ -1,12 +1,10 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
-/**
- * Created by wujy on 16-1-16.
- */
-
-import cn.edu.fudan.codeforces.ranking.util.StringUtil;
-
 import java.util.List;
+
+/**
+ * Created by house on 12/4/16.
+ */
 
 /**
  * Represents a problem.
@@ -26,8 +24,15 @@ public class Problem {
     private String index;
 
     private String name;
+
+    private enum Type {
+        PROGRAMMING, QUESTION
+    }
+
     private Type type;
+
     private Float points;
+
     private List<String> tags;
 
     public Integer getContestId() {
@@ -36,14 +41,6 @@ public class Problem {
 
     public void setContestId(Integer contestId) {
         this.contestId = contestId;
-    }
-
-    public String getContestIdWithPaddingZero() {
-        return getContestIdWithPaddingZero(6);
-    }
-
-    public String getContestIdWithPaddingZero(int numOfPadding) {
-        return StringUtil.numWithPadding(contestId, 6);
     }
 
     public String getIndex() {
@@ -60,6 +57,14 @@ public class Problem {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setType(String type) {
+        if (type.equals("PROGRAMMING")) {
+            this.type = Type.PROGRAMMING;
+        } else if (type.equals("QUESTION")) {
+            this.type = Type.QUESTION;
+        }
     }
 
     public Type getType() {
@@ -86,7 +91,37 @@ public class Problem {
         this.tags = tags;
     }
 
-    private enum Type {
-        PROGRAMMING, QUESTION
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("--------------------------------------------------\n");
+        sb.append("Problem:\n");
+
+        if (contestId != null) {
+            sb.append("contestId: " + contestId + "\n");
+        }
+        if (index != null) {
+            sb.append("index: " + index + "\n");
+        }
+        if (name != null) {
+            sb.append("name: " + name + "\n");
+        }
+        sb.append("type: " + type + "\n");
+        if (points != null) {
+            sb.append("points: " + points + "\n");
+        }
+        if (tags != null) {
+            sb.append("tags:");
+            for (String tag : tags) {
+                sb.append(" ");
+                sb.append(tag);
+            }
+            sb.append("\n");
+        }
+
+        sb.append("--------------------------------------------------");
+
+        return sb.toString();
     }
 }

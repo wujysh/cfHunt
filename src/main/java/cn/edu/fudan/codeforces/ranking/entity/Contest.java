@@ -1,10 +1,8 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
- * Created by wujy on 16-1-16.
+ * Created by house on 12/4/16.
  */
-
-import cn.edu.fudan.codeforces.ranking.util.StringUtil;
 
 /**
  * Represents a contest on Codeforces.
@@ -33,20 +31,43 @@ public class Contest {
     private Integer id;
 
     private String name;
+
+    public enum Type {
+        CF, IOI, ICPC
+    }
+
     private Type type;
+
+    public enum Phase {
+        BEFORE, CODING, PENDING_SYSTEM_TEST, SYSTEM_TEST, FINISHED
+    }
+
     private Phase phase;
+
     private Boolean frozen;
+
     private Integer durationSeconds;
+
     private Integer startTimeSeconds;
+
     private Integer relativeTimeSeconds;
+
     private String preparedBy;
+
     private String websiteUrl;
+
     private String description;
+
     private Integer difficulty;
+
     private String kind;
+
     private String icpcRegion;
+
     private String country;
+
     private String city;
+
     private String season;
 
     public Integer getId() {
@@ -55,14 +76,6 @@ public class Contest {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getIdWithPaddingZero() {
-        return getIdWithPaddingZero(6);
-    }
-
-    public String getIdWithPaddingZero(int numOfPadding) {
-        return StringUtil.numWithPadding(id, 6);
     }
 
     public String getName() {
@@ -77,12 +90,36 @@ public class Contest {
         return type;
     }
 
+    public void setType(String type) {
+        if (type.equals("CF")) {
+            this.type = Type.CF;
+        } else if (type.equals("IOI")) {
+            this.type = Type.IOI;
+        } else if (type.equals("ICPC")) {
+            this.type = Type.ICPC;
+        }
+    }
+
     public void setType(Type type) {
         this.type = type;
     }
 
     public Phase getPhase() {
         return phase;
+    }
+
+    public void setPhase(String phase) {
+        if (phase.equals("BEFORE")) {
+            this.phase = Phase.BEFORE;
+        } else if (phase.equals("CODING")) {
+            this.phase = Phase.CODING;
+        } else if (phase.equals("PENDING_SYSTEM_TEST")) {
+            this.phase = Phase.PENDING_SYSTEM_TEST;
+        } else if (phase.equals("SYSTEM_TEST")) {
+            this.phase = Phase.SYSTEM_TEST;
+        } else if (phase.equals("FINISHED")) {
+            this.phase = Phase.FINISHED;
+        }
     }
 
     public void setPhase(Phase phase) {
@@ -193,12 +230,64 @@ public class Contest {
         this.season = season;
     }
 
-    public enum Type {
-        CF, IOI, ICPC
-    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
 
-    public enum Phase {
-        BEFORE, CODING, PENDING_SYSTEM_TEST, SYSTEM_TEST, FINISHED
+        sb.append("--------------------------------------------------\n");
+        sb.append("Contest:\n");
+
+        if (id != null) {
+            sb.append("id: " + id + "\n");
+        }
+        if (name != null) {
+            sb.append("name: " + name + "\n");
+        }
+        sb.append("type: " + type + "\n");
+        sb.append("phase: " + phase + "\n");
+        if (frozen != null) {
+            sb.append("frozen: " + frozen + "\n");
+        }
+        if (durationSeconds != null) {
+            sb.append("durationSeconds: " + durationSeconds + "\n");
+        }
+        if (startTimeSeconds != null) {
+            sb.append("startTimeSeconds: " + startTimeSeconds + "\n");
+        }
+        if (relativeTimeSeconds != null) {
+            sb.append("relativeTimeSeconds: " + relativeTimeSeconds + "\n");
+        }
+        if (preparedBy != null) {
+            sb.append("preparedBy: " + preparedBy + "\n");
+        }
+        if (websiteUrl != null) {
+            sb.append("websiteUrl: " + websiteUrl + "\n");
+        }
+        if (description != null) {
+            sb.append("description: " + description + "\n");
+        }
+        if (difficulty != null) {
+            sb.append("difficulty: " + difficulty + "\n");
+        }
+        if (kind != null) {
+            sb.append("kind: " + kind + "\n");
+        }
+        if (icpcRegion != null) {
+            sb.append("icpcRegion: " + icpcRegion + "\n");
+        }
+        if (country != null) {
+            sb.append("country: " + country + "\n");
+        }
+        if (city != null) {
+            sb.append("city: " + city + "\n");
+        }
+        if (season != null) {
+            sb.append("season: " + season + "\n");
+        }
+
+        sb.append("--------------------------------------------------");
+
+        return sb.toString();
     }
 
 }

@@ -1,7 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
- * Created by wujy on 16-1-16.
+ * Created by house on 12/4/16.
  */
 
 /**
@@ -185,6 +185,67 @@ public class User {
 
     public void setRegistrationTimeSeconds(Integer registrationTimeSeconds) {
         this.registrationTimeSeconds = registrationTimeSeconds;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("--------------------------------------------------\n");
+        sb.append("User:\n");
+
+        if (handle != null) {
+            sb.append("handle: " + handle + "\n");
+        }
+        if (email != null) {
+            sb.append("email: " + email + "\n");
+        }
+        if (vkId != null) {
+            sb.append("vkId: " + vkId + "\n");
+        }
+        if (openId != null) {
+            sb.append("openId: " + openId + "\n");
+        }
+        if (firstName != null) {
+            sb.append("firstName: " + firstName + "\n");
+        }
+        if (lastName != null) {
+            sb.append("lastName: " + lastName + "\n");
+        }
+        if (country != null) {
+            sb.append("country: " + country + "\n");
+        }
+        if (city != null) {
+            sb.append("city: " + city + "\n");
+        }
+        if (organization != null) {
+            sb.append("organization: " + organization + "\n");
+        }
+        if (contribution != null) {
+            sb.append("contribution: " + contribution + "\n");
+        }
+        if (rank != null) {
+            sb.append("rank: " + rank + "\n");
+        }
+        if (rating != null) {
+            sb.append("rating: " + rating + "\n");
+        }
+        if (maxRank != null) {
+            sb.append("maxRank: " + maxRank + "\n");
+        }
+        if (maxRating != null) {
+            sb.append("maxRating: " + maxRating + "\n");
+        }
+        if (lastOnlineTimeSeconds != null) {
+            sb.append("lastOnlineTimeSeconds: " + lastOnlineTimeSeconds + "\n");
+        }
+        if (registrationTimeSeconds != null) {
+            sb.append("registrationTimeSeconds: " + registrationTimeSeconds + "\n");
+        }
+
+        sb.append("--------------------------------------------------");
+
+        return sb.toString();
     }
 
 }
