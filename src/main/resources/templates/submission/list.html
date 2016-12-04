@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <link rel="icon" th:href="@{/favicon.ico}">
 
-  <title>Codeforces Ranking System</title>
+  <title>Submission - Codeforces Ranking System</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
@@ -42,10 +42,10 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/}">Home</a></li>
         <li><a th:href="@{/contest}">Contest</a></li>
         <li><a th:href="@{/problem}">Problem</a></li>
-        <li><a th:href="@{/submission}">Submission</a></li>
+        <li class="active"><a th:href="@{/submission}">Submission</a></li>
         <li><a th:href="@{/user}">User</a></li>
         <li><a th:href="@{/about}">About</a></li>
       </ul>
@@ -61,10 +61,39 @@
       <p class="pull-right visible-xs">
         <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
       </p>
-      <div class="jumbotron">
-        <h1>Codeforces Ranking System</h1>
-        <p>This is a system to present the data of Codeforces stored in HBase. Try some queries to see the power of NoSQL.</p>
+
+      <h1>Submission list</h1>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Contest ID</th>
+              <th>Index</th>
+              <th>When</th>
+              <th>Author</th>
+              <th>Language</th>
+              <th>Verdict</th>
+              <th>Time</th>
+              <th>Memory</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="submission : ${submissions}">
+              <td th:text="${submission.id}"></td>
+              <td th:text="${submission.problem.contestId}"></td>
+              <td th:text="${submission.problem.index}"></td>
+              <td th:text="${submission.author}"></td>
+              <td th:text="${submission.programmingLanguage}"></td>
+              <td th:text="${submission.verdict}"></td>
+              <td th:text="${submission.timeConsumedMillis}"></td>
+              <td th:text="${submission.memoryConsumedBytes}"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
     </div><!--/.col-xs-12.col-sm-9-->
 
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">

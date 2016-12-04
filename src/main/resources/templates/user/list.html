@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <link rel="icon" th:href="@{/favicon.ico}">
 
-  <title>Codeforces Ranking System</title>
+  <title>User - Codeforces Ranking System</title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
@@ -42,11 +42,11 @@
     </div>
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
-        <li class="active"><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/}">Home</a></li>
         <li><a th:href="@{/contest}">Contest</a></li>
         <li><a th:href="@{/problem}">Problem</a></li>
         <li><a th:href="@{/submission}">Submission</a></li>
-        <li><a th:href="@{/user}">User</a></li>
+        <li class="active"><a th:href="@{/user}">User</a></li>
         <li><a th:href="@{/about}">About</a></li>
       </ul>
     </div><!-- /.nav-collapse -->
@@ -61,10 +61,34 @@
       <p class="pull-right visible-xs">
         <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
       </p>
-      <div class="jumbotron">
-        <h1>Codeforces Ranking System</h1>
-        <p>This is a system to present the data of Codeforces stored in HBase. Try some queries to see the power of NoSQL.</p>
+
+      <h1>User list</h1>
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Handle</th>
+              <th>Email</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Country</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="user : ${users}">
+              <td th:text="${user.handle}"></td>
+              <td th:text="${user.email}"></td>
+              <td th:text="${user.firstName}"></td>
+              <td th:text="${user.lastName}"></td>
+              <td th:text="${user.country}"></td>
+              <td th:text="${user.rating}"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+
     </div><!--/.col-xs-12.col-sm-9-->
 
     <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar">

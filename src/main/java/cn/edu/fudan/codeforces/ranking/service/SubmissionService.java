@@ -23,6 +23,10 @@ public class SubmissionService extends BaseService {
     private static String tablenameSubmission = "codeforces:submission";
     private static HTable tableSubmission;
 
+    public List<Submission> listSubmissions(Integer page, Integer max) throws IOException {
+        return new ArrayList<>();
+    }
+
     public List<Submission> getSubmissions(String contestIdStr, String rtime) throws IOException {
         Connection conn = ConnectionFactory.createConnection(conf);
         tableSubmission = (HTable) conn.getTable(TableName.valueOf(tablenameSubmission));

@@ -19,9 +19,4 @@ public class IndexController {
         return "about";
     }
 
-    @RequestMapping("/contact")
-    public String contact() {
-        return "contact";
-    }
-
 }

@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +18,6 @@ import java.util.List;
  * Created by wujy on 16-12-2.
  */
 @Controller
-@RequestMapping("/user")
 public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class.getName());
@@ -29,7 +29,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping("/list")
+    @RequestMapping("/user")
     public ModelAndView listUsers(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                   @RequestParam(value = "max", defaultValue = "20") Integer max) throws IOException {
         ModelAndView mav = new ModelAndView("user/list");
@@ -38,8 +38,8 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping("/info")
-    public ModelAndView userInfo(@RequestParam("handle") String handle) throws IOException {
+    @RequestMapping("/user/{handle}")
+    public ModelAndView userInfo(@PathVariable String handle) throws IOException {
         ModelAndView mav = new ModelAndView("user/info");
         User user = userService.getUser(handle);
         mav.addObject("user", user);

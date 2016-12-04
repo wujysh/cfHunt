@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -17,7 +18,6 @@ import java.util.List;
  * Created by wujy on 16-12-2.
  */
 @Controller
-@RequestMapping("/problem")
 public class ProblemController {
 
     private static final Logger logger = LoggerFactory.getLogger(ProblemController.class.getName());
@@ -29,7 +29,7 @@ public class ProblemController {
         this.problemService = problemService;
     }
 
-    @RequestMapping("/list")
+    @RequestMapping("/problem")
     public ModelAndView listProblems(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                      @RequestParam(value = "max", defaultValue = "20") Integer max) throws IOException {
         ModelAndView mav = new ModelAndView("problem/list");
@@ -38,9 +38,9 @@ public class ProblemController {
         return mav;
     }
 
-    @RequestMapping("/info")
-    public ModelAndView userInfo(@RequestParam("contestId") String contestId,
-                                 @RequestParam("index") String index) throws IOException {
+    @RequestMapping("/problem/{contestId}/{index}")
+    public ModelAndView problemInfo(@PathVariable String contestId,
+                                    @PathVariable String index) throws IOException {
         ModelAndView mav = new ModelAndView("problem/info");
         Problem problem = problemService.getProblem(contestId, index);
         mav.addObject("problem", problem);
