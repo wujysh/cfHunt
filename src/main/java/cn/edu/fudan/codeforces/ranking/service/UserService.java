@@ -32,6 +32,7 @@ public class UserService {
 
     public List<User> listUsers(Integer page, Integer max) {
         ArrayList<User> ans = new ArrayList<>();
+        int cnt = 0;
 
         Connection conn = ConnectionFactory.createConnection(conf);
         tableUser = (HTable) conn.getTable(TableName.valueOf(tablenameUser));
@@ -40,7 +41,9 @@ public class UserService {
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"));
         ResultScanner scanner = tableUser.getScanner(scan);
         for (Result result : scanner) {
-            ans.add(buildUser(result));
+            if (cnt >= page * max && cnt < (page + 1) * max)
+                ans.add(buildUser(result));
+            ++cnt;
         }
 
         tableUser.close();

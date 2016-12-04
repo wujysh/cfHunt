@@ -32,6 +32,7 @@ public class ContestService {
 
     public List<Contest> listContests(Integer page, Integer max) {
         ArrayList<Contest> ans = new ArrayList<>();
+        int cnt = 0;
 
         Connection conn = ConnectionFactory.createConnection(conf);
         tableContest = (HTable) conn.getTable(TableName.valueOf(tablenameContest));
@@ -40,7 +41,9 @@ public class ContestService {
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
         ResultScanner scanner = tableContest.getScanner(scan);
         for (Result result : scanner) {
-            ans.add(buildContest(result));
+            if (cnt >= page * max && cnt < (page + 1) * max)
+                ans.add(buildContest(result));
+            ++cnt;
         }
 
         tableContest.close();

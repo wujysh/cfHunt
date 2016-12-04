@@ -32,6 +32,7 @@ public class ProblemService {
 
     public List<Problem> listProblems(Integer page, Integer max) {
         ArrayList<Problem> ans = new ArrayList<>();
+        int cnt = 0;
 
         Connection conn = ConnectionFactory.createConnection(conf);
         tableProblem = (HTable) conn.getTable(TableName.valueOf(tablenameProblem));
@@ -40,7 +41,9 @@ public class ProblemService {
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
         ResultScanner scanner = tableProblem.getScanner(scan);
         for (Result result : scanner) {
-            ans.add(buildProblem(result));
+            if (cnt >= page * max && cnt < (page + 1) * max)
+                ans.add(buildProblem(result));
+            ++cnt;
         }
 
         tableProblem.close();
