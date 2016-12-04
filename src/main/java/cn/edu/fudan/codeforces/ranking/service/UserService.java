@@ -31,7 +31,22 @@ public class UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
 
     public List<User> listUsers(Integer page, Integer max) {
-        return new ArrayList<>();
+        ArrayList<User> ans = new ArrayList<>();
+
+        Connection conn = ConnectionFactory.createConnection(conf);
+        tableUser = (HTable) conn.getTable(TableName.valueOf(tablenameUser));
+
+        Scan scan = new Scan();
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"));
+        ResultScanner scanner = tableUser.getScanner(scan);
+        for (Result result : scanner) {
+            ans.add(buildUser(result));
+        }
+
+        tableUser.close();
+        conn.close();
+
+        return ans;
     }
 
     public User getUser(String handle) {

@@ -31,8 +31,48 @@ public class ProblemService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
 
     public List<Problem> listProblems(Integer page, Integer max) {
-        return new ArrayList<>();
+        ArrayList<Problem> ans = new ArrayList<>();
+
+        Connection conn = ConnectionFactory.createConnection(conf);
+        tableProblem = (HTable) conn.getTable(TableName.valueOf(tablenameProblem));
+
+        Scan scan = new Scan();
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
+        ResultScanner scanner = tableProblem.getScanner(scan);
+        for (Result result : scanner) {
+            ans.add(buildProblem(result));
+        }
+
+        tableProblem.close();
+        conn.close();
+
+        return ans;
     }
+
+    public List<Problem> getProblemForContest(String contestIdStr) {
+        ArrayList<Problem> ans = new ArrayList<>();
+
+        Connection conn = ConnectionFactory.createConnection(conf);
+        tableProblem = (HTable) conn.getTable(TableName.valueOf(tablenameProblem));
+
+        int contestId = Integer.valueOf(contestIdStr);
+        String rowkey = String.format("%06d-", contestId);
+
+        Scan scan = new Scan();
+        scan.setStartRow(Bytes.toBytes(rowkey));
+        scan.setStopRow(Bytes.toBytes(rowkey + "-zz"));
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
+        ResultScanner scanner = tableProblem.getScanner(scan);
+        for (Result result : scanner) {
+            ans.add(buildProblem(result));
+        }
+
+        tableProblem.close();
+        conn.close();
+
+        return ans;
+    }
+
 
     public Problem getProblem(String contestIdStr, String problemIdx) {
         Connection conn = ConnectionFactory.createConnection(conf);

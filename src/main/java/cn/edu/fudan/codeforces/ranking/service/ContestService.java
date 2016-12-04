@@ -31,7 +31,22 @@ public class ContestService {
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
 
     public List<Contest> listContests(Integer page, Integer max) {
-        return new ArrayList<>();
+        ArrayList<Contest> ans = new ArrayList<>();
+
+        Connection conn = ConnectionFactory.createConnection(conf);
+        tableContest = (HTable) conn.getTable(TableName.valueOf(tablenameContest));
+
+        Scan scan = new Scan();
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
+        ResultScanner scanner = tableContest.getScanner(scan);
+        for (Result result : scanner) {
+            ans.add(buildContest(result));
+        }
+
+        tableContest.close();
+        conn.close();
+
+        return ans;
     }
 
     public Contest getContest(String contestIdStr) {
