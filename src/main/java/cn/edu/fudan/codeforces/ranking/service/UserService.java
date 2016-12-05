@@ -32,6 +32,9 @@ public class UserService extends BaseService {
 
         Scan scan = new Scan();
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"));
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("firstName"));
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("lastName"));
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("rank"));
         ResultScanner scanner = tableUser.getScanner(scan);
         for (Result result : scanner) {
             if (cnt >= page * max && cnt < (page + 1) * max)

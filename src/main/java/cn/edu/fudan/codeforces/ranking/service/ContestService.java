@@ -32,6 +32,8 @@ public class ContestService extends BaseService {
 
         Scan scan = new Scan();
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
+        scan.addColumn(Bytes.toBytes("time"), Bytes.toBytes("durationSeconds"));
+        scan.addColumn(Bytes.toBytes("time"), Bytes.toBytes("startTimeSeconds"));
         ResultScanner scanner = tableContest.getScanner(scan);
         for (Result result : scanner) {
             if (cnt >= page * max && cnt < (page + 1) * max)

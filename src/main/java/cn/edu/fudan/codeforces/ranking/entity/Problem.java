@@ -17,6 +17,17 @@ import java.util.List;
  * points	        Floating point number. Can be absent. Maximum ammount of points for the problem.
  * tags	            String list. Problem tags.
  */
+/**
+ * Table            codeforces:problem
+ *
+ * Row key          {contestId}(padding)-{index}
+ *
+ * Column Family 1  info
+ * Columns          name, type, points, tags, solvedCount
+ *
+ * Column Family 2  html
+ * Columns          content, timeLimit, memoryLimit, ...
+ */
 public class Problem {
 
     private Integer contestId;

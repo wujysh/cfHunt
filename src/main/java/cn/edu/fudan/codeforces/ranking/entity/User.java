@@ -25,6 +25,17 @@ package cn.edu.fudan.codeforces.ranking.entity;
  * lastOnlineTimeSeconds    Integer. Time, when user was last seen online, in unix format.
  * registrationTimeSeconds  Integer. Time, when user was registered, in unix format.
  */
+/**
+ * Table            codeforces:user
+ *
+ * Row key          {handle}
+ * Column Family 1  info
+ * Columns          email, vkId, openId, firstName, lastName, country, city, organization,
+ *                  contribution, lastOnlineTimeSeconds, registrationTimeSeconds, rank, maxRank
+ *
+ * Column Family 2  rating
+ * Columns          rating, maxRating
+ */
 public class User {
 
     private String handle;

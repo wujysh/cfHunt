@@ -32,6 +32,8 @@ public class ProblemService extends BaseService {
 
         Scan scan = new Scan();
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("points"));
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("tags"));
         ResultScanner scanner = tableProblem.getScanner(scan);
         for (Result result : scanner) {
             if (cnt >= page * max && cnt < (page + 1) * max)

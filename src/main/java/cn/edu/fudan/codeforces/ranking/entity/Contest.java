@@ -26,6 +26,21 @@ package cn.edu.fudan.codeforces.ranking.entity;
  * city	                    String. Localized. Can be absent.
  * season	                String. Can be absent.
  */
+/**
+ * Table            codeforces:contest
+ *
+ * Row key          {id}(padding)
+ *
+ * Column Family 1  info
+ * Columns          name, type, phase, frozen
+ *
+ * Column Family 2  time
+ * Columns          durationSeconds, startTimeSeconds, relativeTimeSeconds
+ *
+ * Column Family 3  other
+ * Columns          preparedBy, websiteUrl, description,
+ *                  difficulty, kind, icpcRegion, city, season
+ */
 public class Contest {
 
     private Integer id;
