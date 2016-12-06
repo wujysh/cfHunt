@@ -45,7 +45,6 @@
         <li><a th:href="@{/}">Home</a></li>
         <li class="active"><a th:href="@{/contest}">Contest</a></li>
         <li><a th:href="@{/problem}">Problem</a></li>
-        <li><a th:href="@{/submission}">Submission</a></li>
         <li><a th:href="@{/user}">User</a></li>
         <li><a th:href="@{/about}">About</a></li>
       </ul>
@@ -69,19 +68,15 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Description</th>
               <th>Start Time</th>
               <th>Duration</th>
-              <th>Type</th>
             </tr>
           </thead>
           <tbody>
             <tr th:each="contest : ${contests}">
               <td th:text="${contest.name}"></td>
-              <td th:text="${contest.description}"></td>
               <td th:text="${contest.startTimeSeconds}"></td>
               <td th:text="${contest.durationSeconds}"></td>
-              <td th:text="${contest.type}"></td>
             </tr>
           </tbody>
         </table>
@@ -99,7 +94,6 @@
         </a>
         <a th:href="@{/contest}" class="list-group-item">Contest</a>
         <a th:href="@{/problem}" class="list-group-item">Problem</a>
-        <a th:href="@{/submission}" class="list-group-item">Submission</a>
         <a th:href="@{/user}" class="list-group-item">User</a>
       </div>
     </div><!--/.sidebar-offcanvas-->
