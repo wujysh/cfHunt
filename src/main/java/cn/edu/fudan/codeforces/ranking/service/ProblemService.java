@@ -1,6 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
+import cn.edu.fudan.codeforces.ranking.entity.Submission;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -123,6 +126,45 @@ public class ProblemService extends BaseService {
         }
 
         return res;
+    }
+
+    public double getProblemAvgACTryCnt(String contestIdStr, String problemIdx) throws IOException {
+        HashMap<String, Integer> cnt = new HashMap<>();
+        HashSet<String> acers = new HashSet<>();
+
+        SubmissionService ss = new SubmissionService();
+        List<Submission> submissions = ss.getSubmissions(contestIdStr, "");
+
+        for (Submission sub : submissions) {
+            if (sub.getProblem().getIndex().equals(problemIdx)) {
+
+                for (String auth : sub.getAuthor().getMembers()) {
+                    if (!acers.contains(auth)) {
+                        int val = 0;
+                        if (cnt.containsKey(auth)) {
+                            val = cnt.get(auth);
+                        }
+                        ++val;
+                        cnt.put(auth, val);
+                    }
+                }
+
+                if (sub.isVerdictOK()) {
+                    for (String auth : sub.getAuthor().getMembers()) {
+                        acers.add(auth);
+                    }
+                }
+
+            }
+        }
+
+        long actry = 0;
+        long acman = acers.size();
+        for (String acer : acers) {
+            actry += cnt.get(acer);
+        }
+
+        return (double) (actry) / acman;
     }
 
 }

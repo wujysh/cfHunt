@@ -101,6 +101,10 @@ public class Submission {
         return verdict;
     }
 
+    public boolean isVerdictOK() {
+        return verdict == Verdict.OK;
+    }
+
     public void setVerdict(Verdict verdict) {
         this.verdict = verdict;
     }
