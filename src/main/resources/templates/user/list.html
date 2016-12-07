@@ -111,7 +111,15 @@
               <td th:text="${user.firstName}"></td>
               <td th:text="${user.lastName}"></td>
               <td>
-                <span class="label label-info" th:text="${user.rank}"></span>  // TODO: coloring
+                <span th:if="${user.rank == 'international grandmaster'}" class="label label-international-grandmaster" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'grandmaster'}" class="label label-grandmaster" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'international master'}" class="label label-international-master" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'master'}" class="label label-master" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'candidate master'}" class="label label-candidate-master" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'expert'}" class="label label-expert" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'specialist'}" class="label label-specialist" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'pupil'}" class="label label-pupil" th:text="${user.rank}"></span>
+                <span th:if="${user.rank == 'newbie'}" class="label label-newbie" th:text="${user.rank}"></span>
               </td>
             </tr>
           </tbody>
