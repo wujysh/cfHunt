@@ -1,6 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
+import cn.edu.fudan.codeforces.ranking.util.ByteUtil;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
@@ -90,7 +91,7 @@ public class ProblemService extends BaseService {
         return ans;
     }
 
-    private Problem buildProblem(Result result) {
+    private Problem buildProblem(Result result) throws IOException {
         Problem res = new Problem();
 
         String[] token = Bytes.toString(result.getRow()).split("-");
@@ -113,9 +114,7 @@ public class ProblemService extends BaseService {
                 } else if (qualifier.equals("points")) {
                     res.setPoints(Bytes.toFloat(cell.getValueArray(), cell.getValueOffset()));
                 } else if (qualifier.equals("tags")) {
-                    ArrayList<String> tmp = new ArrayList<>();
-                    tmp.add(valueStr);
-                    res.setTags(tmp);
+                    res.setTags(ByteUtil.toStringList(Bytes.copy(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength())));
                 }
 
             }
