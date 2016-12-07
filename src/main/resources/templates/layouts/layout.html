@@ -7,35 +7,28 @@
 </head>
 <body>
 <div th:fragment="navbarFragment">
-  <div class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
+  <nav class="navbar navbar-fixed-top navbar-inverse">
+    <div class="container">
       <div class="navbar-header">
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#main_navbar_items">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">
-          <img th:src="@{/public/logo.svg}"/>
-        </a>
+        <a class="navbar-brand" th:href="@{/}">cfHunt</a>
       </div>
-      <div class="main_navbar_items navbar-collapse collapse">
-        <form class="navbar-form navbar-left" role="search" id="main-search">
-          <div class="form-group">
-            <div class="input-group">
-              <input class="form-control" type="text" placeholder="Search User"/>
-                <span class="input-group-btn">
-                  <button class="btn btn-default" type="button">Go</button>
-                </span>
-            </div>
-          </div>
-        </form>
-        <ul class="nav navbar-nav navbar-right">
-
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li><a th:href="@{/}">Home</a></li>
+          <li class="active"><a th:href="@{/contest}">Contest</a></li>
+          <li><a th:href="@{/problem}">Problem</a></li>
+          <li><a th:href="@{/user}">User</a></li>
+          <li><a th:href="@{/about}">About</a></li>
         </ul>
-      </div>
-    </div>
-  </div>
+      </div><!-- /.nav-collapse -->
+    </div><!-- /.container -->
+  </nav><!-- /.navbar -->
 
   <div th:if="${message != null}" class="alert alert-success" th:text="${message}"></div>
 

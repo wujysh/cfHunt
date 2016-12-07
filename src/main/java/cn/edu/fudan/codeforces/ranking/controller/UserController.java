@@ -34,7 +34,15 @@ public class UserController {
                                   @RequestParam(value = "max", defaultValue = "20") Integer max) throws IOException {
         ModelAndView mav = new ModelAndView("user/list");
         List<User> users = userService.listUsers(page, max);
+
+        int totalPage = (int) Math.ceil(89342 / max), minPage = Math.max(1, page - 3), maxPage = Math.min(minPage + 6, totalPage);
+        minPage = Math.max(1, maxPage - 6);
         mav.addObject("users", users);
+        mav.addObject("page", page);
+        mav.addObject("max", max);
+        mav.addObject("totalPage", totalPage);
+        mav.addObject("minPage", minPage);
+        mav.addObject("maxPage", maxPage);
         return mav;
     }
 

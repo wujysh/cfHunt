@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -39,7 +38,15 @@ public class ContestController {
                                      @RequestParam(value = "max", defaultValue = "20") Integer max) throws IOException {
         ModelAndView mav = new ModelAndView("contest/list");
         List<Contest> contests = contestService.listContests(page, max);
+
+        int totalPage = (int) Math.ceil(1253 / max), minPage = Math.max(1, page - 3), maxPage = Math.min(minPage + 6, totalPage);
+        minPage = Math.max(1, maxPage - 6);
         mav.addObject("contests", contests);
+        mav.addObject("page", page);
+        mav.addObject("max", max);
+        mav.addObject("totalPage", totalPage);
+        mav.addObject("minPage", minPage);
+        mav.addObject("maxPage", maxPage);
         return mav;
     }
 
@@ -53,9 +60,4 @@ public class ContestController {
         return mav;
     }
 
-    @ResponseBody
-    @RequestMapping("/contest/data")
-    public String dummy() {
-    	return "data";
-    }
 }

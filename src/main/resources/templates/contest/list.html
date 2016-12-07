@@ -61,7 +61,37 @@
         <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
       </p>
 
-      <h1>Contest list</h1>
+      <div class="row">
+        <div class="col-xs-7">
+          <h3>Contest list <small th:text="${totalPage} + ' pages'"></small></h3>
+        </div>
+        <div class="col-xs-5">
+          <nav aria-label="Page navigation">
+            <ul class="pagination">
+              <li th:class="${page == 1} ? 'disabled' : ''">
+                <span th:if="${page == 1}">
+                  <span aria-hidden="true">&laquo;</span>
+                </span>
+                <a th:if="${page > 1}" th:href="@{${'/contest'}(page=${page-1},max=${max})}" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li th:each="pageNo : ${#numbers.sequence(minPage, maxPage)}" th:class="${page == pageNo}? 'active' : ''">
+                <a th:if="${page == pageNo}" href="#" th:text="${pageNo}"><span class="sr-only">(current)</span></a>
+                <a th:if="${page != pageNo}" th:href="@{${'/contest'}(page=${pageNo},max=${max})}" th:text="${pageNo}"></a>
+              </li>
+              <li th:class="${page == totalPage} ? 'disabled' : ''">
+                <span th:if="${page == totalPage}">
+                  <span aria-hidden="true">&raquo;</span>
+                </span>
+                <a th:if="${page < totalPage}" th:href="@{${'/contest'}(page=${page+1},max=${max})}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
 
       <div class="table-responsive">
         <table class="table table-hover table-striped">
@@ -75,7 +105,7 @@
           <tbody>
             <tr th:each="contest : ${contests}">
               <td th:text="${contest.name}"></td>
-              <td th:text="${#dates.format(new java.util.Date(contest.startTimeSeconds * 1000L), 'MMM/dd/yyyy')}"></td>
+              <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null ? 0 : contest.startTimeSeconds) * 1000L), 'yyyy-MM-dd')}"></td>
               <td th:text="${contest.durationSeconds / 3600} + ' hrs'"></td>
             </tr>
           </tbody>
