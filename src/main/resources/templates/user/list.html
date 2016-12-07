@@ -45,7 +45,6 @@
         <li><a th:href="@{/}">Home</a></li>
         <li><a th:href="@{/contest}">Contest</a></li>
         <li><a th:href="@{/problem}">Problem</a></li>
-        <li><a th:href="@{/submission}">Submission</a></li>
         <li class="active"><a th:href="@{/user}">User</a></li>
         <li><a th:href="@{/about}">About</a></li>
       </ul>
@@ -72,8 +71,7 @@
               <th>Email</th>
               <th>First Name</th>
               <th>Last Name</th>
-              <th>Country</th>
-              <th>Rating</th>
+              <th>Rank</th>
             </tr>
           </thead>
           <tbody>
@@ -82,8 +80,9 @@
               <td th:text="${user.email}"></td>
               <td th:text="${user.firstName}"></td>
               <td th:text="${user.lastName}"></td>
-              <td th:text="${user.country}"></td>
-              <td th:text="${user.rating}"></td>
+              <td>
+                <span class="label label-info" th:text="${user.rank}"></span>  // TODO: coloring
+              </td>
             </tr>
           </tbody>
         </table>
@@ -101,7 +100,6 @@
         </a>
         <a th:href="@{/contest}" class="list-group-item">Contest</a>
         <a th:href="@{/problem}" class="list-group-item">Problem</a>
-        <a th:href="@{/submission}" class="list-group-item">Submission</a>
         <a th:href="@{/user}" class="list-group-item">User</a>
       </div>
     </div><!--/.sidebar-offcanvas-->

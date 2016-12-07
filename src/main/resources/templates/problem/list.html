@@ -45,7 +45,6 @@
         <li><a th:href="@{/}">Home</a></li>
         <li><a th:href="@{/contest}">Contest</a></li>
         <li class="active"><a th:href="@{/problem}">Problem</a></li>
-        <li><a th:href="@{/submission}">Submission</a></li>
         <li><a th:href="@{/user}">User</a></li>
         <li><a th:href="@{/about}">About</a></li>
       </ul>
@@ -68,25 +67,19 @@
         <table class="table table-hover table-striped">
           <thead>
             <tr>
-              <th>Contest ID</th>
               <th>Index</th>
               <th>Name</th>
-              <th>Type</th>
-              <th>Points</th>
               <th>Tags</th>
             </tr>
           </thead>
           <tbody>
             <tr th:each="problem : ${problems}">
-              <td th:text="${problem.contestId}"></td>
-              <td th:text="${problem.index}"></td>
+              <td th:text="${problem.contestId} + ${problem.index}"></td>
               <td th:text="${problem.name}"></td>
-              <td th:text="${problem.type}"></td>
-              <td th:text="${problem.points}"></td>
               <td>
-                <div th:each="tag : ${problem.tags}">
-                  <span th:text="${tag}"></span>
-                </div>
+                <span th:each="tag : ${problem.tags}">
+                  <span class="label label-default" th:text="${tag}"></span>
+                </span>
               </td>
             </tr>
           </tbody>
@@ -105,7 +98,6 @@
         </a>
         <a th:href="@{/contest}" class="list-group-item">Contest</a>
         <a th:href="@{/problem}" class="list-group-item">Problem</a>
-        <a th:href="@{/submission}" class="list-group-item">Submission</a>
         <a th:href="@{/user}" class="list-group-item">User</a>
       </div>
     </div><!--/.sidebar-offcanvas-->
