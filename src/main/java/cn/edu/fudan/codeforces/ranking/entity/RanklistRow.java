@@ -1,7 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
- * Created by wujy on 16-1-16.
+ * Created by house on 12/7/16.
  */
 
 import java.util.List;
@@ -11,8 +11,8 @@ import java.util.List;
  * <p>
  * Field	                    Description
  * handle	                    User handle.
- * points	                    Floating point number. Total ammount of points, scored by the party.
- * penalty	                    Integer. Total penalty (in ICPC meaning) of the party.
+ * points	                    For CF, total amount of points. For ICPC, AC number.
+ * penalty	                    For CF, penalty for all problems. For ICPC, total cost time for all problem.
  * problemResults	            List of ProblemResult objects. Party results for each problem. Order of the problems is the same as in "problems" field of the returned object.
  */
 public class RanklistRow {

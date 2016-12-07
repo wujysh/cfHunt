@@ -1,24 +1,24 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
- * Created by wujy on 16-1-16.
+ * Created by house on 12/7/16.
  */
 
 /**
  * Represents a submissions results of a user for a problem.
  * <p>
  * Field	                    Description
- * points	                    Floating point number.
- * penalty	                    Integer. Penalty (in ICPC meaning) of the party for this problem.
+ * points	                    For CF, the user gets these points by AC. For ICPC, point is 1 or 0.
+ * penalty	                    For CF, penalty for this problem. For ICPC, total cost time for this problem.
  * rejectedAttemptCount         Integer. Number of incorrect submissions.
- * bestSubmissionTimeSeconds    Integer. Number of seconds after the start of the contest before the submission, that brought maximal amount of points for this problem.
+ * acTimeSeconds                Integer. Number of seconds after the start of the contest before the AC submission.
  */
 public class ProblemResult {
 
     private Float points;
     private Integer penalty;
     private Integer rejectedAttemptCount;
-    private Integer bestSubmissionTimeSeconds;
+    private Integer acTimeSeconds;
 
     public Float getPoints() {
         return points;
@@ -44,12 +44,12 @@ public class ProblemResult {
         this.rejectedAttemptCount = rejectedAttemptCount;
     }
 
-    public Integer getBestSubmissionTimeSeconds() {
-        return bestSubmissionTimeSeconds;
+    public Integer getAcTimeSeconds() {
+        return acTimeSeconds;
     }
 
-    public void setBestSubmissionTimeSeconds(Integer bestSubmissionTimeSeconds) {
-        this.bestSubmissionTimeSeconds = bestSubmissionTimeSeconds;
+    public void setAcTimeSeconds(Integer acTimeSeconds) {
+        this.acTimeSeconds = acTimeSeconds;
     }
 
 }
