@@ -16,6 +16,7 @@ import java.util.*;
 public class RankService extends BaseService {
 
     public List<RanklistRow> getRank(String contestIdStr, String rtime, Integer page, Integer max) throws IOException {
+        --page;
         ArrayList<RanklistRow> ans = new ArrayList<>();
 
         ContestService cs = new ContestService();

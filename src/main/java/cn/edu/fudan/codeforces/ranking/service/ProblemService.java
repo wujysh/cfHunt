@@ -28,6 +28,7 @@ public class ProblemService extends BaseService {
     private static HTable tableProblem;
 
     public List<Problem> listProblems(Integer page, Integer max) throws IOException {
+        --page;
         ArrayList<Problem> ans = new ArrayList<>();
         int cnt = 0;
 

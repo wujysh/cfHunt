@@ -24,6 +24,7 @@ public class ContestService extends BaseService {
     private static HTable tableContest;
 
     public List<Contest> listContests(Integer page, Integer max) throws IOException {
+        --page;
         ArrayList<Contest> ans = new ArrayList<>();
         int cnt = 0;
 

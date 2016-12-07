@@ -24,6 +24,7 @@ public class UserService extends BaseService {
     private static HTable tableUser;
 
     public List<User> listUsers(Integer page, Integer max) throws IOException {
+        --page;
         ArrayList<User> ans = new ArrayList<>();
         int cnt = 0;
 
