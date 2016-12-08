@@ -11,7 +11,7 @@ public class BaseMySQLService {
 	static {
 	    try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();//MYSQL驱动
-			con = DriverManager.getConnection("jdbc:mysql://10.131.247.131:3306/codeforces", "root", "123456"); //链接本地MYSQL
+			con = DriverManager.getConnection("jdbc:mysql://10.131.247.131:3306/tongji", "root", "123456"); //链接本地MYSQL
 		    stmt = con.createStatement();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

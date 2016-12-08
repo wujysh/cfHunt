@@ -1,6 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.controller;
 
 import cn.edu.fudan.codeforces.ranking.entity.User;
+import cn.edu.fudan.codeforces.ranking.mysql.DevelopmentService;
 import cn.edu.fudan.codeforces.ranking.mysql.UserNumberService;
 import cn.edu.fudan.codeforces.ranking.service.UserService;
 import org.slf4j.Logger;
@@ -27,13 +28,16 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
     private final UserService userService;
-    
     private final UserNumberService userNumberService;
+    private final DevelopmentService developmentService;
 
     @Autowired
-    public UserController(UserService userService, UserNumberService userNumberService) {
+    public UserController(UserService userService, 
+    		UserNumberService userNumberService,
+    		DevelopmentService developmentService) {
         this.userService = userService;
         this.userNumberService = userNumberService;
+        this.developmentService = developmentService;
     }
 
     @RequestMapping("/user")
@@ -74,5 +78,12 @@ public class UserController {
     	Map<String, Integer> map = userNumberService.listUsersByRank();
     	return gson.toJson(map);
     }
-
+    
+    @RequestMapping("/user/development")
+    public String developmentByYear() {
+    	Gson gson = new Gson();
+    	Map<String, Integer> map = developmentService.getDevelopmentByYear();
+    	return gson.toJson(map);
+    }
+    
 }
