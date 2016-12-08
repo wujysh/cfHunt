@@ -1,13 +1,17 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.*;
+import org.apache.hadoop.hbase.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by house on 12/7/16.
@@ -28,17 +32,15 @@ public class RankService extends BaseService {
         this.ss = ss;
     }
 
-    public List<RanklistRow> getRank(String contestIdStr, String rtime, Integer page, Integer max) throws IOException {
+    public Pair<Integer, List<RanklistRow>> getRank(Contest contest, List<Problem> problems, String rtime, Integer page, Integer max) throws IOException {
         --page;
         ArrayList<RanklistRow> ans = new ArrayList<>();
 
-        Contest contest = cs.getContest(contestIdStr);
-        List<Problem> problems = ps.getProblemForContest(contestIdStr);
         int ctime = contest.getDurationSeconds();
         if (!rtime.isEmpty()) {
             ctime = Math.min(ctime, Integer.valueOf(rtime));
         }
-        List<Submission> submissions = ss.getSubmissions(contestIdStr, String.valueOf(ctime));
+        List<Submission> submissions = ss.getSubmissions(String.valueOf(contest.getId()), String.valueOf(ctime));
 
         HashMap<String, Integer> problemIdx = new HashMap<>();
         ArrayList<Float> points = new ArrayList<>();
@@ -90,7 +92,7 @@ public class RankService extends BaseService {
             ans.add(totalRank.get(idx));
         }
 
-        return ans;
+        return new Pair<>(totalRank.size(), ans);
     }
 
     class CFComparator implements Comparator<RanklistRow> {
