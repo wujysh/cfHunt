@@ -113,7 +113,7 @@
                         <td th:text="${row.penalty}"></td>
                         <td th:each="problemResult : ${row.problemResults}">
                             <span th:text="${problemResult.points}"></span>
-                            <span th:text="${problemResult.panelty}"></span>
+                            <span th:text="${problemResult.penalty}"></span>
                             <span th:text="${problemResult.rejectedAttemptCount}"></span>
                             <span th:text="${problemResult.acTimeSeconds}"></span>
                         </td>

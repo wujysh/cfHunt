@@ -34,7 +34,11 @@ public class RankService extends BaseService {
 
         Contest contest = cs.getContest(contestIdStr);
         List<Problem> problems = ps.getProblemForContest(contestIdStr);
-        List<Submission> submissions = ss.getSubmissions(contestIdStr, rtime);
+        int ctime = contest.getDurationSeconds();
+        if (!rtime.isEmpty()) {
+            ctime = Math.min(ctime, Integer.valueOf(rtime));
+        }
+        List<Submission> submissions = ss.getSubmissions(contestIdStr, String.valueOf(ctime));
 
         HashMap<String, Integer> problemIdx = new HashMap<>();
         ArrayList<Float> points = new ArrayList<>();
@@ -92,10 +96,10 @@ public class RankService extends BaseService {
     class CFComparator implements Comparator<RanklistRow> {
         public final int compare(RanklistRow pFirst, RanklistRow pSecond) {
             if (pFirst.getPoints() < pSecond.getPoints()) {
-                return -1;
+                return 1;
             }
             if (pFirst.getPoints() > pSecond.getPoints()) {
-                return 1;
+                return -1;
             }
             return 0;
         }
@@ -149,16 +153,16 @@ public class RankService extends BaseService {
     class ICPCComparator implements Comparator<RanklistRow> {
         public final int compare(RanklistRow pFirst, RanklistRow pSecond) {
             if (pFirst.getPoints() < pSecond.getPoints()) {
-                return -1;
+                return 1;
             }
             if (pFirst.getPoints() > pSecond.getPoints()) {
-                return 1;
-            }
-            if (pFirst.getPenalty() > pSecond.getPenalty()) {
                 return -1;
             }
-            if (pFirst.getPenalty() < pSecond.getPenalty()) {
+            if (pFirst.getPenalty() > pSecond.getPenalty()) {
                 return 1;
+            }
+            if (pFirst.getPenalty() < pSecond.getPenalty()) {
+                return -1;
             }
             return 0;
         }
