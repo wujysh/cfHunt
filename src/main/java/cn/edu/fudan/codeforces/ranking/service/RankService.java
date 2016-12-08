@@ -132,7 +132,7 @@ public class RankService extends BaseService {
                     res.setPoints(0f);
                     res.setPenalty(0);
                     res.setAcTimeSeconds(0);
-                    res.setRejectedAttemptCount(0);
+                    res.setRejectedAttemptCount(cnt.get(auth).get(i));
                 }
                 resList.add(res);
             }
@@ -194,7 +194,7 @@ public class RankService extends BaseService {
                     res.setPoints(0f);
                     res.setPenalty(0);
                     res.setAcTimeSeconds(0);
-                    res.setRejectedAttemptCount(0);
+                    res.setRejectedAttemptCount(cnt.get(auth).get(i));
                 }
                 resList.add(res);
             }
