@@ -104,7 +104,9 @@
           </thead>
           <tbody>
             <tr th:each="contest : ${contests}">
-              <td th:text="${contest.name}"></td>
+              <td>
+                <a th:href="@{${'/contest/' + contest.id + '/rank'}}" th:text="${contest.name}"></a>
+              </td>
               <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null ? 0 : contest.startTimeSeconds) * 1000L), 'yyyy-MM-dd')}"></td>
               <td th:text="${contest.durationSeconds / 3600} + ' hrs'"></td>
             </tr>
