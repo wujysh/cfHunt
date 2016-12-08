@@ -6,6 +6,7 @@ import cn.edu.fudan.codeforces.ranking.entity.RanklistRow;
 import cn.edu.fudan.codeforces.ranking.service.ContestService;
 import cn.edu.fudan.codeforces.ranking.service.ProblemService;
 import cn.edu.fudan.codeforces.ranking.service.RankService;
+import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,12 +41,12 @@ public class RankController {
         ModelAndView mav = new ModelAndView("contest/rank");
         Contest contest = contestService.getContest(contestId);
         List<Problem> problems = problemService.getProblemForContest(contestId);
-        List<RanklistRow> ranklist = rankService.getRank(contestId, "", page, max);
-        mav.addObject("ranklist", ranklist);
+        Pair<Integer, List<RanklistRow>> ranklist = rankService.getRank(contest, problems, "", page, max);
+        mav.addObject("ranklist", ranklist.getSecond());
         mav.addObject("contest", contest);
         mav.addObject("problems", problems);
 
-        int totalPage = (int) Math.ceil(100 / max), minPage = Math.max(1, page - 3), maxPage = Math.min(minPage + 6, totalPage);
+        int totalPage = (int) Math.ceil(ranklist.getFirst() / max), minPage = Math.max(1, page - 3), maxPage = Math.min(minPage + 6, totalPage);
         minPage = Math.max(1, maxPage - 6);
         mav.addObject("page", page);
         mav.addObject("max", max);

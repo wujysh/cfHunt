@@ -71,8 +71,7 @@ public class ProblemService extends BaseService {
 
         Scan scan = new Scan();
         scan.setStartRow(Bytes.toBytes(rowkey));
-        scan.setStopRow(Bytes.toBytes(rowkey + "-zz"));
-        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
+        scan.setStopRow(Bytes.toBytes(rowkey + "zz"));
         ResultScanner scanner = tableProblem.getScanner(scan);
         for (Result result : scanner) {
             ans.add(buildProblem(result));
