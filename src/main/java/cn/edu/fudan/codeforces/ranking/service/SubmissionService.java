@@ -1,5 +1,6 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
+import cn.edu.fudan.codeforces.ranking.entity.Problem;
 import cn.edu.fudan.codeforces.ranking.entity.Submission;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.TableName;
@@ -67,7 +68,10 @@ public class SubmissionService extends BaseService {
 
         res.setContestId(Integer.valueOf(token[0]));
         res.setRelativeTimeSeconds(Integer.valueOf(token[1]));
-        res.getProblem().setIndex(token[2]);
+
+        Problem prob = new Problem();
+        prob.setIndex(token[2]);
+        res.setProblem(prob);
 
         for (Cell cell : result.rawCells()) {
 

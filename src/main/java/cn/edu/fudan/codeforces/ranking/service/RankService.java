@@ -1,6 +1,9 @@
 package cn.edu.fudan.codeforces.ranking.service;
 
 import cn.edu.fudan.codeforces.ranking.entity.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -12,15 +15,25 @@ import java.util.*;
 @Service
 public class RankService extends BaseService {
 
+    private static final Logger logger = LoggerFactory.getLogger(RankService.class.getName());
+
+    private final ContestService cs;
+    private final ProblemService ps;
+    private final SubmissionService ss;
+
+    @Autowired
+    public RankService(ContestService cs, ProblemService ps, SubmissionService ss) {
+        this.cs = cs;
+        this.ps = ps;
+        this.ss = ss;
+    }
+
     public List<RanklistRow> getRank(String contestIdStr, String rtime, Integer page, Integer max) throws IOException {
         --page;
         ArrayList<RanklistRow> ans = new ArrayList<>();
 
-        ContestService cs = new ContestService();
         Contest contest = cs.getContest(contestIdStr);
-        ProblemService ps = new ProblemService();
         List<Problem> problems = ps.getProblemForContest(contestIdStr);
-        SubmissionService ss = new SubmissionService();
         List<Submission> submissions = ss.getSubmissions(contestIdStr, rtime);
 
         HashMap<String, Integer> problemIdx = new HashMap<>();

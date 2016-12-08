@@ -9,6 +9,7 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -26,6 +27,13 @@ public class ProblemService extends BaseService {
     private static final Logger logger = LoggerFactory.getLogger(ProblemService.class.getName());
     private static String tablenameProblem = "codeforces:problem";
     private static HTable tableProblem;
+
+    private final SubmissionService ss;
+
+    @Autowired
+    public ProblemService(SubmissionService ss) {
+        this.ss = ss;
+    }
 
     public List<Problem> listProblems(Integer page, Integer max) throws IOException {
         --page;
@@ -132,7 +140,6 @@ public class ProblemService extends BaseService {
         HashMap<String, Integer> cnt = new HashMap<>();
         HashSet<String> acers = new HashSet<>();
 
-        SubmissionService ss = new SubmissionService();
         List<Submission> submissions = ss.getSubmissions(contestIdStr, "");
 
         for (Submission sub : submissions) {
