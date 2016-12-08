@@ -1,6 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.controller;
 
 import cn.edu.fudan.codeforces.ranking.entity.User;
+import cn.edu.fudan.codeforces.ranking.mysql.UserNumberService;
 import cn.edu.fudan.codeforces.ranking.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wujy on 16-12-2.
@@ -23,10 +27,13 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
     private final UserService userService;
+    
+    private final UserNumberService userNumberService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserNumberService userNumberService) {
         this.userService = userService;
+        this.userNumberService = userNumberService;
     }
 
     @RequestMapping("/user")
@@ -52,6 +59,20 @@ public class UserController {
         User user = userService.getUser(handle);
         mav.addObject("user", user);
         return mav;
+    }
+
+    @RequestMapping("/user")
+    public String listUsersByCountry() {
+    	Gson gson = new Gson();
+    	Map<String, Integer> map = userNumberService.listUsersByCountry();
+    	return gson.toJson(map);
+    }
+    
+    @RequestMapping("/user")
+    public String listUsersByRank() {
+    	Gson gson = new Gson();
+    	Map<String, Integer> map = userNumberService.listUsersByRank();
+    	return gson.toJson(map);
     }
 
 }

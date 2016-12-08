@@ -2,6 +2,7 @@ package cn.edu.fudan.codeforces.ranking.controller;
 
 import cn.edu.fudan.codeforces.ranking.entity.Contest;
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
+import cn.edu.fudan.codeforces.ranking.mysql.ContestPopularityService;
 import cn.edu.fudan.codeforces.ranking.service.ContestService;
 import cn.edu.fudan.codeforces.ranking.service.ProblemService;
 import org.slf4j.Logger;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by wujy on 16-12-2.
@@ -26,11 +30,15 @@ public class ContestController {
 
     private final ContestService contestService;
     private final ProblemService problemService;
+    private final ContestPopularityService contestPopularityService;
 
     @Autowired
-    public ContestController(ContestService contestService, ProblemService problemService) {
+    public ContestController(ContestService contestService, 
+    		ProblemService problemService,
+    		ContestPopularityService contestPopularityService) {
         this.contestService = contestService;
         this.problemService = problemService;
+        this.contestPopularityService = contestPopularityService;
     }
 
     @RequestMapping("/contest")
@@ -59,5 +67,18 @@ public class ContestController {
         mav.addObject("problems", problems);
         return mav;
     }
+    
+    @RequestMapping("/contest/{contestId}")
+    public String contestPopularityByRank(@PathVariable String contestId) throws IOException {
+    	Gson gson = new Gson();
+		Map<String, Integer> map = contestPopularityService.listContestPopularityByRank(contestId);
+		return gson.toJson(map);
+    }
 
+    @RequestMapping("/contest/{contestId}")
+    public String contestPopularityByCountry(@PathVariable String contestId) throws IOException {
+    	Gson gson = new Gson();
+		Map<String, Integer> map = contestPopularityService.listContestPopularityByCountry(contestId);
+		return gson.toJson(map);
+    }
 }
