@@ -1,4 +1,4 @@
-package cn.edu.fudan.codeforces.ranking.service;
+package cn.edu.fudan.codeforces.ranking.service.hbase;
 
 import cn.edu.fudan.codeforces.ranking.entity.User;
 import org.apache.hadoop.hbase.Cell;
@@ -17,7 +17,7 @@ import java.util.List;
  * Created by house on 12/4/16.
  */
 @Service
-public class UserService extends BaseService {
+public class UserService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
     private static HTable tableUser;

@@ -2,10 +2,8 @@ package cn.edu.fudan.codeforces.ranking.controller;
 
 import cn.edu.fudan.codeforces.ranking.entity.Contest;
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
-import cn.edu.fudan.codeforces.ranking.service.ContestService;
-import cn.edu.fudan.codeforces.ranking.service.ProblemService;
-import cn.edu.fudan.codeforces.ranking.service.mysql.ContestPopularityService;
-import com.google.gson.Gson;
+import cn.edu.fudan.codeforces.ranking.service.hbase.ContestService;
+import cn.edu.fudan.codeforces.ranking.service.hbase.ProblemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by wujy on 16-12-2.
@@ -30,15 +26,12 @@ public class ContestController {
 
     private final ContestService contestService;
     private final ProblemService problemService;
-    private final ContestPopularityService contestPopularityService;
 
     @Autowired
     public ContestController(ContestService contestService,
-                             ProblemService problemService,
-                             ContestPopularityService contestPopularityService) {
+                             ProblemService problemService) {
         this.contestService = contestService;
         this.problemService = problemService;
-        this.contestPopularityService = contestPopularityService;
     }
 
     @RequestMapping("/contest")
@@ -66,22 +59,6 @@ public class ContestController {
         mav.addObject("contest", contest);
         mav.addObject("problems", problems);
         return mav;
-    }
-
-    @ResponseBody
-    @RequestMapping("/json/contest/{contestId}/rank")
-    public String contestPopularityByRank(@PathVariable String contestId) throws IOException {
-        Gson gson = new Gson();
-        Map<String, Integer> map = contestPopularityService.listContestPopularityByRank(contestId);
-        return gson.toJson(map);
-    }
-
-    @ResponseBody
-    @RequestMapping("/json/contest/{contestId}/country")
-    public String contestPopularityByCountry(@PathVariable String contestId) throws IOException {
-        Gson gson = new Gson();
-        Map<String, Integer> map = contestPopularityService.listContestPopularityByCountry(contestId);
-        return gson.toJson(map);
     }
 
 }

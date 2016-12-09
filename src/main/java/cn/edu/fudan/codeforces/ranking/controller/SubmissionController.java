@@ -1,7 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.controller;
 
 import cn.edu.fudan.codeforces.ranking.entity.Submission;
-import cn.edu.fudan.codeforces.ranking.service.SubmissionService;
+import cn.edu.fudan.codeforces.ranking.service.hbase.SubmissionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

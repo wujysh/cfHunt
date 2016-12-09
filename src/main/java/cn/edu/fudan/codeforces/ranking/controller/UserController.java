@@ -1,10 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.controller;
 
 import cn.edu.fudan.codeforces.ranking.entity.User;
-import cn.edu.fudan.codeforces.ranking.service.UserService;
-import cn.edu.fudan.codeforces.ranking.service.mysql.DevelopmentService;
-import cn.edu.fudan.codeforces.ranking.service.mysql.UserNumberService;
-import com.google.gson.Gson;
+import cn.edu.fudan.codeforces.ranking.service.hbase.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by wujy on 16-12-2.
@@ -28,16 +23,10 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
     private final UserService userService;
-    private final UserNumberService userNumberService;
-    private final DevelopmentService developmentService;
 
     @Autowired
-    public UserController(UserService userService,
-                          UserNumberService userNumberService,
-                          DevelopmentService developmentService) {
+    public UserController(UserService userService) {
         this.userService = userService;
-        this.userNumberService = userNumberService;
-        this.developmentService = developmentService;
     }
 
     @RequestMapping("/user")
@@ -63,30 +52,6 @@ public class UserController {
         User user = userService.getUser(handle);
         mav.addObject("user", user);
         return mav;
-    }
-
-    @ResponseBody
-    @RequestMapping("/json/user/country")
-    public String jsonUsersByCountry() {
-        Gson gson = new Gson();
-        Map<String, Integer> map = userNumberService.listUsersByCountry();
-        return gson.toJson(map);
-    }
-
-    @ResponseBody
-    @RequestMapping("/json/user/rank")
-    public String jsonUsersByRank() {
-        Gson gson = new Gson();
-        Map<String, Integer> map = userNumberService.listUsersByRank();
-        return gson.toJson(map);
-    }
-
-    @ResponseBody
-    @RequestMapping("/json/user/development")
-    public String jsonDevelopmentByYear() {
-        Gson gson = new Gson();
-        Map<String, Integer> map = developmentService.getDevelopmentByYear();
-        return gson.toJson(map);
     }
 
 }

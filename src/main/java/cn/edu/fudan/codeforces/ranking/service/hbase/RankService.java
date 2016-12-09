@@ -1,4 +1,4 @@
-package cn.edu.fudan.codeforces.ranking.service;
+package cn.edu.fudan.codeforces.ranking.service.hbase;
 
 import cn.edu.fudan.codeforces.ranking.entity.*;
 import org.apache.hadoop.hbase.util.Pair;
@@ -17,7 +17,7 @@ import java.util.List;
  * Created by house on 12/7/16.
  */
 @Service
-public class RankService extends BaseService {
+public class RankService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(RankService.class.getName());
 

@@ -3,9 +3,9 @@ package cn.edu.fudan.codeforces.ranking.controller;
 import cn.edu.fudan.codeforces.ranking.entity.Contest;
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
 import cn.edu.fudan.codeforces.ranking.entity.RanklistRow;
-import cn.edu.fudan.codeforces.ranking.service.ContestService;
-import cn.edu.fudan.codeforces.ranking.service.ProblemService;
-import cn.edu.fudan.codeforces.ranking.service.RankService;
+import cn.edu.fudan.codeforces.ranking.service.hbase.ContestService;
+import cn.edu.fudan.codeforces.ranking.service.hbase.ProblemService;
+import cn.edu.fudan.codeforces.ranking.service.hbase.RankService;
 import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,9 @@ public class RankController {
     private final ProblemService problemService;
 
     @Autowired
-    public RankController(RankService rankService, ContestService contestService, ProblemService problemService) {
+    public RankController(RankService rankService,
+                          ContestService contestService,
+                          ProblemService problemService) {
         this.rankService = rankService;
         this.contestService = contestService;
         this.problemService = problemService;

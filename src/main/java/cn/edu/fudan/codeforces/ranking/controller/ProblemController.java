@@ -1,9 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.controller;
 
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
-import cn.edu.fudan.codeforces.ranking.service.ProblemService;
-import cn.edu.fudan.codeforces.ranking.service.mysql.ProblemDifficultyService;
-import com.google.gson.Gson;
+import cn.edu.fudan.codeforces.ranking.service.hbase.ProblemService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by wujy on 16-12-2.
@@ -27,13 +23,10 @@ public class ProblemController {
     private static final Logger logger = LoggerFactory.getLogger(ProblemController.class.getName());
 
     private final ProblemService problemService;
-    private final ProblemDifficultyService problemDifficultyService;
 
     @Autowired
-    public ProblemController(ProblemService problemService,
-                             ProblemDifficultyService problemDifficultyService) {
+    public ProblemController(ProblemService problemService) {
         this.problemService = problemService;
-        this.problemDifficultyService = problemDifficultyService;
     }
 
     @RequestMapping("/problem")
@@ -60,14 +53,6 @@ public class ProblemController {
         Problem problem = problemService.getProblem(contestId, index);
         mav.addObject("problem", problem);
         return mav;
-    }
-
-    @ResponseBody
-    @RequestMapping("/json/problem/rank/{contestId}/{index}")
-    public String jsonProblemDifficultyByRank(@PathVariable String contestId, @PathVariable String index) throws IOException {
-        Gson gson = new Gson();
-        Map<String, Float> map = problemDifficultyService.listProblemDifficultyByRank(contestId, index);
-        return gson.toJson(map);
     }
 
 }

@@ -1,4 +1,4 @@
-package cn.edu.fudan.codeforces.ranking.service;
+package cn.edu.fudan.codeforces.ranking.service.hbase;
 
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
 import cn.edu.fudan.codeforces.ranking.entity.Submission;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by house on 12/4/16.
  */
 @Service
-public class SubmissionService extends BaseService {
+public class SubmissionService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(SubmissionService.class.getName());
 
