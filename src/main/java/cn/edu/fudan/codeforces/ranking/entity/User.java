@@ -2,9 +2,7 @@ package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
  * Created by house on 12/4/16.
- */
-
-/**
+ * <p>
  * Represents a Codeforces user.
  * <p>
  * Field	                Description
@@ -24,15 +22,16 @@ package cn.edu.fudan.codeforces.ranking.entity;
  * maxRating	            Integer.
  * lastOnlineTimeSeconds    Integer. Time, when user was last seen online, in unix format.
  * registrationTimeSeconds  Integer. Time, when user was registered, in unix format.
- */
-/**
+ * <p>
+ * Structure in HBase
+ * <p>
  * Table            codeforces:user
- *
+ * <p>
  * Row key          {handle}
  * Column Family 1  info
  * Columns          email, vkId, openId, firstName, lastName, country, city, organization,
- *                  contribution, lastOnlineTimeSeconds, registrationTimeSeconds, rank, maxRank
- *
+ * contribution, lastOnlineTimeSeconds, registrationTimeSeconds, rank, maxRank
+ * <p>
  * Column Family 2  rating
  * Columns          rating, maxRating
  */
@@ -191,52 +190,52 @@ public class User {
         sb.append("User:\n");
 
         if (handle != null) {
-            sb.append("handle: " + handle + "\n");
+            sb.append("handle: ").append(handle).append("\n");
         }
         if (email != null) {
-            sb.append("email: " + email + "\n");
+            sb.append("email: ").append(email).append("\n");
         }
         if (vkId != null) {
-            sb.append("vkId: " + vkId + "\n");
+            sb.append("vkId: ").append(vkId).append("\n");
         }
         if (openId != null) {
-            sb.append("openId: " + openId + "\n");
+            sb.append("openId: ").append(openId).append("\n");
         }
         if (firstName != null) {
-            sb.append("firstName: " + firstName + "\n");
+            sb.append("firstName: ").append(firstName).append("\n");
         }
         if (lastName != null) {
-            sb.append("lastName: " + lastName + "\n");
+            sb.append("lastName: ").append(lastName).append("\n");
         }
         if (country != null) {
-            sb.append("country: " + country + "\n");
+            sb.append("country: ").append(country).append("\n");
         }
         if (city != null) {
-            sb.append("city: " + city + "\n");
+            sb.append("city: ").append(city).append("\n");
         }
         if (organization != null) {
-            sb.append("organization: " + organization + "\n");
+            sb.append("organization: ").append(organization).append("\n");
         }
         if (contribution != null) {
-            sb.append("contribution: " + contribution + "\n");
+            sb.append("contribution: ").append(contribution).append("\n");
         }
         if (rank != null) {
-            sb.append("rank: " + rank + "\n");
+            sb.append("rank: ").append(rank).append("\n");
         }
         if (rating != null) {
-            sb.append("rating: " + rating + "\n");
+            sb.append("rating: ").append(rating).append("\n");
         }
         if (maxRank != null) {
-            sb.append("maxRank: " + maxRank + "\n");
+            sb.append("maxRank: ").append(maxRank).append("\n");
         }
         if (maxRating != null) {
-            sb.append("maxRating: " + maxRating + "\n");
+            sb.append("maxRating: ").append(maxRating).append("\n");
         }
         if (lastOnlineTimeSeconds != null) {
-            sb.append("lastOnlineTimeSeconds: " + lastOnlineTimeSeconds + "\n");
+            sb.append("lastOnlineTimeSeconds: ").append(lastOnlineTimeSeconds).append("\n");
         }
         if (registrationTimeSeconds != null) {
-            sb.append("registrationTimeSeconds: " + registrationTimeSeconds + "\n");
+            sb.append("registrationTimeSeconds: ").append(registrationTimeSeconds).append("\n");
         }
 
         sb.append("--------------------------------------------------");

@@ -2,9 +2,7 @@ package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
  * Created by house on 12/4/16.
- */
-
-/**
+ * <p>
  * Represents a contest on Codeforces.
  * <p>
  * Field	                Description
@@ -25,21 +23,22 @@ package cn.edu.fudan.codeforces.ranking.entity;
  * country	                String. Localized. Can be absent.
  * city	                    String. Localized. Can be absent.
  * season	                String. Can be absent.
- */
-/**
+ * <p>
+ * Structure in HBase
+ * <p>
  * Table            codeforces:contest
- *
+ * <p>
  * Row key          {id}(padding)
- *
+ * <p>
  * Column Family 1  info
  * Columns          name, type, phase, frozen
- *
+ * <p>
  * Column Family 2  time
  * Columns          durationSeconds, startTimeSeconds, relativeTimeSeconds
- *
+ * <p>
  * Column Family 3  other
  * Columns          preparedBy, websiteUrl, description,
- *                  difficulty, kind, icpcRegion, city, season
+ * difficulty, kind, icpcRegion, city, season
  */
 public class Contest {
 
@@ -81,40 +80,50 @@ public class Contest {
         return type;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(String type) {
+        switch (type) {
+            case "CF":
+                this.type = Type.CF;
+                break;
+            case "IOI":
+                this.type = Type.IOI;
+                break;
+            case "ICPC":
+                this.type = Type.ICPC;
+                break;
+        }
     }
 
-    public void setType(String type) {
-        if (type.equals("CF")) {
-            this.type = Type.CF;
-        } else if (type.equals("IOI")) {
-            this.type = Type.IOI;
-        } else if (type.equals("ICPC")) {
-            this.type = Type.ICPC;
-        }
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public Phase getPhase() {
         return phase;
     }
 
-    public void setPhase(Phase phase) {
-        this.phase = phase;
+    public void setPhase(String phase) {
+        switch (phase) {
+            case "BEFORE":
+                this.phase = Phase.BEFORE;
+                break;
+            case "CODING":
+                this.phase = Phase.CODING;
+                break;
+            case "PENDING_SYSTEM_TEST":
+                this.phase = Phase.PENDING_SYSTEM_TEST;
+                break;
+            case "SYSTEM_TEST":
+                this.phase = Phase.SYSTEM_TEST;
+                break;
+            case "FINISHED":
+                this.phase = Phase.FINISHED;
+                break;
+        }
     }
 
-    public void setPhase(String phase) {
-        if (phase.equals("BEFORE")) {
-            this.phase = Phase.BEFORE;
-        } else if (phase.equals("CODING")) {
-            this.phase = Phase.CODING;
-        } else if (phase.equals("PENDING_SYSTEM_TEST")) {
-            this.phase = Phase.PENDING_SYSTEM_TEST;
-        } else if (phase.equals("SYSTEM_TEST")) {
-            this.phase = Phase.SYSTEM_TEST;
-        } else if (phase.equals("FINISHED")) {
-            this.phase = Phase.FINISHED;
-        }
+    public void setPhase(Phase phase) {
+        this.phase = phase;
     }
 
     public Boolean getFrozen() {
@@ -229,51 +238,51 @@ public class Contest {
         sb.append("Contest:\n");
 
         if (id != null) {
-            sb.append("id: " + id + "\n");
+            sb.append("id: ").append(id).append("\n");
         }
         if (name != null) {
-            sb.append("name: " + name + "\n");
+            sb.append("name: ").append(name).append("\n");
         }
-        sb.append("type: " + type + "\n");
-        sb.append("phase: " + phase + "\n");
+        sb.append("type: ").append(type).append("\n");
+        sb.append("phase: ").append(phase).append("\n");
         if (frozen != null) {
-            sb.append("frozen: " + frozen + "\n");
+            sb.append("frozen: ").append(frozen).append("\n");
         }
         if (durationSeconds != null) {
-            sb.append("durationSeconds: " + durationSeconds + "\n");
+            sb.append("durationSeconds: ").append(durationSeconds).append("\n");
         }
         if (startTimeSeconds != null) {
-            sb.append("startTimeSeconds: " + startTimeSeconds + "\n");
+            sb.append("startTimeSeconds: ").append(startTimeSeconds).append("\n");
         }
         if (relativeTimeSeconds != null) {
-            sb.append("relativeTimeSeconds: " + relativeTimeSeconds + "\n");
+            sb.append("relativeTimeSeconds: ").append(relativeTimeSeconds).append("\n");
         }
         if (preparedBy != null) {
-            sb.append("preparedBy: " + preparedBy + "\n");
+            sb.append("preparedBy: ").append(preparedBy).append("\n");
         }
         if (websiteUrl != null) {
-            sb.append("websiteUrl: " + websiteUrl + "\n");
+            sb.append("websiteUrl: ").append(websiteUrl).append("\n");
         }
         if (description != null) {
-            sb.append("description: " + description + "\n");
+            sb.append("description: ").append(description).append("\n");
         }
         if (difficulty != null) {
-            sb.append("difficulty: " + difficulty + "\n");
+            sb.append("difficulty: ").append(difficulty).append("\n");
         }
         if (kind != null) {
-            sb.append("kind: " + kind + "\n");
+            sb.append("kind: ").append(kind).append("\n");
         }
         if (icpcRegion != null) {
-            sb.append("icpcRegion: " + icpcRegion + "\n");
+            sb.append("icpcRegion: ").append(icpcRegion).append("\n");
         }
         if (country != null) {
-            sb.append("country: " + country + "\n");
+            sb.append("country: ").append(country).append("\n");
         }
         if (city != null) {
-            sb.append("city: " + city + "\n");
+            sb.append("city: ").append(city).append("\n");
         }
         if (season != null) {
-            sb.append("season: " + season + "\n");
+            sb.append("season: ").append(season).append("\n");
         }
 
         sb.append("--------------------------------------------------");

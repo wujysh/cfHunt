@@ -1,12 +1,10 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
-/**
- * Created by house on 12/7/16.
- */
-
 import java.util.List;
 
 /**
+ * Created by house on 12/7/16.
+ * <p>
  * Represents a ranklist row.
  * <p>
  * Field	                    Description

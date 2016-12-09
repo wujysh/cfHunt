@@ -4,9 +4,7 @@ import java.util.List;
 
 /**
  * Created by house on 12/4/16.
- */
-
-/**
+ * <p>
  * Represents a party, participating in a contest.
  * <p>
  * Field	            Description

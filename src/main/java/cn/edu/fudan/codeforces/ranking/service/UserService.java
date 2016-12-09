@@ -20,16 +20,21 @@ import java.util.List;
 public class UserService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
-    private static String tablenameUser = "codeforces:user";
     private static HTable tableUser;
+
+    static {
+        String tablename = "codeforces:user";
+        try {
+            tableUser = (HTable) conn.getTable(TableName.valueOf(tablename));
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e.getCause());
+        }
+    }
 
     public List<User> listUsers(Integer page, Integer max) throws IOException {
         --page;
         ArrayList<User> ans = new ArrayList<>();
         int cnt = 0;
-
-        Connection conn = ConnectionFactory.createConnection(conf);
-        tableUser = (HTable) conn.getTable(TableName.valueOf(tablenameUser));
 
         Scan scan = new Scan();
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("email"));
@@ -43,24 +48,14 @@ public class UserService extends BaseService {
             ++cnt;
         }
 
-        tableUser.close();
-        conn.close();
-
         return ans;
     }
 
     public User getUser(String handle) throws IOException {
-        Connection conn = ConnectionFactory.createConnection(conf);
-        tableUser = (HTable) conn.getTable(TableName.valueOf(tablenameUser));
-
         Get get = new Get(Bytes.toBytes(handle));
         Result result = tableUser.get(get);
-        User ans = buildUser(result);
 
-        tableUser.close();
-        conn.close();
-
-        return ans;
+        return buildUser(result);
     }
 
     private User buildUser(Result result) {
@@ -76,45 +71,54 @@ public class UserService extends BaseService {
             Integer valueInt = Bytes.readAsInt(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength());
 
             if (family.equals("info")) {
-
-                if (qualifier.equals("email")) {
-                    res.setEmail(valueStr);
-                } else if (qualifier.equals("vkId")) {
-                    res.setVkId(valueStr);
-                } else if (qualifier.equals("openId")) {
-                    res.setOpenId(valueStr);
-                } else if (qualifier.equals("firstName")) {
-                    res.setFirstName(valueStr);
-                } else if (qualifier.equals("lastName")) {
-                    res.setLastName(valueStr);
-                } else if (qualifier.equals("country")) {
-                    res.setCountry(valueStr);
-                } else if (qualifier.equals("city")) {
-                    res.setCity(valueStr);
-                } else if (qualifier.equals("organization")) {
-                    res.setOrganization(valueStr);
-                } else if (qualifier.equals("contribution")) {
-                    res.setContribution(valueInt);
-                } else if (qualifier.equals("lastOnlineTimeSeconds")) {
-                    res.setLastOnlineTimeSeconds(valueInt);
-                } else if (qualifier.equals("registrationTimeSeconds")) {
-                    res.setRegistrationTimeSeconds(valueInt);
-                } else if (qualifier.equals("rank")) {
-                    res.setRank(valueStr);
-                } else if (qualifier.equals("maxRank")) {
-                    res.setMaxRank(valueStr);
+                switch (qualifier) {
+                    case "email":
+                        res.setEmail(valueStr);
+                        break;
+                    case "vkId":
+                        res.setVkId(valueStr);
+                        break;
+                    case "openId":
+                        res.setOpenId(valueStr);
+                        break;
+                    case "firstName":
+                        res.setFirstName(valueStr);
+                        break;
+                    case "lastName":
+                        res.setLastName(valueStr);
+                        break;
+                    case "country":
+                        res.setCountry(valueStr);
+                        break;
+                    case "city":
+                        res.setCity(valueStr);
+                        break;
+                    case "organization":
+                        res.setOrganization(valueStr);
+                        break;
+                    case "contribution":
+                        res.setContribution(valueInt);
+                        break;
+                    case "lastOnlineTimeSeconds":
+                        res.setLastOnlineTimeSeconds(valueInt);
+                        break;
+                    case "registrationTimeSeconds":
+                        res.setRegistrationTimeSeconds(valueInt);
+                        break;
+                    case "rank":
+                        res.setRank(valueStr);
+                        break;
+                    case "maxRank":
+                        res.setMaxRank(valueStr);
+                        break;
                 }
-
             } else if (family.equals("rating")) {
-
                 if (qualifier.equals("rating")) {
                     res.setRating(valueInt);
                 } else if (qualifier.equals("maxRating")) {
                     res.setMaxRating(valueInt);
                 }
-
             }
-
         }
 
         return res;

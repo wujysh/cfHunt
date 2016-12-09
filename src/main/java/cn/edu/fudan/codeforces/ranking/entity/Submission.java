@@ -2,11 +2,9 @@ package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
  * Created by house on 12/4/16.
- */
-
-/**
- * Represents a submission.
  * <p>
+ * Represents a submission.
+ * </p>
  * Field	                Description
  * id	                    Integer.
  * contestId	            Integer.
@@ -101,14 +99,6 @@ public class Submission {
         return verdict;
     }
 
-    public boolean isVerdictOK() {
-        return verdict == Verdict.OK;
-    }
-
-    public void setVerdict(Verdict verdict) {
-        this.verdict = verdict;
-    }
-
     public void setVerdict(String verdict) {
         if (verdict.equals("FAILED")) {
             this.verdict = Verdict.FAILED;
@@ -147,44 +137,67 @@ public class Submission {
         }
     }
 
+    public void setVerdict(Verdict verdict) {
+        this.verdict = verdict;
+    }
+
+    public boolean isVerdictOK() {
+        return verdict == Verdict.OK;
+    }
+
     public Testset getTestset() {
         return testset;
     }
 
-    public void setTestset(Testset testset) {
-        this.testset = testset;
+    public void setTestset(String testset) {
+        switch (testset) {
+            case "SAMPLES":
+                this.testset = Testset.SAMPLES;
+                break;
+            case "PRETESTS":
+                this.testset = Testset.PRETESTS;
+                break;
+            case "TESTS":
+                this.testset = Testset.TESTS;
+                break;
+            case "CHALLENGES":
+                this.testset = Testset.CHALLENGES;
+                break;
+            case "TESTS1":
+                this.testset = Testset.TESTS1;
+                break;
+            case "TESTS2":
+                this.testset = Testset.TESTS2;
+                break;
+            case "TESTS3":
+                this.testset = Testset.TESTS3;
+                break;
+            case "TESTS4":
+                this.testset = Testset.TESTS4;
+                break;
+            case "TESTS5":
+                this.testset = Testset.TESTS5;
+                break;
+            case "TESTS6":
+                this.testset = Testset.TESTS6;
+                break;
+            case "TESTS7":
+                this.testset = Testset.TESTS7;
+                break;
+            case "TESTS8":
+                this.testset = Testset.TESTS8;
+                break;
+            case "TESTS9":
+                this.testset = Testset.TESTS9;
+                break;
+            case "TESTS10":
+                this.testset = Testset.TESTS10;
+                break;
+        }
     }
 
-    public void setTestset(String testset) {
-        if (testset.equals("SAMPLES")) {
-            this.testset = Testset.SAMPLES;
-        } else if (testset.equals("PRETESTS")) {
-            this.testset = Testset.PRETESTS;
-        } else if (testset.equals("TESTS")) {
-            this.testset = Testset.TESTS;
-        } else if (testset.equals("CHALLENGES")) {
-            this.testset = Testset.CHALLENGES;
-        } else if (testset.equals("TESTS1")) {
-            this.testset = Testset.TESTS1;
-        } else if (testset.equals("TESTS2")) {
-            this.testset = Testset.TESTS2;
-        } else if (testset.equals("TESTS3")) {
-            this.testset = Testset.TESTS3;
-        } else if (testset.equals("TESTS4")) {
-            this.testset = Testset.TESTS4;
-        } else if (testset.equals("TESTS5")) {
-            this.testset = Testset.TESTS5;
-        } else if (testset.equals("TESTS6")) {
-            this.testset = Testset.TESTS6;
-        } else if (testset.equals("TESTS7")) {
-            this.testset = Testset.TESTS7;
-        } else if (testset.equals("TESTS8")) {
-            this.testset = Testset.TESTS8;
-        } else if (testset.equals("TESTS9")) {
-            this.testset = Testset.TESTS9;
-        } else if (testset.equals("TESTS10")) {
-            this.testset = Testset.TESTS10;
-        }
+    public void setTestset(Testset testset) {
+        this.testset = testset;
     }
 
     public Integer getPassedTestCount() {
@@ -219,53 +232,53 @@ public class Submission {
         sb.append("Submission:\n");
 
         if (id != null) {
-            sb.append("id: " + id + "\n");
+            sb.append("id: ").append(id).append("\n");
         }
         if (contestId != null) {
-            sb.append("contestId: " + contestId + "\n");
+            sb.append("contestId: ").append(contestId).append("\n");
         }
         if (creationTimeSeconds != null) {
-            sb.append("creationTimeSeconds: " + creationTimeSeconds + "\n");
+            sb.append("creationTimeSeconds: ").append(creationTimeSeconds).append("\n");
         }
         if (relativeTimeSeconds != null) {
-            sb.append("relativeTimeSeconds: " + relativeTimeSeconds + "\n");
+            sb.append("relativeTimeSeconds: ").append(relativeTimeSeconds).append("\n");
         }
         if (problem.getIndex() != null) {
-            sb.append("problemIndex: " + problem.getIndex() + "\n");
+            sb.append("problemIndex: ").append(problem.getIndex()).append("\n");
         }
         // party
         if (author.getTeamId() != null) {
-            sb.append("teamId: " + author.getTeamId() + "\n");
+            sb.append("teamId: ").append(author.getTeamId()).append("\n");
         }
         if (author.getTeamName() != null) {
-            sb.append("teamName: " + author.getTeamName() + "\n");
+            sb.append("teamName: ").append(author.getTeamName()).append("\n");
         }
         if (author.getRoom() != null) {
-            sb.append("room: " + author.getRoom() + "\n");
+            sb.append("room: ").append(author.getRoom()).append("\n");
         }
         if (author.getStartTimeSeconds() != null) {
-            sb.append("startTimeSeconds: " + author.getStartTimeSeconds() + "\n");
+            sb.append("startTimeSeconds: ").append(author.getStartTimeSeconds()).append("\n");
         }
         if (author.getMembers() != null && author.getMembers().size() > 0) {
             sb.append("members:");
             for (String mem : author.getMembers()) {
-                sb.append(" " + mem);
+                sb.append(" ").append(mem);
             }
             sb.append("\n");
         }
         if (programmingLanguage != null) {
-            sb.append("programmingLanguage: " + programmingLanguage + "\n");
+            sb.append("programmingLanguage: ").append(programmingLanguage).append("\n");
         }
-        sb.append("verdict: " + verdict + "\n");
-        sb.append("testset: " + testset + "\n");
+        sb.append("verdict: ").append(verdict).append("\n");
+        sb.append("testset: ").append(testset).append("\n");
         if (passedTestCount != null) {
-            sb.append("passedTestCount: " + passedTestCount + "\n");
+            sb.append("passedTestCount: ").append(passedTestCount).append("\n");
         }
         if (timeConsumedMillis != null) {
-            sb.append("timeConsumedMillis: " + timeConsumedMillis + "\n");
+            sb.append("timeConsumedMillis: ").append(timeConsumedMillis).append("\n");
         }
         if (memoryConsumedBytes != null) {
-            sb.append("memoryConsumedBytes: " + memoryConsumedBytes + "\n");
+            sb.append("memoryConsumedBytes: ").append(memoryConsumedBytes).append("\n");
         }
 
         sb.append("--------------------------------------------------");

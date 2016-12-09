@@ -25,23 +25,28 @@ import java.util.List;
 public class ProblemService extends BaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(ProblemService.class.getName());
-    private static String tablenameProblem = "codeforces:problem";
     private static HTable tableProblem;
 
-    private final SubmissionService ss;
+    static {
+        try {
+            String tablename = "codeforces:problem";
+            tableProblem = (HTable) conn.getTable(TableName.valueOf(tablename));
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e.getCause());
+        }
+    }
+
+    private final SubmissionService submissionService;
 
     @Autowired
-    public ProblemService(SubmissionService ss) {
-        this.ss = ss;
+    public ProblemService(SubmissionService submissionService) {
+        this.submissionService = submissionService;
     }
 
     public List<Problem> listProblems(Integer page, Integer max) throws IOException {
         --page;
         ArrayList<Problem> ans = new ArrayList<>();
         int cnt = 0;
-
-        Connection conn = ConnectionFactory.createConnection(conf);
-        tableProblem = (HTable) conn.getTable(TableName.valueOf(tablenameProblem));
 
         Scan scan = new Scan();
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
@@ -54,17 +59,11 @@ public class ProblemService extends BaseService {
             ++cnt;
         }
 
-        tableProblem.close();
-        conn.close();
-
         return ans;
     }
 
     public List<Problem> getProblemForContest(String contestIdStr) throws IOException {
         ArrayList<Problem> ans = new ArrayList<>();
-
-        Connection conn = ConnectionFactory.createConnection(conf);
-        tableProblem = (HTable) conn.getTable(TableName.valueOf(tablenameProblem));
 
         int contestId = Integer.valueOf(contestIdStr);
         String rowkey = String.format("%06d-", contestId);
@@ -77,29 +76,19 @@ public class ProblemService extends BaseService {
             ans.add(buildProblem(result));
         }
 
-        tableProblem.close();
-        conn.close();
-
         return ans;
     }
 
 
     public Problem getProblem(String contestIdStr, String problemIdx) throws IOException {
-        Connection conn = ConnectionFactory.createConnection(conf);
-        tableProblem = (HTable) conn.getTable(TableName.valueOf(tablenameProblem));
-
         int contestId = Integer.valueOf(contestIdStr);
 
         String rowkey = String.format("%06d-%s", contestId, problemIdx);
 
         Get get = new Get(Bytes.toBytes(rowkey));
         Result result = tableProblem.get(get);
-        Problem ans = buildProblem(result);
 
-        tableProblem.close();
-        conn.close();
-
-        return ans;
+        return buildProblem(result);
     }
 
     private Problem buildProblem(Result result) throws IOException {
@@ -117,21 +106,22 @@ public class ProblemService extends BaseService {
             String valueStr = Bytes.toStringBinary(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength());
 
             if (family.equals("info")) {
-
-                if (qualifier.equals("name")) {
-                    res.setName(valueStr);
-                } else if (qualifier.equals("type")) {
-                    res.setType(valueStr);
-                } else if (qualifier.equals("points")) {
-                    res.setPoints(Bytes.toFloat(cell.getValueArray(), cell.getValueOffset()));
-                } else if (qualifier.equals("tags")) {
-                    res.setTags(ByteUtil.toStringList(Bytes.copy(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength())));
+                switch (qualifier) {
+                    case "name":
+                        res.setName(valueStr);
+                        break;
+                    case "type":
+                        res.setType(valueStr);
+                        break;
+                    case "points":
+                        res.setPoints(Bytes.toFloat(cell.getValueArray(), cell.getValueOffset()));
+                        break;
+                    case "tags":
+                        res.setTags(ByteUtil.toStringList(Bytes.copy(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength())));
+                        break;
                 }
-
             }
-
         }
-
         return res;
     }
 
@@ -139,7 +129,7 @@ public class ProblemService extends BaseService {
         HashMap<String, Integer> cnt = new HashMap<>();
         HashSet<String> acers = new HashSet<>();
 
-        List<Submission> submissions = ss.getSubmissions(contestIdStr, "");
+        List<Submission> submissions = submissionService.getSubmissions(contestIdStr, "");
 
         for (Submission sub : submissions) {
             if (sub.getProblem().getIndex().equals(problemIdx)) {

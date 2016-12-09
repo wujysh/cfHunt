@@ -2,9 +2,7 @@ package cn.edu.fudan.codeforces.ranking.entity;
 
 /**
  * Created by wujy on 16-1-16.
- */
-
-/**
+ * <p>
  * Represents a hack, made during Codeforces Round.
  * <p>
  * Field	            Description

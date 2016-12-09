@@ -4,9 +4,7 @@ import java.util.List;
 
 /**
  * Created by house on 12/4/16.
- */
-
-/**
+ * <p>
  * Represents a problem.
  * <p>
  * Field	        Description
@@ -16,15 +14,16 @@ import java.util.List;
  * type	            Enum: PROGRAMMING, QUESTION.
  * points	        Floating point number. Can be absent. Maximum ammount of points for the problem.
  * tags	            String list. Problem tags.
- */
-/**
+ * <p>
+ * Structure in HBase
+ * <p>
  * Table            codeforces:problem
- *
+ * <p>
  * Row key          {contestId}(padding)-{index}
- *
+ * <p>
  * Column Family 1  info
  * Columns          name, type, points, tags, solvedCount
- *
+ * <p>
  * Column Family 2  html
  * Columns          content, timeLimit, memoryLimit, ...
  */
@@ -101,17 +100,17 @@ public class Problem {
         sb.append("Problem:\n");
 
         if (contestId != null) {
-            sb.append("contestId: " + contestId + "\n");
+            sb.append("contestId: ").append(contestId).append("\n");
         }
         if (index != null) {
-            sb.append("index: " + index + "\n");
+            sb.append("index: ").append(index).append("\n");
         }
         if (name != null) {
-            sb.append("name: " + name + "\n");
+            sb.append("name: ").append(name).append("\n");
         }
-        sb.append("type: " + type + "\n");
+        sb.append("type: ").append(type).append("\n");
         if (points != null) {
-            sb.append("points: " + points + "\n");
+            sb.append("points: ").append(points).append("\n");
         }
         if (tags != null) {
             sb.append("tags:");

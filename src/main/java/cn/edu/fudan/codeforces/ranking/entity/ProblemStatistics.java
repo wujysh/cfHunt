@@ -1,12 +1,10 @@
 package cn.edu.fudan.codeforces.ranking.entity;
 
-/**
- * Created by wujy on 16-1-16.
- */
-
 import cn.edu.fudan.codeforces.ranking.util.StringUtil;
 
 /**
+ * Created by wujy on 16-1-16.
+ * <p>
  * Represents a statistic data about a problem.
  * <p>
  * Field	        Description
@@ -33,7 +31,7 @@ public class ProblemStatistics {
     }
 
     public String getContestIdWithPaddingZero(int numOfPadding) {
-        return StringUtil.numWithPadding(contestId, 6);
+        return StringUtil.numWithPadding(contestId, numOfPadding);
     }
 
     public String getIndex() {
