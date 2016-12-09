@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class ContestService extends BaseHBaseService {
         return buildContest(result);
     }
 
-    private Contest buildContest(Result result) {
+    private Contest buildContest(Result result) throws UnsupportedEncodingException {
         Contest res = new Contest();
 
         res.setId(Integer.valueOf(Bytes.toString(result.getRow())));
@@ -68,7 +69,7 @@ public class ContestService extends BaseHBaseService {
         for (Cell cell : result.rawCells()) {
             String family = Bytes.toStringBinary(cell.getFamilyArray(), cell.getFamilyOffset(), cell.getFamilyLength());
             String qualifier = Bytes.toStringBinary(cell.getQualifierArray(), cell.getQualifierOffset(), cell.getQualifierLength());
-            String valueStr = Bytes.toStringBinary(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength());
+            String valueStr = new String(Bytes.copy(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength()), "utf-8");
             Integer valueInt = Bytes.readAsInt(cell.getValueArray(), cell.getValueOffset(), cell.getValueLength());
 
             switch (family) {
