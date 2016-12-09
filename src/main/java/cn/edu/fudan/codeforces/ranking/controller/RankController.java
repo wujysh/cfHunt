@@ -45,6 +45,7 @@ public class RankController {
         mav.addObject("ranklist", ranklist.getSecond());
         mav.addObject("contest", contest);
         mav.addObject("problems", problems);
+        mav.addObject("total", ranklist.getFirst());
 
         int totalPage = (int) Math.ceil(ranklist.getFirst() / max), minPage = Math.max(1, page - 3), maxPage = Math.min(minPage + 6, totalPage);
         minPage = Math.max(1, maxPage - 6);
