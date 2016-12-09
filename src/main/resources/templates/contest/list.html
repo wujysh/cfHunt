@@ -118,15 +118,21 @@
               <th>Name</th>
               <th>Start Time</th>
               <th>Duration</th>
+              <th>Ranking</th>
             </tr>
           </thead>
           <tbody>
             <tr th:each="contest : ${contests}">
               <td>
-                <a th:href="@{${'/contest/' + contest.id + '/rank'}}" th:text="${contest.name}"></a>
+                <a th:href="@{${'/contest/' + contest.id}}" th:utext="${contest.name}"></a>
               </td>
               <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null ? 0 : contest.startTimeSeconds) * 1000L), 'yyyy-MM-dd')}"></td>
-              <td th:text="${contest.durationSeconds / 3600} + ' hrs'"></td>
+              <td th:text="${contest.durationSeconds / 3600} + ' hours'"></td>
+              <td>
+                <a class='btn btn-default' th:href="@{${'/contest/' + contest.id + '/rank'}}">
+                  <span class="glyphicon glyphicon-stats" aria-hidden="true"></span> Ranking
+                </a>
+              </td>
             </tr>
           </tbody>
         </table>

@@ -65,7 +65,7 @@
     <div class="row">
         <div class="row">
             <div class="col-xs-6">
-                <h3><span th:text="${contest.name}"></span> <small th:text="${total} + ' participants'"></small></h3>
+                <h3><a th:href="@{${'/contest/' + contest.id}}" th:utext="${contest.name}"></a> <small th:text="${total} + ' participants'"></small></h3>
             </div>
             <div class="col-xs-6 text-right">
                 <nav aria-label="Page navigation">
