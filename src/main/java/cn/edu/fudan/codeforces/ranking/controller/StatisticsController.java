@@ -7,21 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Created by wujy on 16-12-9.
  */
 @Controller
-public class StatisitcsController {
+public class StatisticsController {
 
     @RequestMapping("/statistics/user")
-    public String statisitcsUser() {
-        return "statisitcs/user";
+    public String statisticsUser() {
+        return "statistics/user";
     }
 
     @RequestMapping("/statistics/problem")
-    public String statisitcsProblem() {
-        return "statisitcs/problem";
+    public String statisticsProblem() {
+        return "statistics/problem";
     }
 
     @RequestMapping("/statistics/contest")
-    public String statisitcsContest() {
-        return "statisitcs/contest";
+    public String statisticsContest() {
+        return "statistics/contest";
     }
 
 }
