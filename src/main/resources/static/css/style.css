@@ -5,6 +5,7 @@
     border-bottom-right-radius: 4px;
     border-bottom-left-radius: 4px;
 }
+
 .list-group-answer-unique {
     max-height: 400px;
 }
@@ -17,27 +18,35 @@
 .label-international-grandmaster {
     background-color: #c9302c;
 }
+
 .label-grandmaster {
     background-color: #d9534f;
 }
+
 .label-international-master {
     background-color: #ec971f;
 }
+
 .label-master {
     background-color: #f0ad4e;
 }
+
 .label-candidate-master {
     background-color: #634190;
 }
+
 .label-expert {
     background-color: #337ab7;
 }
+
 .label-specialist {
     background-color: #449d44;
 }
+
 .label-pupil {
     background-color: #7fb883;
 }
+
 .label-newbie {
     background-color: #777;
 }
