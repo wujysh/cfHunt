@@ -129,6 +129,7 @@
               <td th:text="${user.firstName}"></td>
               <td th:text="${user.lastName}"></td>
               <td>
+                <span th:if="${user.rank == 'legendary grandmaster'}" class="label label-legendary-grandmaster" th:text="${user.rank}"></span>
                 <span th:if="${user.rank == 'international grandmaster'}" class="label label-international-grandmaster" th:text="${user.rank}"></span>
                 <span th:if="${user.rank == 'grandmaster'}" class="label label-grandmaster" th:text="${user.rank}"></span>
                 <span th:if="${user.rank == 'international master'}" class="label label-international-master" th:text="${user.rank}"></span>

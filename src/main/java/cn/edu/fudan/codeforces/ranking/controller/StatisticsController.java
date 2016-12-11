@@ -40,7 +40,7 @@ public class StatisticsController {
     @RequestMapping("/statistics/user/rank")
     public ModelAndView statisticsUserRank() {
         Map<String, Integer> map = userNumberService.listUsersByRank();
-        ModelAndView mav = new ModelAndView("/statistics/user_rank");
+        ModelAndView mav = new ModelAndView("statistics/user_rank");
         List<String> key = new ArrayList<>();
         key.add("legendary grandmaster");
         key.add("international grandmaster");
@@ -61,7 +61,7 @@ public class StatisticsController {
 
     @RequestMapping("/statistics/user/time")
     public String statisticsUserTime() {
-        return "/statistics/user_time";
+        return "statistics/user_time";
     }
 
     @RequestMapping("/statistics/problem")
