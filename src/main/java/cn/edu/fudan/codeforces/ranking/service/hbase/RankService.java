@@ -50,6 +50,13 @@ public class RankService extends BaseHBaseService {
         HashMap<String, ArrayList<Integer>> tim = new HashMap<>();
 
         for (Submission sub : submissions) {
+
+            if (!problemIdx.containsKey(sub.getProblem().getIndex())) {
+                continue;
+            }
+
+            int probIdx = problemIdx.get(sub.getProblem().getIndex());
+
             for (String auth : sub.getAuthor().getMembers()) {
 
                 if (!cnt.containsKey(auth)) {
@@ -62,8 +69,6 @@ public class RankService extends BaseHBaseService {
                     cnt.put(auth, tmp1);
                     tim.put(auth, tmp2);
                 }
-
-                int probIdx = problemIdx.get(sub.getProblem().getIndex());
 
                 ArrayList<Integer> tmp = cnt.get(auth);
                 tmp.set(probIdx, tmp.get(probIdx) + 1);
