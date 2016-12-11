@@ -123,7 +123,7 @@
                             <span th:text="${problem.index}" th:title="${problem.name}"></span>
                             <span th:if="${contest.type.name() == 'CF'}">
                                 <br>
-                                <span th:text="${#numbers.formatDecimal(problem.points, 0, 0)}"></span>
+                                <span class="rank-problem-points" th:text="${#numbers.formatDecimal(problem.points, 0, 0)}"></span>
                             </span>
                         </th>
                     </tr>
@@ -132,29 +132,27 @@
                     <tr th:each="row, iterStat : ${ranklist}">
                         <td class="text-center" th:text="${iterStat.index + 1}"></td>
                         <td th:text="${row.handle}"></td>
-                        <td class="text-center" th:text="${#numbers.formatDecimal(row.points, 0, 0)}"></td>
-                        <td th:if="${contest.type.name() == 'ICPC'}" class="text-center" th:text="${#numbers.formatInteger(row.penalty / 3600, 2) + ':' + #numbers.formatInteger(row.penalty % 3600 / 60, 2) + ':' + #numbers.formatInteger(row.penalty % 60, 2)}"></td>
+                        <td class="rank-total-points text-center" th:text="${#numbers.formatDecimal(row.points, 0, 0)}"></td>
+                        <td th:if="${contest.type.name() == 'ICPC'}" class="text-center" th:text="${#numbers.formatInteger(row.penalty / 3600, 2) + ':' + #numbers.formatInteger(row.penalty % 3600 / 60, 2)}"></td>
                         <td class="text-center" th:each="problemResult : ${row.problemResults}">
                             <span th:if="${contest.type.name() == 'CF'}">
                                 <span th:if="${problemResult.points > 0}"><!--Accepted-->
-                                    <span th:text="${#numbers.formatDecimal(problemResult.points, 0, 0)}"></span>
+                                    <span class="rank-passed" th:text="${#numbers.formatDecimal(problemResult.points, 0, 0)}"></span>
                                     <br>
-                                    <span th:text="${#numbers.formatInteger(problemResult.acTimeSeconds / 3600, 2) + ':' + #numbers.formatInteger(problemResult.acTimeSeconds % 3600 / 60, 2) + ':' + #numbers.formatInteger(problemResult.acTimeSeconds % 60, 2)}"></span>
+                                    <span class="rank-time-cf" th:text="${#numbers.formatInteger(problemResult.acTimeSeconds / 3600, 2) + ':' + #numbers.formatInteger(problemResult.acTimeSeconds % 3600 / 60, 2)}"></span>
                                 </span>
-                                <span th:if="${problemResult.points == 0}"><!--!Accepted-->
-                                    <span th:text="${'-' + problemResult.rejectedAttemptCount}"></span>
+                                <span th:if="${problemResult.points == 0 && problemResult.rejectedAttemptCount > 0}"><!--!Accepted-->
+                                    <span class="rank-failed" th:text="${'-' + problemResult.rejectedAttemptCount}"></span>
                                 </span>
                             </span>
                             <span th:if="${contest.type.name() == 'ICPC'}">
                                 <span th:if="${problemResult.points > 0}"><!--Accepted-->
-                                    <span th:text="${#numbers.formatInteger(problemResult.acTimeSeconds / 3600, 2) + ':' + #numbers.formatInteger(problemResult.acTimeSeconds % 3600 / 60, 2) + ':' + #numbers.formatInteger(problemResult.acTimeSeconds % 60, 2)}"></span>
-                                    <span th:if="${problemResult.rejectedAttemptCount > 0}">
-                                        <br>
-                                        <span th:text="${'(+' + problemResult.rejectedAttemptCount + ')'}"></span>
-                                    </span>
+                                    <span class="rank-passed" th:text="${'+' + (problemResult.rejectedAttemptCount > 0 ? problemResult.rejectedAttemptCount : '')}"></span>
+                                    <br>
+                                    <span class="rank-time-icpc" th:text="${#numbers.formatInteger(problemResult.acTimeSeconds / 3600, 2) + ':' + #numbers.formatInteger(problemResult.acTimeSeconds % 3600 / 60, 2)}"></span>
                                 </span>
-                                <span th:if="${problemResult.points == 0}"><!--!Accepted-->
-                                    <span th:text="${'(-' + problemResult.rejectedAttemptCount + ')'}"></span>
+                                <span th:if="${problemResult.points == 0 && problemResult.rejectedAttemptCount > 0}"><!--!Accepted-->
+                                    <span class="rank-rejected" th:text="${'-' + problemResult.rejectedAttemptCount}"></span>
                                 </span>
                             </span>
                         </td>

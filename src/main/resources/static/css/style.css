@@ -33,3 +33,54 @@
 .label-newbie {
     background-color: #777;
 }
+
+.rank-green {
+    background-color: #d7febe;
+}
+
+.rank-red {
+    background-color: #fecdbe;
+}
+
+.rank-passed {
+    color: #0a0;
+    font-weight: bold;
+}
+
+.rank-failed {
+    color: red;
+    font-weight: bold;
+}
+
+.rank-rejected {
+    color: #00a;
+}
+
+.rank-time-cf {
+    color: gray;
+    font-size: 9px;
+    display: block;
+}
+
+.rank-time-icpc {
+    font-size: 1.0rem;
+    display: block;
+}
+
+.rank-total-points {
+    font-weight: bold;
+}
+
+.rank-problem-points {
+    font-size: 1.0rem !important;
+}
+
+.table>thead>tr>th {
+    vertical-align: middle;
+    font-size: 1.3rem;
+}
+
+.table>tbody>tr>td {
+    vertical-align: middle;
+    font-size: 1.3rem;
+}
