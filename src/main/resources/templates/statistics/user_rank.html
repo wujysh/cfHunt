@@ -72,10 +72,10 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Panel header</h3>
+            <h3 class="panel-title">Users per Rank</h3>
         </div>
         <div class="panel-body">
-            Panel content
+            <div id="container_rank"></div>
         </div>
     </div>
 
@@ -89,12 +89,77 @@
 
 <!-- Bootstrap core JavaScript
 ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
+<!-- Placed at the end of the document so the pages load faster th:if="${not #lists.isEmpty(data)}" -->
 <script th:src="@{/js/jquery.min.js}"></script>
 <script>window.jQuery || document.write('<script th:src="@{/js/jquery.min.js}"><\/script>')</script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
 <script th:src="@{/js/highcharts.js}"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:inline="javascript" th:if="${not #lists.isEmpty(value)}">
+    $(function () {
+        Highcharts.chart('container_rank', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: null
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                title: {
+                    text: 'Rank'
+                },
+                categories: [[${key}]]
+            },
+            yAxis: {
+                title: {
+                    text: '# of users'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+            series: [{
+                type: 'area',
+                name: '# of users',
+                data: [[${value}]]
+            }]
+        });
+    });
+</script>
 </body>
 </html>

@@ -6,36 +6,36 @@ import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 @Service
 public class DevelopmentService extends BaseMySQLService {
 
     private static final Logger logger = LoggerFactory.getLogger(DevelopmentService.class.getName());
 
-    public Map<String, Integer> getDevelopmentByYear() {
-        Map<String, Integer> map = new HashMap<>();
+    public Map<Date, Integer> getDevelopmentByYear() {
+        Map<Date, Integer> map = new TreeMap<>();
         String sql = "select registrationTimeSeconds from user";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 
         ResultSet selectRes;
         try {
             selectRes = stmt.executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
-                Date date = selectRes.getDate("registrationTimeSeconds");
-                String month = sdf.format(date);
-                if (map.containsKey(month)) {
-                    int value = map.get(month);
-                    map.put(month, value + 1);
+                Date date = new Date(selectRes.getLong("registrationTimeSeconds") * 1000L);
+                date.setDate(1);
+                date.setHours(0);
+                date.setMinutes(0);
+                date.setSeconds(0);
+                if (map.containsKey(date)) {
+                    int value = map.get(date);
+                    map.put(date, value + 1);
                 } else {
-                    map.put(month, 1);
+                    map.put(date, 1);
                 }
             }
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             logger.error(e.getMessage());
         }
         return map;

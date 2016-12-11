@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -51,9 +52,15 @@ public class JsonController {
 
     @RequestMapping("/json/user/year")
     public String usersByYear() {
-        Gson gson = new Gson();
-        Map<String, Integer> map = developmentService.getDevelopmentByYear();
-        return gson.toJson(map);
+        Map<Date, Integer> map = developmentService.getDevelopmentByYear();
+        String ret = "[";
+        int cnt = 0;
+        for (Map.Entry<Date, Integer> e : map.entrySet()) {
+            if (++cnt > 1) ret += ",";
+            ret = ret + "[Date.UTC(" + String.valueOf(e.getKey().getYear()+1900) + "," + String.valueOf(e.getKey().getMonth()+1) + ",1)," + e.getValue() + "]";
+        }
+        ret += "]";
+        return ret;
     }
 
     @RequestMapping("/json/problem/rank/{contestId}/{index}")
