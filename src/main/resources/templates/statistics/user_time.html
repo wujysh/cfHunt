@@ -48,9 +48,9 @@
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Statistics <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li class="active"><a th:href="@{/statistics/user}">User</a></li>
-                        <li><a th:href="@{/statistics/contest}">Contest</a></li>
-                        <li><a th:href="@{/statistics/problem}">Problem</a></li>
+                        <li><a th:href="@{/statistics/user/rank}">Users per rank</a></li>
+                        <li class="active"><a th:href="@{/statistics/user/time}">Registration trend</a></li>
+                        <li><a th:href="@{/statistics/user/country}">Users per country</a></li>
                     </ul>
                 </li>
                 <li><a th:href="@{/about}">About</a></li>
@@ -67,15 +67,24 @@
     </ol>
 
     <div class="page-header">
-        <h1>Statistics <small>User</small></h1>
+        <h1>Statistics <small>Registration trend</small></h1>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">User registration trend</h3>
+            <h3 class="panel-title">New registrations per month</h3>
         </div>
         <div class="panel-body">
             <div id="container"></div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Accumulative users per month</h3>
+        </div>
+        <div class="panel-body">
+            <div id="container1"></div>
         </div>
     </div>
 
@@ -102,66 +111,113 @@
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script th:inline="javascript">
     $(function () {
-        $.ajax({
-            url: "/json/user/year",
-            context: document.body,
-            success: function(data) {
-                alert(data);
-                Highcharts.chart('container', {
-                    chart: {
-                        zoomType: 'x'
+        Highcharts.chart('container', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: null
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: '# of new registrations'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
                     },
-                    title: {
-                        text: null
+                    marker: {
+                        radius: 2
                     },
-                    subtitle: {
-                        text: document.ontouchstart === undefined ?
-                                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-                    },
-                    xAxis: {
-                        type: 'datetime'
-                    },
-                    yAxis: {
-                        title: {
-                            text: '# of users'
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
                         }
                     },
-                    legend: {
-                        enabled: false
+                    threshold: null
+                }
+            },
+            series: [{
+                type: 'area',
+                name: '# of users',
+                data: [[Date.UTC(2010,1,1),163],[Date.UTC(2010,2,1),376],[Date.UTC(2010,3,1),970],[Date.UTC(2010,4,1),659],[Date.UTC(2010,5,1),423],[Date.UTC(2010,6,1),365],[Date.UTC(2010,7,1),254],[Date.UTC(2010,8,1),213],[Date.UTC(2010,9,1),635],[Date.UTC(2010,10,1),857],[Date.UTC(2010,11,1),433],[Date.UTC(2010,12,1),355],[Date.UTC(2011,1,1),442],[Date.UTC(2011,2,1),555],[Date.UTC(2011,3,1),743],[Date.UTC(2011,4,1),528],[Date.UTC(2011,5,1),548],[Date.UTC(2011,6,1),400],[Date.UTC(2011,7,1),509],[Date.UTC(2011,8,1),681],[Date.UTC(2011,9,1),743],[Date.UTC(2011,10,1),871],[Date.UTC(2011,11,1),779],[Date.UTC(2011,12,1),689],[Date.UTC(2012,1,1),734],[Date.UTC(2012,2,1),911],[Date.UTC(2012,3,1),1467],[Date.UTC(2012,4,1),725],[Date.UTC(2012,5,1),546],[Date.UTC(2012,6,1),616],[Date.UTC(2012,7,1),798],[Date.UTC(2012,8,1),889],[Date.UTC(2012,9,1),1015],[Date.UTC(2012,10,1),1247],[Date.UTC(2012,11,1),1141],[Date.UTC(2012,12,1),944],[Date.UTC(2013,1,1),1260],[Date.UTC(2013,2,1),1056],[Date.UTC(2013,3,1),1230],[Date.UTC(2013,4,1),1092],[Date.UTC(2013,5,1),854],[Date.UTC(2013,6,1),873],[Date.UTC(2013,7,1),1253],[Date.UTC(2013,8,1),1110],[Date.UTC(2013,9,1),1274],[Date.UTC(2013,10,1),1516],[Date.UTC(2013,11,1),1530],[Date.UTC(2013,12,1),1294],[Date.UTC(2014,1,1),1410],[Date.UTC(2014,2,1),283],[Date.UTC(2014,3,1),1887],[Date.UTC(2014,4,1),1353],[Date.UTC(2014,5,1),1297],[Date.UTC(2014,6,1),1038],[Date.UTC(2014,7,1),1699],[Date.UTC(2014,8,1),1900],[Date.UTC(2014,9,1),1977],[Date.UTC(2014,10,1),1953],[Date.UTC(2014,11,1),1534],[Date.UTC(2014,12,1),1618],[Date.UTC(2015,1,1),1624],[Date.UTC(2015,2,1),1776],[Date.UTC(2015,3,1),1662],[Date.UTC(2015,4,1),1298],[Date.UTC(2015,5,1),1599],[Date.UTC(2015,6,1),1657],[Date.UTC(2015,7,1),1228],[Date.UTC(2015,8,1),1800],[Date.UTC(2015,9,1),1857],[Date.UTC(2015,10,1),2060],[Date.UTC(2015,11,1),1448],[Date.UTC(2015,12,1),1468],[Date.UTC(2016,1,1),1507],[Date.UTC(2016,2,1),1358],[Date.UTC(2016,3,1),1855],[Date.UTC(2016,4,1),892],[Date.UTC(2016,5,1),1216],[Date.UTC(2016,6,1),1281],[Date.UTC(2016,7,1),1312],[Date.UTC(2016,8,1),1567],[Date.UTC(2016,9,1),1259],[Date.UTC(2016,10,1),1101]]
+            }]
+        });
+        Highcharts.chart('container1', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: null
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: '# of accumulative users'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
                     },
-                    plotOptions: {
-                        area: {
-                            fillColor: {
-                                linearGradient: {
-                                    x1: 0,
-                                    y1: 0,
-                                    x2: 0,
-                                    y2: 1
-                                },
-                                stops: [
-                                    [0, Highcharts.getOptions().colors[0]],
-                                    [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                                ]
-                            },
-                            marker: {
-                                radius: 2
-                            },
-                            lineWidth: 1,
-                            states: {
-                                hover: {
-                                    lineWidth: 1
-                                }
-                            },
-                            threshold: null
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
                         }
                     },
-                    series: [{
-                        type: 'area',
-                        name: '# of users',
-                        data:[[Date.UTC(2010,1,1),163],[Date.UTC(2010,2,1),376],[Date.UTC(2010,3,1),970],[Date.UTC(2010,4,1),659],[Date.UTC(2010,5,1),423],[Date.UTC(2010,6,1),365],[Date.UTC(2010,7,1),254],[Date.UTC(2010,8,1),213],[Date.UTC(2010,9,1),635],[Date.UTC(2010,10,1),857],[Date.UTC(2010,11,1),433],[Date.UTC(2010,12,1),355],[Date.UTC(2011,1,1),442],[Date.UTC(2011,2,1),555],[Date.UTC(2011,3,1),743],[Date.UTC(2011,4,1),528],[Date.UTC(2011,5,1),548],[Date.UTC(2011,6,1),400],[Date.UTC(2011,7,1),509],[Date.UTC(2011,8,1),681],[Date.UTC(2011,9,1),743],[Date.UTC(2011,10,1),871],[Date.UTC(2011,11,1),779],[Date.UTC(2011,12,1),689],[Date.UTC(2012,1,1),734],[Date.UTC(2012,2,1),911],[Date.UTC(2012,3,1),1467],[Date.UTC(2012,4,1),725],[Date.UTC(2012,5,1),546],[Date.UTC(2012,6,1),616],[Date.UTC(2012,7,1),798],[Date.UTC(2012,8,1),889],[Date.UTC(2012,9,1),1015],[Date.UTC(2012,10,1),1247],[Date.UTC(2012,11,1),1141],[Date.UTC(2012,12,1),944],[Date.UTC(2013,1,1),1260],[Date.UTC(2013,2,1),1056],[Date.UTC(2013,3,1),1230],[Date.UTC(2013,4,1),1092],[Date.UTC(2013,5,1),854],[Date.UTC(2013,6,1),873],[Date.UTC(2013,7,1),1253],[Date.UTC(2013,8,1),1110],[Date.UTC(2013,9,1),1274],[Date.UTC(2013,10,1),1516],[Date.UTC(2013,11,1),1530],[Date.UTC(2013,12,1),1294],[Date.UTC(2014,1,1),1410],[Date.UTC(2014,2,1),283],[Date.UTC(2014,3,1),1887],[Date.UTC(2014,4,1),1353],[Date.UTC(2014,5,1),1297],[Date.UTC(2014,6,1),1038],[Date.UTC(2014,7,1),1699],[Date.UTC(2014,8,1),1900],[Date.UTC(2014,9,1),1977],[Date.UTC(2014,10,1),1953],[Date.UTC(2014,11,1),1534],[Date.UTC(2014,12,1),1618],[Date.UTC(2015,1,1),1624],[Date.UTC(2015,2,1),1776],[Date.UTC(2015,3,1),1662],[Date.UTC(2015,4,1),1298],[Date.UTC(2015,5,1),1599],[Date.UTC(2015,6,1),1657],[Date.UTC(2015,7,1),1228],[Date.UTC(2015,8,1),1800],[Date.UTC(2015,9,1),1857],[Date.UTC(2015,10,1),2060],[Date.UTC(2015,11,1),1448],[Date.UTC(2015,12,1),1468],[Date.UTC(2016,1,1),1507],[Date.UTC(2016,2,1),1358],[Date.UTC(2016,3,1),1855],[Date.UTC(2016,4,1),892],[Date.UTC(2016,5,1),1216],[Date.UTC(2016,6,1),1281],[Date.UTC(2016,7,1),1312],[Date.UTC(2016,8,1),1567],[Date.UTC(2016,9,1),1259],[Date.UTC(2016,10,1),1101]]
-                    }]
-                });
-            }
+                    threshold: null
+                }
+            },
+            series: [{
+                type: 'area',
+                name: '# of users',
+                data: [[Date.UTC(2010,1,1),163],[Date.UTC(2010,2,1),376],[Date.UTC(2010,3,1),970],[Date.UTC(2010,4,1),659],[Date.UTC(2010,5,1),423],[Date.UTC(2010,6,1),365],[Date.UTC(2010,7,1),254],[Date.UTC(2010,8,1),213],[Date.UTC(2010,9,1),635],[Date.UTC(2010,10,1),857],[Date.UTC(2010,11,1),433],[Date.UTC(2010,12,1),355],[Date.UTC(2011,1,1),442],[Date.UTC(2011,2,1),555],[Date.UTC(2011,3,1),743],[Date.UTC(2011,4,1),528],[Date.UTC(2011,5,1),548],[Date.UTC(2011,6,1),400],[Date.UTC(2011,7,1),509],[Date.UTC(2011,8,1),681],[Date.UTC(2011,9,1),743],[Date.UTC(2011,10,1),871],[Date.UTC(2011,11,1),779],[Date.UTC(2011,12,1),689],[Date.UTC(2012,1,1),734],[Date.UTC(2012,2,1),911],[Date.UTC(2012,3,1),1467],[Date.UTC(2012,4,1),725],[Date.UTC(2012,5,1),546],[Date.UTC(2012,6,1),616],[Date.UTC(2012,7,1),798],[Date.UTC(2012,8,1),889],[Date.UTC(2012,9,1),1015],[Date.UTC(2012,10,1),1247],[Date.UTC(2012,11,1),1141],[Date.UTC(2012,12,1),944],[Date.UTC(2013,1,1),1260],[Date.UTC(2013,2,1),1056],[Date.UTC(2013,3,1),1230],[Date.UTC(2013,4,1),1092],[Date.UTC(2013,5,1),854],[Date.UTC(2013,6,1),873],[Date.UTC(2013,7,1),1253],[Date.UTC(2013,8,1),1110],[Date.UTC(2013,9,1),1274],[Date.UTC(2013,10,1),1516],[Date.UTC(2013,11,1),1530],[Date.UTC(2013,12,1),1294],[Date.UTC(2014,1,1),1410],[Date.UTC(2014,2,1),283],[Date.UTC(2014,3,1),1887],[Date.UTC(2014,4,1),1353],[Date.UTC(2014,5,1),1297],[Date.UTC(2014,6,1),1038],[Date.UTC(2014,7,1),1699],[Date.UTC(2014,8,1),1900],[Date.UTC(2014,9,1),1977],[Date.UTC(2014,10,1),1953],[Date.UTC(2014,11,1),1534],[Date.UTC(2014,12,1),1618],[Date.UTC(2015,1,1),1624],[Date.UTC(2015,2,1),1776],[Date.UTC(2015,3,1),1662],[Date.UTC(2015,4,1),1298],[Date.UTC(2015,5,1),1599],[Date.UTC(2015,6,1),1657],[Date.UTC(2015,7,1),1228],[Date.UTC(2015,8,1),1800],[Date.UTC(2015,9,1),1857],[Date.UTC(2015,10,1),2060],[Date.UTC(2015,11,1),1448],[Date.UTC(2015,12,1),1468],[Date.UTC(2016,1,1),1507],[Date.UTC(2016,2,1),1358],[Date.UTC(2016,3,1),1855],[Date.UTC(2016,4,1),892],[Date.UTC(2016,5,1),1216],[Date.UTC(2016,6,1),1281],[Date.UTC(2016,7,1),1312],[Date.UTC(2016,8,1),1567],[Date.UTC(2016,9,1),1259],[Date.UTC(2016,10,1),1101]]
+            }]
         });
     })
 </script>
