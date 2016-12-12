@@ -17,9 +17,9 @@ public class ContestPopularityService extends BaseMySQLService {
     public Map<String, Integer> listContestPopularityByRank(String contestId) {
         Map<String, Integer> map = new HashMap<>();
         try {
-            String sql = "SELECT rank, count(*) as number FROM submission, user WHERE contestId = "
+            String sql = "SELECT rank, count(distinct user.handle) as number FROM submission, party, user WHERE contestId = "
                     + contestId
-                    + " and submission.user = user.handle GROUP BY user.rank";
+                    + " and submission.author=party.id and party.members = user.handle GROUP BY user.rank";
             ResultSet selectRes = stmt.executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
@@ -35,9 +35,9 @@ public class ContestPopularityService extends BaseMySQLService {
     public Map<String, Integer> listContestPopularityByCountry(String contestId) {
         Map<String, Integer> map = new HashMap<>();
         try {
-            String sql = "SELECT country, count(*) as number FROM submission, user WHERE contestId = "
+            String sql = "SELECT country, count(distinct user.handle) as number FROM submission, party, user WHERE contestId = "
                     + contestId
-                    + " and submission.user = user.handle GROUP BY user.country";
+                    + " and submission.author=party.id and party.members = user.handle GROUP BY user.country";
             ResultSet selectRes = stmt.executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String country = selectRes.getString("country");

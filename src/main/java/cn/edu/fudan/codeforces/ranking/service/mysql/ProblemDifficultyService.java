@@ -19,26 +19,57 @@ public class ProblemDifficultyService extends BaseMySQLService {
         Map<String, Float> map = new HashMap<>();
 
         try {
-            String sql = "SELECT rank, count(*) as number FROM submission WHERE contestId = "
+            String sql = "SELECT rank, count(*) as number FROM submission, user, party WHERE submission.contestid="
                     + contestId
-                    + " and numIndex = " + index
-                    + " and state = 'SUCCESS' GROUP BY rank";
+                    + " and submission.problem = problem.id and problem.numindex = '" + index
+                    + "' and submission.author=party.id and party.members = user.handle and verdict = 'OK' GROUP BY user.rank";
             ResultSet selectRes = stmt.executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
                 map.put(rank, (float) number);
             }
-            sql = "SELECT rank, count(*) as number FROM submission WHERE contestId = "
+            sql = "SELECT rank, count(*) as number FROM submission, user, party WHERE submission.contestid="
                     + contestId
-                    + " and numIndex = " + index
-                    + " GROUP BY rank";
+                    + " and submission.problem = problem.id and problem.numindex = '" + index
+                    + "' and submission.author=party.id and party.members = user.handle GROUP BY user.rank";
             selectRes = stmt.executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
                 float successNum = map.get(rank);
                 map.put(rank, successNum / (float) number);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return map;
+    }
+    
+    public Map<String, Float> listProblemDifficultyByCountry(String contestId, String index) throws IOException {
+        Map<String, Float> map = new HashMap<>();
+
+        try {
+            String sql = "SELECT country, count(distinct user.handle) as number FROM submission, user, party, problem WHERE submission.contestid="
+                    + contestId
+                    + " and submission.problem = problem.id and problem.numindex = '" + index
+                    + "' and submission.author=party.id and party.members = user.handle and verdict = 'OK' GROUP BY user.country";
+            ResultSet selectRes = stmt.executeQuery(sql);
+            while (selectRes.next()) { // 循环输出结果集
+                String country = selectRes.getString("country");
+                int number = selectRes.getInt("number");
+                map.put(country, (float) number);
+            }
+            sql = "SELECT country, count(distinct user.handle) as number FROM submission, user, party, problem WHERE submission.contestid="
+                    + contestId
+                    + " and submission.problem = problem.id and problem.numindex = '" + index
+                    + "' and submission.author=party.id and party.members = user.handle GROUP BY user.country";
+            selectRes = stmt.executeQuery(sql);
+            while (selectRes.next()) { // 循环输出结果集
+                String country = selectRes.getString("country");
+                int number = selectRes.getInt("number");
+                float successNum = map.get(country);
+                map.put(country, successNum / (float) number);
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());

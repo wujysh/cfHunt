@@ -70,6 +70,14 @@ public class JsonController {
         Map<String, Float> map = problemDifficultyService.listProblemDifficultyByRank(contestId, index);
         return gson.toJson(map);
     }
+    
+    @RequestMapping("/json/problem/country/{contestId}/{index}")
+    public String problemDifficultyByCountry(@PathVariable String contestId,
+                                          @PathVariable String index) throws IOException {
+        Gson gson = new Gson();
+        Map<String, Float> map = problemDifficultyService.listProblemDifficultyByCountry(contestId, index);
+        return gson.toJson(map);
+    }
 
     @RequestMapping("/json/contest/{contestId}/rank")
     public String contestPopularityByRank(@PathVariable String contestId) throws IOException {
