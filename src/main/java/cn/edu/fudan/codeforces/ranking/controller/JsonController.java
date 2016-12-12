@@ -65,6 +65,19 @@ public class JsonController {
         return ret;
     }
 
+    @RequestMapping("/json/user/year/{country}")
+    public String usersByYearAndCountry(@PathVariable String country) {
+        Map<Date, Integer> map = developmentService.getDevelopmentByYearAndCountry(country);
+        String ret = "[";
+        int cnt = 0;
+        for (Map.Entry<Date, Integer> e : map.entrySet()) {
+            if (++cnt > 1) ret += ",";
+            ret = ret + "[Date.UTC(" + String.valueOf(e.getKey().getYear()+1900) + "," + String.valueOf(e.getKey().getMonth()+1) + ",1)," + e.getValue() + "]";
+        }
+        ret += "]";
+        return ret;
+    }
+
     @RequestMapping("/json/problem/rank/{contestId}/{index}")
     public String problemDifficultyByRank(@PathVariable String contestId,
                                           @PathVariable String index) throws IOException {
