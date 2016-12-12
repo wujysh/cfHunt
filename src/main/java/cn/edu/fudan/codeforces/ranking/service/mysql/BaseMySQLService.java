@@ -16,7 +16,7 @@ public class BaseMySQLService {
 
     static Statement getStmt() {
         try {
-            if (stmt == null || stmt.isClosed()) {
+            if (stmt == null) {
                 Class.forName("com.mysql.jdbc.Driver").newInstance();  //MYSQL驱动
                 Connection con = DriverManager.getConnection("jdbc:mysql://10.131.247.131:3306/tongji", "root", "123456");
                 stmt = con.createStatement();

@@ -24,7 +24,24 @@ public class UserNumberService extends BaseMySQLService {
         try {
             selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) {
-                ret.add(new Pair<>(selectRes.getString("country"), selectRes.getInt("number")));
+                String country = selectRes.getString("country");
+                if (country != null) {
+                    switch (country) {
+                        case "United States (USA)":
+                            country = "United States of America";
+                            break;
+                        case "Korea, Republic of":
+                            country = "South Korea";
+                            break;
+                        case "Korea,DPR":
+                            country = "North Korea";
+                            break;
+                        case "The Netherlands":
+                            country = "Netherlands";
+                            break;
+                    }
+                }
+                ret.add(new Pair<>(country, selectRes.getInt("number")));
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
