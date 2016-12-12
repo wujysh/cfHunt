@@ -99,6 +99,10 @@ public class Submission {
         return verdict;
     }
 
+    public void setVerdict(Verdict verdict) {
+        this.verdict = verdict;
+    }
+
     public void setVerdict(String verdict) {
         if (verdict.equals("FAILED")) {
             this.verdict = Verdict.FAILED;
@@ -137,16 +141,16 @@ public class Submission {
         }
     }
 
-    public void setVerdict(Verdict verdict) {
-        this.verdict = verdict;
-    }
-
     public boolean isVerdictOK() {
         return verdict == Verdict.OK;
     }
 
     public Testset getTestset() {
         return testset;
+    }
+
+    public void setTestset(Testset testset) {
+        this.testset = testset;
     }
 
     public void setTestset(String testset) {
@@ -194,10 +198,6 @@ public class Submission {
                 this.testset = Testset.TESTS10;
                 break;
         }
-    }
-
-    public void setTestset(Testset testset) {
-        this.testset = testset;
     }
 
     public Integer getPassedTestCount() {

@@ -1,6 +1,6 @@
 package cn.edu.fudan.codeforces.ranking.util;
 
-import cn.edu.fudan.codeforces.ranking.entity.Tableclass;
+import cn.edu.fudan.codeforces.ranking.service.mysql.TableClass;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -21,20 +21,22 @@ public class ByteUtil {
         return baos.toByteArray();
     }
 
-    public static Tableclass getTableclass(String contestId) {
-        Tableclass tc;
-        switch (contestId)
-        {   case "1" : tc=new Tableclass("0") ;
-            break;
-            case "2": ;
-            case "3" : tc= new Tableclass("1") ;break;
-            default : tc=new Tableclass("2"); break;
+    public static TableClass getTableclass(String contestId) {
+        TableClass tc;
+        switch (contestId) {
+            case "1":
+                tc = new TableClass("0");
+                break;
+            case "2":
+            case "3":
+                tc = new TableClass("1");
+                break;
+            default:
+                tc = new TableClass("2");
+                break;
         }
         return tc;
     }
-
-
-
 
     public static List<String> toStringList(byte[] bytes) throws IOException {
         List<String> ret = new ArrayList<>();

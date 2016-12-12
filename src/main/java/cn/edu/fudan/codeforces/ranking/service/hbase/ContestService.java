@@ -18,7 +18,7 @@ import java.util.List;
  * Created by house on 12/4/16.
  */
 @Service
-public class  ContestService extends BaseHBaseService {
+public class ContestService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContestService.class.getName());
 

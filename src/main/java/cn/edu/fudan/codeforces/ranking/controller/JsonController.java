@@ -59,7 +59,7 @@ public class JsonController {
         int cnt = 0;
         for (Map.Entry<Date, Integer> e : map.entrySet()) {
             if (++cnt > 1) ret += ",";
-            ret = ret + "[Date.UTC(" + String.valueOf(e.getKey().getYear()+1900) + "," + String.valueOf(e.getKey().getMonth()+1) + ",1)," + e.getValue() + "]";
+            ret = ret + "[Date.UTC(" + String.valueOf(e.getKey().getYear() + 1900) + "," + String.valueOf(e.getKey().getMonth() + 1) + ",1)," + e.getValue() + "]";
         }
         ret += "]";
         return ret;
@@ -72,7 +72,7 @@ public class JsonController {
         int cnt = 0;
         for (Map.Entry<Date, Integer> e : map.entrySet()) {
             if (++cnt > 1) ret += ",";
-            ret = ret + "[Date.UTC(" + String.valueOf(e.getKey().getYear()+1900) + "," + String.valueOf(e.getKey().getMonth()+1) + ",1)," + e.getValue() + "]";
+            ret = ret + "[Date.UTC(" + String.valueOf(e.getKey().getYear() + 1900) + "," + String.valueOf(e.getKey().getMonth() + 1) + ",1)," + e.getValue() + "]";
         }
         ret += "]";
         return ret;
@@ -95,7 +95,7 @@ public class JsonController {
 
     @RequestMapping("/json/problem/country/{contestId}/{index}")
     public String problemDifficultyByCountry(@PathVariable String contestId,
-                                            @PathVariable String index) throws IOException {
+                                             @PathVariable String index) throws IOException {
         Gson gson = new Gson();
         List<Pair<String, Float>> map = problemDifficultyService.listProblemDifficultyByCountry(contestId, index);
         return gson.toJson(map);

@@ -80,6 +80,10 @@ public class Contest {
         return type;
     }
 
+    public void setType(Type type) {
+        this.type = type;
+    }
+
     public void setType(String type) {
         switch (type) {
             case "CF":
@@ -94,12 +98,12 @@ public class Contest {
         }
     }
 
-    public void setType(Type type) {
-        this.type = type;
-    }
-
     public Phase getPhase() {
         return phase;
+    }
+
+    public void setPhase(Phase phase) {
+        this.phase = phase;
     }
 
     public void setPhase(String phase) {
@@ -120,10 +124,6 @@ public class Contest {
                 this.phase = Phase.FINISHED;
                 break;
         }
-    }
-
-    public void setPhase(Phase phase) {
-        this.phase = phase;
     }
 
     public Boolean getFrozen() {

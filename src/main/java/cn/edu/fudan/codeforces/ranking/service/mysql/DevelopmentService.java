@@ -17,7 +17,7 @@ public class DevelopmentService extends BaseMySQLService {
 
     public Map<Date, Integer> getDevelopmentByYearAndCountry(String country) {
         Map<Date, Integer> map = new TreeMap<>();
-        String sql = "select registrationTimeSeconds from user where country='"+ country +"'";
+        String sql = "select registrationTimeSeconds from user where country='" + country + "'";
 
         ResultSet selectRes;
         try {

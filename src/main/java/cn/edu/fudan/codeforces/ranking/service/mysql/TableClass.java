@@ -1,20 +1,20 @@
-package cn.edu.fudan.codeforces.ranking.entity;
+package cn.edu.fudan.codeforces.ranking.service.mysql;
 
 /**
  * Created by zqj on 2016/12/12.
  */
-public class Tableclass {
+public class TableClass {
+
     public String submission;
     public String problem;
     public String party;
 
-    public Tableclass(String i) {
-        if(i.equals("0"))
-        {
+    public TableClass(String i) {
+        if (i.equals("0")) {
             this.submission = "submission";
             this.problem = "problem";
             this.party = "party";
-        }else {
+        } else {
             this.submission = "submission" + i;
             this.problem = "problem" + i;
             this.party = "party" + i;
@@ -44,4 +44,5 @@ public class Tableclass {
     public void setParty(String party) {
         this.party = party;
     }
+
 }
