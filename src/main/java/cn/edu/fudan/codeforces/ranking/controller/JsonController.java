@@ -97,7 +97,7 @@ public class JsonController {
     public String problemDifficultyByCountry(@PathVariable String contestId,
                                             @PathVariable String index) throws IOException {
         Gson gson = new Gson();
-        Map<String, Float> map = problemDifficultyService.listProblemDifficultyByCountry(contestId, index);
+        List<Pair<String, Float>> map = problemDifficultyService.listProblemDifficultyByCountry(contestId, index);
         return gson.toJson(map);
     }
 
