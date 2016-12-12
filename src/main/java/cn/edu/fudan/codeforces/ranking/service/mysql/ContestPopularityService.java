@@ -31,7 +31,6 @@ public class ContestPopularityService extends BaseMySQLService {
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
-                System.out.println(rank + "  " + number);
                 map.put(rank, number);
             }
         } catch (SQLException e) {

@@ -33,6 +33,20 @@ public class UserNumberService extends BaseMySQLService {
         return ret;
     }
 
+    public Map<String, Integer> listUsersByRankAndCountry(String country) {
+        Map<String, Integer> map = new HashMap<>();
+        String sql = "SELECT rank, count(*) as number FROM user where country = '" + country + "' group by rank order by number DESC";
+        try {
+            ResultSet selectRes = getStmt().executeQuery(sql);
+            while (selectRes.next()) {
+                map.put(selectRes.getString("rank"), selectRes.getInt("number"));
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return map;
+    }
+
     public Map<String, Integer> listUsersByRank() {
         Map<String, Integer> map = new HashMap<>();
         String sql = "SELECT rank, count(*) as number FROM user group by rank order by number DESC";

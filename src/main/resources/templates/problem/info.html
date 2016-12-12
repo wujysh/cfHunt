@@ -9,7 +9,7 @@
   <meta name="author" content="">
   <link rel="icon" th:href="@{/favicon.ico}">
 
-  <title th:text="${contest.name} + ' - Codeforces Hunting'"></title>
+  <title th:text="${problem.name} + ' - Codeforces Hunting'"></title>
 
   <!-- Bootstrap core CSS -->
   <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
@@ -43,8 +43,8 @@
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li><a th:href="@{/}">Home</a></li>
-        <li class="active"><a th:href="@{/contest}">Contest</a></li>
-        <li><a th:href="@{/problem}">Problem</a></li>
+        <li><a th:href="@{/contest}">Contest</a></li>
+        <li class="active"><a th:href="@{/problem}">Problem</a></li>
         <li><a th:href="@{/user}">User</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Statistics <span class="caret"></span></a>
@@ -63,53 +63,19 @@
 <div class="container">
 
   <div class="page-header">
-    <div class="btn-toolbar pull-right">
-      <a class='btn btn-primary' th:href="@{${'/contest/' + contest.id + '/rank'}}">Ranking</a>
-    </div>
-    <h1><span th:utext="${contest.name}"></span> <small>details</small></h1>
+    <h1><span th:text="${problem.name}"></span> <small>details</small></h1>
   </div>
 
   <div class="row">
     <div class="col-xs-8">
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Problems</h3>
-        </div>
-        <table class="table table-hover table-striped">
-          <thead>
-          <tr>
-            <th>Index</th>
-            <th>Name</th>
-            <th>Tags</th>
-            <th th:if="${contest.type.name() == 'CF'}">Points</th>
-            <th>Difficulty</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="problem : ${problems}">
-            <td th:text="${problem.index}"></td>
-            <td th:text="${problem.name}"></td>
-            <td>
-                <span th:each="tag : ${problem.tags}">
-                  <span class="label label-default" th:text="${tag}"></span>
-                </span>
-            </td>
-            <td th:if="${contest.type.name() == 'CF'}" th:text="${#numbers.formatDecimal(problem.points, 0, 0)}"></td>
-            <td th:text="${#numbers.formatDecimal(avgAcTryCnt[problemStat.index], 0, 2)}"></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">Participants</h3>
+          <h3 class="panel-title">Accepted rate - Country</h3>
         </div>
         <div class="panel-body">
           <div id="container"></div>
         </div>
       </div>
-
     </div>
 
     <div class="col-xs-4">
@@ -119,104 +85,72 @@
         </div>
         <table class="table table-hover table-striped">
           <thead>
-          <tr>
-            <th>ID</th>
-            <th th:text="${contest.id}"></th>
-          </tr>
+            <tr>
+              <th>Index</th>
+              <th th:text="${problem.contestId + problem.index}"></th>
+            </tr>
           </thead>
           <tbody>
-          <tr>
-            <th>Type</th>
-            <td th:text="${contest.type}"></td>
-          </tr>
-          <tr>
-            <th>Phase</th>
-            <td th:text="${contest.phase}"></td>
-          </tr>
-          <tr>
-            <th>Frozen</th>
-            <td th:text="${contest.frozen}"></td>
-          </tr>
-          <tr>
-            <th>Duration</th>
-            <td th:text="${contest.durationSeconds / 3600} + ' hours'"></td>
-          </tr>
-          <tr>
-            <th>Start Time</th>
-            <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null ? 0 : contest.startTimeSeconds) * 1000L), 'yyyy-MM-dd HH:mm:ss')}"></td>
-          </tr>
-          <tr>
-            <th>Last Update</th>
-            <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null || contest.relativeTimeSeconds == null ? 0 : contest.startTimeSeconds + contest.relativeTimeSeconds) * 1000L), 'yyyy-MM-dd HH:mm:ss')}"></td>
-          </tr>
-          <tr>
-            <th>Prepared By</th>
-            <td th:text="${contest.preparedBy}"></td>
-          </tr>
-          <tr>
-            <th>Website Url</th>
-            <td th:text="${contest.websiteUrl}"></td>
-          </tr>
-          <tr>
-            <th>Description</th>
-            <td th:text="${contest.description}"></td>
-          </tr>
-          <tr>
-            <th>Difficulty</th>
-            <td th:text="${contest.difficulty}"></td>
-          </tr>
-          <tr>
-            <th>Kind</th>
-            <td th:text="${contest.kind}"></td>
-          </tr>
-          <tr>
-            <th>ICPC Region</th>
-            <td th:text="${contest.icpcRegion}"></td>
-          </tr>
-          <tr>
-            <th>Country</th>
-            <td th:text="${contest.country}"></td>
-          </tr>
-          <tr>
-            <th>City</th>
-            <td th:text="${contest.city}"></td>
-          </tr>
-          <tr>
-            <th>Season</th>
-            <td th:text="${contest.season}"></td>
-          </tr>
+            <tr>
+              <th>Name</th>
+              <td th:text="${problem.name}"></td>
+            </tr>
+            <tr>
+              <th>Type</th>
+              <td th:text="${problem.type}"></td>
+            </tr>
+            <tr>
+              <th>Points</th>
+              <td th:text="${problem.points == null ? '' : #numbers.formatDecimal(problem.points, 0, 0)}"></td>
+            </tr>
+            <tr>
+              <th>Tags</th>
+              <td>
+                <span th:each="tag : ${problem.tags}">
+                  <span class="label label-default" th:text="${tag}"></span>
+                </span>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-      <a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapseExample">
-        Show details
-      </a>
+      <!--<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapseExample">-->
+      <!--Show details-->
+      <!--</a>-->
+      <div id="collapse" class="collapse panel panel-default">
+        <div class="panel-heading" role="tab" id="heading">
+          <h4 class="panel-title">
+            Details
+          </h4>
+        </div>
+        <table id="data" class="table table-hover table-striped">
+          <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Country</th>
+            <th># of users</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="count, iterStat : ${counts}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td th:text="${count.first}"></td>
+            <td th:text="${count.second}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div><!--/row-->
 
-  <div id="collapse" class="collapse panel panel-default">
-    <div class="panel-heading" role="tab" id="heading">
-      <h4 class="panel-title">
-        Details
-      </h4>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Accepted rate - Rank</h3>
     </div>
-    <table id="data" class="table table-hover table-striped">
-      <thead>
-      <tr>
-        <th>Rank</th>
-        <th>Country</th>
-        <th># of users</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="count, iterStat : ${counts}">
-        <td th:text="${iterStat.index + 1}"></td>
-        <td th:text="${count.first}"></td>
-        <td th:text="${count.second}"></td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="panel-body">
+      <div id="container1"></div>
+    </div>
   </div>
 
   <hr>
@@ -235,7 +169,8 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
-<script th:src="@{/js/highmaps.js}"></script>
+<script th:src="@{/js/highcharts.js}"></script>
+<script th:src="@{/js/map.js}"></script>
 <script th:src="@{/js/world.js}"></script>
 <script th:src="@{/js/exporting.js}"></script>
 <script th:src="@{/js/data.js}"></script>
@@ -282,7 +217,7 @@
                 mapData: mapData,
                 data: data,
                 joinBy: 'ucName',
-                name: '',
+                name: 'Accepted rate',
                 states: {
                     hover: {
                         color: '#a4edba'
@@ -296,6 +231,64 @@
                 },
                 tooltip: {
                 }
+            }]
+        });
+
+        Highcharts.chart('container1', {
+            chart: {
+                zoomType: 'x'
+            },
+            title: {
+                text: null
+            },
+            subtitle: {
+                text: document.ontouchstart === undefined ?
+                    'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+            },
+            xAxis: {
+                title: {
+                    text: 'Rank'
+                },
+                categories: [[${key}]]
+            },
+            yAxis: {
+                title: {
+                    text: 'Accepted rate'
+                }
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                area: {
+                    fillColor: {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, Highcharts.getOptions().colors[0]],
+                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                        ]
+                    },
+                    marker: {
+                        radius: 2
+                    },
+                    lineWidth: 1,
+                    states: {
+                        hover: {
+                            lineWidth: 1
+                        }
+                    },
+                    threshold: null
+                }
+            },
+            series: [{
+                type: 'area',
+                name: '# of users',
+                data: [[${value}]]
             }]
         });
     });

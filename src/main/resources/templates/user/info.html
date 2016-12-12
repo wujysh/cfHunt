@@ -82,7 +82,7 @@
           <tbody>
             <tr>
               <th>Email</th>
-              <td th:text="${user.handle}"></td>
+              <td th:text="${user.email}"></td>
             </tr>
             <tr>
               <th>First Name</th>
@@ -134,11 +134,11 @@
             </tr>
             <tr>
               <th>Last Online Time</th>
-              <td th:text="${user.lastOnlineTimeSeconds}"></td>
+              <td th:text="${#dates.format(new java.util.Date((user.lastOnlineTimeSeconds == null ? 0 : user.lastOnlineTimeSeconds) * 1000L), 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             <tr>
               <th>Registration Time</th>
-              <td th:text="${user.registrationTimeSeconds}"></td>
+              <td th:text="${#dates.format(new java.util.Date((user.registrationTimeSeconds == null ? 0 : user.registrationTimeSeconds) * 1000L), 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
           </tbody>
         </table>

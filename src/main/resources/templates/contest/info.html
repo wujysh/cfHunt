@@ -103,13 +103,12 @@
 
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h3 class="panel-title">Participants</h3>
+          <h3 class="panel-title">Participants per country</h3>
         </div>
         <div class="panel-body">
           <div id="container"></div>
         </div>
       </div>
-
     </div>
 
     <div class="col-xs-4">
@@ -189,34 +188,42 @@
         </table>
       </div>
 
-      <a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapseExample">
-        Show details
-      </a>
+      <!--<a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapseExample">-->
+        <!--Show details-->
+      <!--</a>-->
+      <div id="collapse" class="collapse panel panel-default">
+        <div class="panel-heading" role="tab" id="heading">
+          <h4 class="panel-title">
+            Details
+          </h4>
+        </div>
+        <table id="data" class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Country</th>
+              <th># of users</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="count, iterStat : ${counts}">
+              <td th:text="${iterStat.index + 1}"></td>
+              <td th:text="${count.first}"></td>
+              <td th:text="${count.second}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div><!--/row-->
 
-  <div id="collapse" class="collapse panel panel-default">
-    <div class="panel-heading" role="tab" id="heading">
-      <h4 class="panel-title">
-        Details
-      </h4>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Participants per rank</h3>
     </div>
-    <table id="data" class="table table-hover table-striped">
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Country</th>
-          <th># of users</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr th:each="count, iterStat : ${counts}">
-          <td th:text="${iterStat.index + 1}"></td>
-          <td th:text="${count.first}"></td>
-          <td th:text="${count.second}"></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="panel-body">
+      <div id="container1"></div>
+    </div>
   </div>
 
   <hr>
@@ -235,7 +242,8 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
-<script th:src="@{/js/highmaps.js}"></script>
+<script th:src="@{/js/highcharts.js}"></script>
+<script th:src="@{/js/map.js}"></script>
 <script th:src="@{/js/world.js}"></script>
 <script th:src="@{/js/exporting.js}"></script>
 <script th:src="@{/js/data.js}"></script>
@@ -282,7 +290,7 @@
                 mapData: mapData,
                 data: data,
                 joinBy: 'ucName',
-                name: '',
+                name: '# of users',
                 states: {
                     hover: {
                         color: '#a4edba'
@@ -297,6 +305,66 @@
                 tooltip: {
                 }
             }]
+        });
+
+        $(function () {
+            Highcharts.chart('container1', {
+                chart: {
+                    zoomType: 'x'
+                },
+                title: {
+                    text: null
+                },
+                subtitle: {
+                    text: document.ontouchstart === undefined ?
+                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                },
+                xAxis: {
+                    title: {
+                        text: 'Rank'
+                    },
+                    categories: [[${key}]]
+                },
+                yAxis: {
+                    title: {
+                        text: '# of users'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    area: {
+                        fillColor: {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, Highcharts.getOptions().colors[0]],
+                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                            ]
+                        },
+                        marker: {
+                            radius: 2
+                        },
+                        lineWidth: 1,
+                        states: {
+                            hover: {
+                                lineWidth: 1
+                            }
+                        },
+                        threshold: null
+                    }
+                },
+                series: [{
+                    type: 'area',
+                    name: '# of users',
+                    data: [[${value}]]
+                }]
+            });
         });
     });
 </script>

@@ -45,7 +45,6 @@ public class ProblemDifficultyService extends BaseMySQLService {
                 int number = selectRes.getInt("number");
                 float successNum = map.get(rank);
                 map.put(rank, successNum / (float) number);
-                System.out.println(rank + number);
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());

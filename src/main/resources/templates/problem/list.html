@@ -124,7 +124,9 @@
         <tbody>
           <tr th:each="problem : ${problems}">
             <td th:text="${problem.contestId} + ${problem.index}"></td>
-            <td th:text="${problem.name}"></td>
+            <td>
+              <a th:href="@{${'/problem/' + problem.contestId + '/' + problem.index}}" th:text="${problem.name}"></a>
+            </td>
             <td>
               <span th:each="tag : ${problem.tags}">
                 <span class="label label-default" th:text="${tag}"></span>

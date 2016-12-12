@@ -42,8 +42,13 @@ public class StatisticsController {
 
     @RequestMapping("/statistics/user/rank")
     public ModelAndView statisticsUserRank() {
-        Map<String, Integer> map = userNumberService.listUsersByRank();
         ModelAndView mav = new ModelAndView("statistics/user_rank");
+
+        Map<String, Integer> map = userNumberService.listUsersByRank();
+        Map<String, Integer> mapChina = userNumberService.listUsersByRankAndCountry("China");
+        Map<String, Integer> mapRussia = userNumberService.listUsersByRankAndCountry("Russia");
+        Map<String, Integer> mapIndia = userNumberService.listUsersByRankAndCountry("India");
+
         List<String> key = new ArrayList<>();
         key.add("legendary grandmaster");
         key.add("international grandmaster");
@@ -56,9 +61,17 @@ public class StatisticsController {
         key.add("pupil");
         key.add("newbie");
         Collections.reverse(key);
-        List<Integer> value = key.stream().map(map::get).collect(Collectors.toList());
         mav.addObject("key", key);
+
+        List<Integer> value = key.stream().map(map::get).collect(Collectors.toList());
+        List<Integer> valueChina = key.stream().map(mapChina::get).collect(Collectors.toList());
+        List<Integer> valueRussia = key.stream().map(mapRussia::get).collect(Collectors.toList());
+        List<Integer> valueIndia = key.stream().map(mapIndia::get).collect(Collectors.toList());
         mav.addObject("value", value);
+        mav.addObject("valueChina", valueChina);
+        mav.addObject("valueRussia", valueRussia);
+        mav.addObject("valueIndia", valueIndia);
+
         return mav;
     }
 

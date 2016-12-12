@@ -119,10 +119,10 @@
             yAxis: {
                 title: {
                     text: '# of users'
-                }
+                },
+                min: 0
             },
             legend: {
-                enabled: false
             },
             plotOptions: {
                 area: {
@@ -152,8 +152,20 @@
             },
             series: [{
                 type: 'area',
-                name: '# of users',
+                name: 'World',
                 data: [[${value}]]
+            }, {
+                type: 'line',
+                name: 'China',
+                data: [[${valueChina}]]
+            }, {
+                type: 'line',
+                name: 'Russia',
+                data: [[${valueRussia}]]
+            }, {
+                type: 'line',
+                name: 'India',
+                data: [[${valueIndia}]]
             }]
         });
     });

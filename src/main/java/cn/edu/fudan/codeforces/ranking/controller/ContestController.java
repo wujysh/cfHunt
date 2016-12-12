@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by wujy on 16-12-2.
@@ -69,6 +73,23 @@ public class ContestController {
 
         List<Pair<String, Integer>> counts = contestPopularityService.listContestPopularityByCountry("1");
         mav.addObject("counts", counts);
+
+        Map<String, Integer> map = contestPopularityService.listContestPopularityByRank(contestId);
+        List<String> key = new ArrayList<>();
+        key.add("legendary grandmaster");
+        key.add("international grandmaster");
+        key.add("grandmaster");
+        key.add("international master");
+        key.add("master");
+        key.add("candidate master");
+        key.add("expert");
+        key.add("specialist");
+        key.add("pupil");
+        key.add("newbie");
+        Collections.reverse(key);
+        List<Integer> value = key.stream().map(map::get).collect(Collectors.toList());
+        mav.addObject("key", key);
+        mav.addObject("value", value);
 
         return mav;
     }
