@@ -1,5 +1,6 @@
 package cn.edu.fudan.codeforces.ranking.service.hbase;
 
+import cn.edu.fudan.codeforces.ranking.entity.Contest;
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
 import cn.edu.fudan.codeforces.ranking.entity.Submission;
 import cn.edu.fudan.codeforces.ranking.util.ByteUtil;
@@ -125,42 +126,58 @@ public class ProblemService extends BaseHBaseService {
         return res;
     }
 
-    public double getProblemAvgACTryCnt(String contestIdStr, String problemIdx) throws IOException {
-        HashMap<String, Integer> cnt = new HashMap<>();
-        HashSet<String> acers = new HashSet<>();
+    public List<Double> getProblemAvgACTryCnt(Contest contest, List<Problem> problems) throws IOException {
+        ArrayList<Double> ans = new ArrayList<>();
 
-        List<Submission> submissions = submissionService.getSubmissions(contestIdStr, "");
+        int problemSize = problems.size();
+        HashMap<String, Integer> problemIdx = new HashMap<>();
+        ArrayList<HashMap<String, Integer>> cnt = new ArrayList<>();
+        ArrayList<HashSet<String>> acers = new ArrayList<>();
+        for (int i = 0; i < problemSize; ++i) {
+            problemIdx.put(problems.get(i).getIndex(), i);
+            cnt.add(new HashMap<>());
+            acers.add(new HashSet<>());
+        }
+
+        int ctime = contest.getDurationSeconds() + 1;
+        List<Submission> submissions = submissionService.getSubmissions(String.valueOf(contest.getId()), String.valueOf(ctime));
 
         for (Submission sub : submissions) {
-            if (sub.getProblem().getIndex().equals(problemIdx)) {
+            if (problemIdx.containsKey(sub.getProblem().getIndex())) {
+
+                int problemIndex = problemIdx.get(sub.getProblem().getIndex());
+                String partyName = "";
 
                 for (String auth : sub.getAuthor().getMembers()) {
-                    if (!acers.contains(auth)) {
-                        int val = 0;
-                        if (cnt.containsKey(auth)) {
-                            val = cnt.get(auth);
-                        }
-                        ++val;
-                        cnt.put(auth, val);
+                    partyName += auth + "_";
+                }
+
+                if (!acers.get(problemIndex).contains(partyName)) {
+                    int val = 0;
+                    if (cnt.get(problemIndex).containsKey(partyName)) {
+                        val = cnt.get(problemIndex).get(partyName);
                     }
+                    ++val;
+                    cnt.get(problemIndex).put(partyName, val);
                 }
 
                 if (sub.isVerdictOK()) {
-                    for (String auth : sub.getAuthor().getMembers()) {
-                        acers.add(auth);
-                    }
+                    acers.get(problemIndex).add(partyName);
                 }
 
             }
         }
 
-        long actry = 0;
-        long acman = acers.size();
-        for (String acer : acers) {
-            actry += cnt.get(acer);
+        for (int i = 0; i < problemSize; ++i) {
+            long actry = 0;
+            long acman = acers.get(i).size();
+            for (String acer : acers.get(i)) {
+                actry += cnt.get(i).get(acer);
+            }
+            ans.add((double) (actry) / acman);
         }
 
-        return (double) (actry) / acman;
+        return ans;
     }
 
 }
