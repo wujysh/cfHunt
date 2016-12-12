@@ -94,8 +94,8 @@
                   <span class="label label-default" th:text="${tag}"></span>
                 </span>
               </td>
-              <td th:if="${contest.type.name() == 'CF'}" th:text="${problem.points}"></td>
-              <td th:text="${avgAcTryCnt[problemStat.index]}"></td>
+              <td th:if="${contest.type.name() == 'CF'}" th:text="${#numbers.formatDecimal(problem.points, 0, 0)}"></td>
+              <td th:text="${#numbers.formatDecimal(avgAcTryCnt[problemStat.index], 0, 2)}"></td>
             </tr>
           </tbody>
         </table>
@@ -143,11 +143,11 @@
             </tr>
             <tr>
               <th>Start Time</th>
-              <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null ? 0 : contest.startTimeSeconds) * 1000L), 'yyyy-MM-dd')}"></td>
+              <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null ? 0 : contest.startTimeSeconds) * 1000L), 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             <tr>
               <th>Last Update</th>
-              <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null || contest.relativeTimeSeconds == null ? 0 : contest.startTimeSeconds + contest.relativeTimeSeconds) * 1000L), 'yyyy-MM-dd')}"></td>
+              <td th:text="${#dates.format(new java.util.Date((contest.startTimeSeconds == null || contest.relativeTimeSeconds == null ? 0 : contest.startTimeSeconds + contest.relativeTimeSeconds) * 1000L), 'yyyy-MM-dd HH:mm:ss')}"></td>
             </tr>
             <tr>
               <th>Prepared By</th>

@@ -170,8 +170,8 @@ public class ProblemService extends BaseHBaseService {
 
         for (int i = 0; i < problemSize; ++i) {
             long actry = 0;
-            long acman = acers.get(i).size();
-            for (String acer : acers.get(i)) {
+            long acman = cnt.get(i).size();
+            for (String acer : cnt.get(i).keySet()) {
                 actry += cnt.get(i).get(acer);
             }
             ans.add((double) (actry) / acman);

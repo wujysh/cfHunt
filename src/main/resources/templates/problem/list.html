@@ -118,6 +118,7 @@
             <th>Index</th>
             <th>Name</th>
             <th>Tags</th>
+            <th>Points</th>
           </tr>
         </thead>
         <tbody>
@@ -129,6 +130,7 @@
                 <span class="label label-default" th:text="${tag}"></span>
               </span>
             </td>
+            <td th:text="${problem.points == null ? '' : #numbers.formatDecimal(problem.points, 0, 0)}"></td>
           </tr>
         </tbody>
       </table>

@@ -1,10 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" th:href="@{/favicon.ico}">
 
+  <title th:text="${user.handle} + ' - Codeforces Hunting'"></title>
+
+  <!-- Bootstrap core CSS -->
+  <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <link th:href="@{/css/ie10-viewport-bug-workaround.css}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link th:href="@{/css/jumbotron.css}" rel="stylesheet">
+  <link th:href="@{/css/style.css}" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script th:src="@{/js/html5shiv.min.js}"></script>
+  <script th:src="@{/js/respond.min.js}"></script>
+  <![endif]-->
+</head>
+
+<body>
+<nav class="navbar navbar-fixed-top navbar-inverse">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" th:href="@{/}">cfHunt</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/contest}">Contest</a></li>
+        <li><a th:href="@{/problem}">Problem</a></li>
+        <li class="active"><a th:href="@{/user}">User</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Statistics <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a th:href="@{/statistics/user/rank}">Users per rank</a></li>
+            <li><a th:href="@{/statistics/user/time}">Registration trend</a></li>
+            <li><a th:href="@{/statistics/user/country}">Users per country</a></li>
+          </ul>
+        </li>
+        <li><a th:href="@{/about}">About</a></li>
+      </ul>
+    </div><!-- /.nav-collapse -->
+  </div><!-- /.container -->
+</nav><!-- /.navbar -->
+
+<div class="container">
+
+  <div class="page-header">
+    <h1><span th:text="${user.handle}"></span> <small>details</small></h1>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Information</h3>
+    </div>
+    <div class="row">
+      <div class="col-xs-6">
+        <table class="table table-hover table-striped">
+          <thead>
+          <tr>
+            <th>Handle</th>
+            <th th:text="${user.handle}"></th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Email</th>
+              <td th:text="${user.handle}"></td>
+            </tr>
+            <tr>
+              <th>First Name</th>
+              <td th:text="${user.firstName}"></td>
+            </tr>
+            <tr>
+              <th>Last Name</th>
+              <td th:text="${user.lastName}"></td>
+            </tr>
+            <tr>
+              <th>Country</th>
+              <td th:text="${user.country}"></td>
+            </tr>
+            <tr>
+              <th>City</th>
+              <td th:text="${user.city}"></td>
+            </tr>
+            <tr>
+              <th>Organization</th>
+              <td th:text="${user.organization}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-xs-6">
+        <table class="table table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th th:text="${user.rank}"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>Max Rank</th>
+              <td th:text="${user.maxRank}"></td>
+            </tr>
+            <tr>
+              <th>Rating</th>
+              <td th:text="${user.rating}"></td>
+            </tr>
+            <tr>
+              <th>Max Rating</th>
+              <td th:text="${user.maxRating}"></td>
+            </tr>
+            <tr>
+              <th>Contribution</th>
+              <td th:text="${user.contribution}"></td>
+            </tr>
+            <tr>
+              <th>Last Online Time</th>
+              <td th:text="${user.lastOnlineTimeSeconds}"></td>
+            </tr>
+            <tr>
+              <th>Registration Time</th>
+              <td th:text="${user.registrationTimeSeconds}"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <footer>
+    <p>&copy; 2016 Fudan University</p>
+  </footer>
+
+</div><!--/.container-->
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script th:src="@{/js/jquery.min.js}"></script>
+<script>window.jQuery || document.write('<script th:src="@{/js/jquery.min.js}"><\/script>')</script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
 </body>
 </html>

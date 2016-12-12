@@ -40,6 +40,7 @@ public class ContestService extends BaseHBaseService {
 
         Scan scan = new Scan();
         scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("name"));
+        scan.addColumn(Bytes.toBytes("info"), Bytes.toBytes("type"));
         scan.addColumn(Bytes.toBytes("time"), Bytes.toBytes("durationSeconds"));
         scan.addColumn(Bytes.toBytes("time"), Bytes.toBytes("startTimeSeconds"));
         ResultScanner scanner = tableContest.getScanner(scan);

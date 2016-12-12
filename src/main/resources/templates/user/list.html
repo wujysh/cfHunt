@@ -117,14 +117,16 @@
             <tr>
               <th>Handle</th>
               <th>Email</th>
-              <th>First Name</th>
+              <th>Firstname</th>
               <th>Last Name</th>
               <th>Rank</th>
             </tr>
           </thead>
           <tbody>
             <tr th:each="user : ${users}">
-              <td th:text="${user.handle}"></td>
+              <td>
+                <a th:href="@{${'/user/' + user.handle}}" th:text="${user.handle}"></a>
+              </td>
               <td th:text="${user.email}"></td>
               <td th:text="${user.firstName}"></td>
               <td th:text="${user.lastName}"></td>
