@@ -81,6 +81,8 @@
               <th>Index</th>
               <th>Name</th>
               <th>Tags</th>
+              <th th:if="${contest.type.name() == 'CF'}">Points</th>
+              <th>Difficulty</th>
             </tr>
           </thead>
           <tbody>
@@ -92,10 +94,22 @@
                   <span class="label label-default" th:text="${tag}"></span>
                 </span>
               </td>
+              <td th:if="${contest.type.name() == 'CF'}" th:text="${problem.points}"></td>
+              <td th:text="${avgAcTryCnt[problemStat.index]}"></td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Participants</h3>
+        </div>
+        <div class="panel-body">
+          <div id="container"></div>
+        </div>
+      </div>
+
     </div>
 
     <div class="col-xs-4">
@@ -174,8 +188,36 @@
           </tbody>
         </table>
       </div>
+
+      <a class="btn btn-xs btn-default" role="button" data-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapseExample">
+        Show details
+      </a>
     </div>
   </div><!--/row-->
+
+  <div id="collapse" class="collapse panel panel-default">
+    <div class="panel-heading" role="tab" id="heading">
+      <h4 class="panel-title">
+        Details
+      </h4>
+    </div>
+    <table id="data" class="table table-hover table-striped">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Country</th>
+          <th># of users</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="count, iterStat : ${counts}">
+          <td th:text="${iterStat.index + 1}"></td>
+          <td th:text="${count.first}"></td>
+          <td th:text="${count.second}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <hr>
 
@@ -193,6 +235,70 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
-<script th:src="@{/js/highcharts.js}"></script>
+<script th:src="@{/js/highmaps.js}"></script>
+<script th:src="@{/js/world.js}"></script>
+<script th:src="@{/js/exporting.js}"></script>
+<script th:src="@{/js/data.js}"></script>
+<script th:inline="javascript">
+    $(function () {
+        // Load the data from the HTML table and tag it with an upper case name used for joining
+        var data = [],
+            // Get the map data
+            mapData = Highcharts.geojson(Highcharts.maps['custom/world']);
+
+        Highcharts.data({
+            table: document.getElementById('data'),
+            startColumn: 1,
+            startRow: 1,
+            complete: function (options) {
+                $.each(options.series[0].data, function () {
+                    data.push({
+                        ucName: this[0],
+                        value: this[1]
+                    });
+                });
+            }
+        });
+
+        // Process mapdata
+        $.each(mapData, function () {
+            this.ucName = this.name;
+        });
+
+        // Initiate the chart
+        Highcharts.mapChart('container', {
+            title: null,
+            mapNavigation: {
+                enabled: true
+            },
+            xAxis: {
+                labels: {
+                    enabled: false
+                }
+            },
+            colorAxis: {
+            },
+            series: [{
+                mapData: mapData,
+                data: data,
+                joinBy: 'ucName',
+                name: '',
+                states: {
+                    hover: {
+                        color: '#a4edba'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                tooltip: {
+                }
+            }]
+        });
+    });
+</script>
 </body>
 </html>
