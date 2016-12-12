@@ -67,6 +67,11 @@
     </ol>
 
     <div class="page-header">
+        <div class="btn-toolbar pull-right">
+            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapseExample">
+                Show details
+            </a>
+        </div>
         <h1>Statistics <small>Users per country</small></h1>
     </div>
 
@@ -79,7 +84,12 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div id="collapse" class="collapse panel panel-default">
+        <div class="panel-heading" role="tab" id="heading">
+            <h4 class="panel-title">
+                Details
+            </h4>
+        </div>
         <table id="data" class="table table-hover table-striped">
             <thead>
                 <tr>
