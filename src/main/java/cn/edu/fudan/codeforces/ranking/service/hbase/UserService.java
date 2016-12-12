@@ -20,12 +20,12 @@ import java.util.List;
 public class UserService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserService.class.getName());
-    private static HTable tableUser;
+    private static Table tableUser;
 
     static {
         String tablename = "codeforces:user";
         try {
-            tableUser = (HTable) conn.getTable(TableName.valueOf(tablename));
+            tableUser = conn.getTable(TableName.valueOf(tablename));
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
         }

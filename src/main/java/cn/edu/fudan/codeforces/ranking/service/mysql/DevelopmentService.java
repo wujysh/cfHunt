@@ -21,7 +21,7 @@ public class DevelopmentService extends BaseMySQLService {
 
         ResultSet selectRes;
         try {
-            selectRes = stmt.executeQuery(sql);
+            selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 Date date = new Date(selectRes.getLong("registrationTimeSeconds") * 1000L);
                 date.setDate(1);

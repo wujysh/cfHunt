@@ -23,7 +23,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
                     + contestId
                     + " and numIndex = " + index
                     + " and state = 'SUCCESS' GROUP BY rank";
-            ResultSet selectRes = stmt.executeQuery(sql);
+            ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
@@ -33,7 +33,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
                     + contestId
                     + " and numIndex = " + index
                     + " GROUP BY rank";
-            selectRes = stmt.executeQuery(sql);
+            selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");

@@ -4,10 +4,10 @@ import cn.edu.fudan.codeforces.ranking.entity.Problem;
 import cn.edu.fudan.codeforces.ranking.entity.Submission;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.TableName;
-import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.client.Scan;
+import org.apache.hadoop.hbase.client.Table;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +26,12 @@ public class SubmissionService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(SubmissionService.class.getName());
 
-    private static HTable tableSubmission;
+    private static Table tableSubmission;
 
     static {
         String tablename = "codeforces:submission";
         try {
-            tableSubmission = (HTable) conn.getTable(TableName.valueOf(tablename));
+            tableSubmission = conn.getTable(TableName.valueOf(tablename));
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
         }

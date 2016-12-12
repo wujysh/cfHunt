@@ -25,12 +25,12 @@ import java.util.List;
 public class ProblemService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(BaseHBaseService.class.getName());
-    private static HTable tableProblem;
+    private static Table tableProblem;
 
     static {
         try {
             String tablename = "codeforces:problem";
-            tableProblem = (HTable) conn.getTable(TableName.valueOf(tablename));
+            tableProblem = conn.getTable(TableName.valueOf(tablename));
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
         }

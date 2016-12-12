@@ -20,7 +20,7 @@ public class ContestPopularityService extends BaseMySQLService {
             String sql = "SELECT rank, count(*) as number FROM submission, user WHERE contestId = "
                     + contestId
                     + " and submission.user = user.handle GROUP BY user.rank";
-            ResultSet selectRes = stmt.executeQuery(sql);
+            ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
@@ -38,7 +38,7 @@ public class ContestPopularityService extends BaseMySQLService {
             String sql = "SELECT country, count(*) as number FROM submission, user WHERE contestId = "
                     + contestId
                     + " and submission.user = user.handle GROUP BY user.country";
-            ResultSet selectRes = stmt.executeQuery(sql);
+            ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String country = selectRes.getString("country");
                 int number = selectRes.getInt("number");
