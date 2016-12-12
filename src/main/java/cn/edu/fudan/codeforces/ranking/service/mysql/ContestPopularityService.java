@@ -17,13 +17,14 @@ public class ContestPopularityService extends BaseMySQLService {
     public Map<String, Integer> listContestPopularityByRank(String contestId) {
         Map<String, Integer> map = new HashMap<>();
         try {
-            String sql = "SELECT rank, count(*) as number FROM submission, user WHERE contestId = "
+            String sql = "SELECT rank, count(*) as number FROM submission, user,party WHERE submission.contestid= "
                     + contestId
-                    + " and submission.user = user.handle GROUP BY user.rank";
+                    + " and  submission.author=party.id and party.members = user.handle GROUP BY user.rank";
             ResultSet selectRes = stmt.executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
+                System.out.println(rank+"  "+number);
                 map.put(rank, number);
             }
         } catch (SQLException e) {
@@ -35,14 +36,18 @@ public class ContestPopularityService extends BaseMySQLService {
     public Map<String, Integer> listContestPopularityByCountry(String contestId) {
         Map<String, Integer> map = new HashMap<>();
         try {
-            String sql = "SELECT country, count(*) as number FROM submission, user WHERE contestId = "
-                    + contestId
-                    + " and submission.user = user.handle GROUP BY user.country";
+            String sql = "SELECT country, count(*) as number FROM submission, user ,party WHERE submission.contestid="+contestId+" and  submission.author=party.id and party.members = user.handle GROUP BY user.country";
             ResultSet selectRes = stmt.executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String country = selectRes.getString("country");
                 int number = selectRes.getInt("number");
-                map.put(country, number);
+                if (country==null)
+                {
+                    map.put("empty",number);
+                }
+                else {
+                    map.put(country, number);
+                }
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());

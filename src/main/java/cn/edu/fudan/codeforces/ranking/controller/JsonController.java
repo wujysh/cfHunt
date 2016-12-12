@@ -70,19 +70,19 @@ public class JsonController {
         Map<String, Float> map = problemDifficultyService.listProblemDifficultyByRank(contestId, index);
         return gson.toJson(map);
     }
+//
+//    @RequestMapping("/json/contest/{contestId}/rank")
+//    public String contestPopularityByRank(@PathVariable String contestId) throws IOException {
+//        Gson gson = new Gson();
+//        Map<String, Integer> map = contestPopularityService.listContestPopularityByRank(contestId);
+//        return gson.toJson(map);
+//    }
 
-    @RequestMapping("/json/contest/{contestId}/rank")
-    public String contestPopularityByRank(@PathVariable String contestId) throws IOException {
-        Gson gson = new Gson();
-        Map<String, Integer> map = contestPopularityService.listContestPopularityByRank(contestId);
-        return gson.toJson(map);
-    }
-
-    @RequestMapping("/json/contest/{contestId}/country")
-    public String contestPopularityByCountry(@PathVariable String contestId) throws IOException {
-        Gson gson = new Gson();
-        Map<String, Integer> map = contestPopularityService.listContestPopularityByCountry(contestId);
-        return gson.toJson(map);
-    }
+//    @RequestMapping("/json/contest/{contestId}/country")
+//    public String contestPopularityByCountry(@PathVariable String contestId) throws IOException {
+//        Gson gson = new Gson();
+//        Map<String, Integer> map = contestPopularityService.listContestPopularityByCountry(contestId);
+//        return gson.toJson(map);
+//    }
 
 }
