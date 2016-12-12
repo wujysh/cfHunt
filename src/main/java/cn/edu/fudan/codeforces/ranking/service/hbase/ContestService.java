@@ -22,12 +22,12 @@ public class ContestService extends BaseHBaseService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContestService.class.getName());
 
-    private static HTable tableContest;
+    private static Table tableContest;
 
     static {
         try {
             String tablename = "codeforces:contest";
-            tableContest = (HTable) conn.getTable(TableName.valueOf(tablename));
+            tableContest = conn.getTable(TableName.valueOf(tablename));
         } catch (IOException e) {
             logger.error(e.getMessage(), e.getCause());
         }

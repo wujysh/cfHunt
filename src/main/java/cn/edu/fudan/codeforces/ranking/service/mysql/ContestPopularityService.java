@@ -1,12 +1,15 @@
 package cn.edu.fudan.codeforces.ranking.service.mysql;
 
+import org.apache.hadoop.hbase.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -17,10 +20,10 @@ public class ContestPopularityService extends BaseMySQLService {
     public Map<String, Integer> listContestPopularityByRank(String contestId) {
         Map<String, Integer> map = new HashMap<>();
         try {
-            String sql = "SELECT rank, count(*) as number FROM submission, user,party WHERE submission.contestid= "
+            String sql = "SELECT rank, count(distinct user.handle) as number FROM submission, party, user WHERE contestId = "
                     + contestId
-                    + " and  submission.author=party.id and party.members = user.handle GROUP BY user.rank";
-            ResultSet selectRes = stmt.executeQuery(sql);
+                    + " and submission.author=party.id and party.members = user.handle GROUP BY user.rank";
+            ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
@@ -33,26 +36,37 @@ public class ContestPopularityService extends BaseMySQLService {
         return map;
     }
 
-    public Map<String, Integer> listContestPopularityByCountry(String contestId) {
-        Map<String, Integer> map = new HashMap<>();
+    public List<Pair<String, Integer>> listContestPopularityByCountry(String contestId) {
+        List<Pair<String, Integer>> ret = new ArrayList<>();
         try {
-            String sql = "SELECT country, count(*) as number FROM submission, user ,party WHERE submission.contestid="+contestId+" and  submission.author=party.id and party.members = user.handle GROUP BY user.country";
-            ResultSet selectRes = stmt.executeQuery(sql);
+            String sql = "SELECT country, count(distinct user.handle) as number FROM submission, party, user WHERE submission.contestid = "
+                    + contestId
+                    + " and submission.author=party.id and party.members = user.handle GROUP BY user.country order by number desc";
+            ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String country = selectRes.getString("country");
-                int number = selectRes.getInt("number");
-                if (country==null)
-                {
-                    map.put("empty",number);
+                if (country != null) {
+                    switch (country) {
+                        case "United States (USA)":
+                            country = "United States of America";
+                            break;
+                        case "Korea, Republic of":
+                            country = "South Korea";
+                            break;
+                        case "Korea,DPR":
+                            country = "North Korea";
+                            break;
+                        case "The Netherlands":
+                            country = "Netherlands";
+                            break;
+                    }
                 }
-                else {
-                    map.put(country, number);
-                }
+                ret.add(new Pair<>(country, selectRes.getInt("number")));
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
         }
-        return map;
+        return ret;
     }
 
 }

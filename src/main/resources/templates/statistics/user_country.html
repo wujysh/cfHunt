@@ -67,16 +67,45 @@
     </ol>
 
     <div class="page-header">
+        <div class="btn-toolbar pull-right">
+            <a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapse" aria-expanded="false" aria-controls="collapseExample">
+                Show details
+            </a>
+        </div>
         <h1>Statistics <small>Users per country</small></h1>
     </div>
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Users per Rank</h3>
+            <h3 class="panel-title">Users per country</h3>
         </div>
         <div class="panel-body">
-            <div id="container_rank"></div>
+            <div id="container"></div>
         </div>
+    </div>
+
+    <div id="collapse" class="collapse panel panel-default">
+        <div class="panel-heading" role="tab" id="heading">
+            <h4 class="panel-title">
+                Details
+            </h4>
+        </div>
+        <table id="data" class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Country</th>
+                    <th># of users</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="count, iterStat : ${counts}">
+                    <td th:text="${iterStat.index + 1}"></td>
+                    <td th:text="${count.first}"></td>
+                    <td th:text="${count.second}"></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <hr>
@@ -95,68 +124,67 @@
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
-<script th:src="@{/js/highcharts.js}"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script th:inline="javascript" th:if="${not #lists.isEmpty(value)}">
+<script th:src="@{/js/highmaps.js}"></script>
+<script th:src="@{/js/world.js}"></script>
+<script th:src="@{/js/exporting.js}"></script>
+<script th:src="@{/js/data.js}"></script>
+<script th:inline="javascript">
     $(function () {
-        Highcharts.chart('container_rank', {
-            chart: {
-                zoomType: 'x'
-            },
-            title: {
-                text: null
-            },
-            subtitle: {
-                text: document.ontouchstart === undefined ?
-                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+        // Load the data from the HTML table and tag it with an upper case name used for joining
+        var data = [],
+        // Get the map data
+        mapData = Highcharts.geojson(Highcharts.maps['custom/world']);
+
+        Highcharts.data({
+            table: document.getElementById('data'),
+            startColumn: 1,
+            startRow: 1,
+            complete: function (options) {
+                $.each(options.series[0].data, function () {
+                    data.push({
+                        ucName: this[0],
+                        value: this[1]
+                    });
+                });
+            }
+        });
+
+        // Process mapdata
+        $.each(mapData, function () {
+            this.ucName = this.name;
+        });
+
+        // Initiate the chart
+        Highcharts.mapChart('container', {
+            title: null,
+            mapNavigation: {
+                enabled: true
             },
             xAxis: {
-                title: {
-                    text: 'Rank'
-                },
-                categories: [[${key}]]
-            },
-            yAxis: {
-                title: {
-                    text: '# of users'
+                labels: {
+                    enabled: false
                 }
             },
-            legend: {
-                enabled: false
-            },
-            plotOptions: {
-                area: {
-                    fillColor: {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1
-                        },
-                        stops: [
-                            [0, Highcharts.getOptions().colors[0]],
-                            [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                        ]
-                    },
-                    marker: {
-                        radius: 2
-                    },
-                    lineWidth: 1,
-                    states: {
-                        hover: {
-                            lineWidth: 1
-                        }
-                    },
-                    threshold: null
-                }
+            colorAxis: {
             },
             series: [{
-                type: 'area',
-                name: '# of users',
-                data: [[${value}]]
+                mapData: mapData,
+                data: data,
+                joinBy: 'ucName',
+                name: '',
+                states: {
+                    hover: {
+                        color: '#a4edba'
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                tooltip: {
+                }
             }]
         });
     });

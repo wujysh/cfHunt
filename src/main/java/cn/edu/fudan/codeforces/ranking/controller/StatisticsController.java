@@ -4,7 +4,7 @@ import cn.edu.fudan.codeforces.ranking.service.mysql.ContestPopularityService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.DevelopmentService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.ProblemDifficultyService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.UserNumberService;
-import com.google.gson.Gson;
+import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,6 +67,14 @@ public class StatisticsController {
         return "statistics/user_time";
     }
 
+    @RequestMapping("/statistics/user/country")
+    public ModelAndView statisticsUserCountry() {
+        ModelAndView mav = new ModelAndView("statistics/user_country");
+        List<Pair<String, Integer>> counts = userNumberService.listUsersByCountry();
+        mav.addObject("counts", counts);
+        return mav;
+    }
+
     @RequestMapping("/statistics/problem")
     public String statisticsProblem() {
         return "statistics/problem";
@@ -102,9 +110,9 @@ public class StatisticsController {
 
     @RequestMapping("/contest/{contestId}/statistics/country")
     public ModelAndView contestPopularityByCountry(@PathVariable String contestId) throws IOException {
-        Map<String, Integer> map = contestPopularityService.listContestPopularityByCountry("1");
-        System.out.println(map.get("empty"));
+        List<Pair<String, Integer>> counts = contestPopularityService.listContestPopularityByCountry("1");
         ModelAndView mav = new ModelAndView("statistics/contest_country");
+        mav.addObject("counts", counts);
         return mav;
     }
 
