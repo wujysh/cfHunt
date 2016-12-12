@@ -1,5 +1,7 @@
 package cn.edu.fudan.codeforces.ranking.service.mysql;
 
+import cn.edu.fudan.codeforces.ranking.entity.Tableclass;
+import cn.edu.fudan.codeforces.ranking.util.ByteUtil;
 import cn.edu.fudan.codeforces.ranking.util.StringUtil;
 import org.apache.hadoop.hbase.util.Pair;
 import org.slf4j.Logger;
@@ -20,10 +22,12 @@ public class ContestPopularityService extends BaseMySQLService {
 
     public Map<String, Integer> listContestPopularityByRank(String contestId) {
         Map<String, Integer> map = new HashMap<>();
+        if (Integer.parseInt(contestId) > 5) contestId = "5";
+        Tableclass tc = ByteUtil.getTableclass(contestId);
         try {
-            String sql = "SELECT rank, count(distinct user.handle) as number FROM submission, party, user WHERE submission.contestid = "
+            String sql = "SELECT rank, count(distinct user.handle) as number FROM "+tc.submission+", "+tc.party+", user WHERE "+tc.submission+".contestId = "
                     + contestId
-                    + " and submission.author=party.id and party.members = user.handle GROUP BY user.rank";
+                    + " and "+tc.submission+".author="+tc.party+".id and "+tc.party+".members = user.handle GROUP BY user.rank";
             ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
@@ -38,11 +42,13 @@ public class ContestPopularityService extends BaseMySQLService {
     }
 
     public List<Pair<String, Integer>> listContestPopularityByCountry(String contestId) {
+        if (Integer.parseInt(contestId) > 5) contestId = "5";
         List<Pair<String, Integer>> ret = new ArrayList<>();
+        Tableclass tc = ByteUtil.getTableclass(contestId);
+
         try {
-            String sql = "SELECT country, count(distinct user.handle) as number FROM submission, party, user WHERE submission.contestid = "
-                    + contestId
-                    + " and submission.author=party.id and party.members = user.handle GROUP BY user.country order by number desc";
+            String sql = "SELECT country, count(distinct user.handle) as number FROM "+tc.submission+", "+tc.party+", user WHERE "+tc.submission+".contestid = " + contestId +
+                    " and "+tc.submission+".author="+tc.party+".id and "+tc.party+".members = user.handle GROUP BY user.country order by number desc";
             ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 ret.add(new Pair<>(StringUtil.handleCountryName(selectRes.getString("country")), selectRes.getInt("number")));
@@ -52,5 +58,6 @@ public class ContestPopularityService extends BaseMySQLService {
         }
         return ret;
     }
+
 
 }

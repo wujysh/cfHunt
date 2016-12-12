@@ -4,6 +4,7 @@ import cn.edu.fudan.codeforces.ranking.service.mysql.ContestPopularityService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.DevelopmentService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.ProblemDifficultyService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.UserNumberService;
+import com.google.gson.Gson;
 import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,9 +88,8 @@ public class StatisticsController {
 
     @RequestMapping("/contest/{contestId}/statistics/rank")
     public ModelAndView contestPopularityByRank(@PathVariable String contestId) throws IOException {
-        Map<String, Integer> map = contestPopularityService.listContestPopularityByRank("1");
+        Map<String, Integer> map = contestPopularityService.listContestPopularityByRank(contestId);
         ModelAndView mav = new ModelAndView("statistics/contest_rank");
-        System.out.println(map.get("pupil"));
         List<String> key = new ArrayList<>();
         key.add("legendary grandmaster");
         key.add("international grandmaster");
@@ -110,9 +110,41 @@ public class StatisticsController {
 
     @RequestMapping("/contest/{contestId}/statistics/country")
     public ModelAndView contestPopularityByCountry(@PathVariable String contestId) throws IOException {
-        List<Pair<String, Integer>> counts = contestPopularityService.listContestPopularityByCountry("1");
+        List<Pair<String, Integer>> counts = contestPopularityService.listContestPopularityByCountry(contestId);
         ModelAndView mav = new ModelAndView("statistics/contest_country");
         mav.addObject("counts", counts);
+        return mav;
+    }
+
+    @RequestMapping("/problem/{contestId}/{index}/statistics/country")
+    public ModelAndView problemDifficultyByCountry(@PathVariable String contestId,
+                                             @PathVariable String index) throws IOException {
+        List<Pair<String, Float>> counts = problemDifficultyService.listProblemDifficultyByCountry(contestId, index);
+        ModelAndView mav = new ModelAndView("statistics/problem_country");
+        mav.addObject("counts", counts);
+        return mav;
+    }
+
+    @RequestMapping("/problem/{contestId}/{index}/statistics/rank")
+    public ModelAndView problemDifficultyByRank(@PathVariable String contestId,
+                                          @PathVariable String index) throws IOException {
+        Map<String, Float> map = problemDifficultyService.listProblemDifficultyByRank(contestId, index);
+        ModelAndView mav = new ModelAndView("statistics/contest_rank");
+        List<String> key = new ArrayList<>();
+        key.add("legendary grandmaster");
+        key.add("international grandmaster");
+        key.add("grandmaster");
+        key.add("international master");
+        key.add("master");
+        key.add("candidate master");
+        key.add("expert");
+        key.add("specialist");
+        key.add("pupil");
+        key.add("newbie");
+        Collections.reverse(key);
+        List<Float> value= key.stream().map(map::get).collect(Collectors.toList());
+        mav.addObject("key",key);
+        mav.addObject("value",value);
         return mav;
     }
 
