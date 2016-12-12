@@ -2,6 +2,7 @@ package cn.edu.fudan.codeforces.ranking.service.mysql;
 
 import cn.edu.fudan.codeforces.ranking.entity.Tableclass;
 import cn.edu.fudan.codeforces.ranking.util.ByteUtil;
+import cn.edu.fudan.codeforces.ranking.util.StringUtil;
 import org.apache.hadoop.hbase.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,10 +65,10 @@ public class ProblemDifficultyService extends BaseMySQLService {
                 int number = selectRes.getInt("number");
                 map.put(country, (float) number);
             }
-            sql = "SELECT country, count(distinct submission.id) as number FROM submission, user, party, problem WHERE submission.contestid="
+            sql = "SELECT country, count(distinct "+tc.submission+".id) as number FROM "+tc.submission+", user, "+tc.party+", "+tc.problem+" WHERE "+tc.submission+".contestid="
                     + contestId
-                    + " and submission.problem = problem.id and problem.numindex = '" + index
-                    + "' and submission.author=party.id and party.members = user.handle GROUP BY user.country ";
+                    + " and "+tc.submission+".problem = "+tc.problem+".id and "+tc.problem+".numindex = '" + index
+                    + "' and "+tc.submission+".author="+tc.party+".id and "+tc.party+".members = user.handle GROUP BY user.country ";
             selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String country = selectRes.getString("country");
@@ -75,10 +76,10 @@ public class ProblemDifficultyService extends BaseMySQLService {
                 if(map.get(country)!=null) {
                     float successNum = map.get(country);
                     if (number >= 10) {
-                        ret.add(new Pair<>(country, successNum / (float) number));
+                        ret.add(new Pair<>(StringUtil.handleCountryName(country), successNum / (float) number));
                     }
                 }else{
-                    ret.add(new Pair<>(country, 0f));
+                    ret.add(new Pair<>(StringUtil.handleCountryName(country), 0f));
                 }
             }
         } catch (SQLException e) {

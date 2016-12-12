@@ -4,6 +4,8 @@ import cn.edu.fudan.codeforces.ranking.entity.Contest;
 import cn.edu.fudan.codeforces.ranking.entity.Problem;
 import cn.edu.fudan.codeforces.ranking.service.hbase.ContestService;
 import cn.edu.fudan.codeforces.ranking.service.hbase.ProblemService;
+import cn.edu.fudan.codeforces.ranking.service.mysql.ContestPopularityService;
+import org.apache.hadoop.hbase.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,15 @@ public class ContestController {
 
     private final ContestService contestService;
     private final ProblemService problemService;
+    private final ContestPopularityService contestPopularityService;
 
     @Autowired
     public ContestController(ContestService contestService,
-                             ProblemService problemService) {
+                             ProblemService problemService,
+                             ContestPopularityService contestPopularityService) {
         this.contestService = contestService;
         this.problemService = problemService;
+        this.contestPopularityService = contestPopularityService;
     }
 
     @RequestMapping("/contest")
@@ -58,6 +63,13 @@ public class ContestController {
         List<Problem> problems = problemService.getProblemForContest(contestId);
         mav.addObject("contest", contest);
         mav.addObject("problems", problems);
+
+        List<Double> avgAcTryCnt = problemService.getProblemAvgACTryCnt(contest, problems);
+        mav.addObject("avgAcTryCnt", avgAcTryCnt);
+
+        List<Pair<String, Integer>> counts = contestPopularityService.listContestPopularityByCountry("1");
+        mav.addObject("counts", counts);
+
         return mav;
     }
 

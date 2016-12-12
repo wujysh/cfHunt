@@ -1,5 +1,6 @@
 package cn.edu.fudan.codeforces.ranking.service.mysql;
 
+import cn.edu.fudan.codeforces.ranking.util.StringUtil;
 import org.apache.hadoop.hbase.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,24 +25,7 @@ public class UserNumberService extends BaseMySQLService {
         try {
             selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) {
-                String country = selectRes.getString("country");
-                if (country != null) {
-                    switch (country) {
-                        case "United States (USA)":
-                            country = "United States of America";
-                            break;
-                        case "Korea, Republic of":
-                            country = "South Korea";
-                            break;
-                        case "Korea,DPR":
-                            country = "North Korea";
-                            break;
-                        case "The Netherlands":
-                            country = "Netherlands";
-                            break;
-                    }
-                }
-                ret.add(new Pair<>(country, selectRes.getInt("number")));
+                ret.add(new Pair<>(StringUtil.handleCountryName(selectRes.getString("country")), selectRes.getInt("number")));
             }
         } catch (SQLException e) {
             logger.error(e.getMessage());
