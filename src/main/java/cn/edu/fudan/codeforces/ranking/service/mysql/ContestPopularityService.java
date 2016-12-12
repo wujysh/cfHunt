@@ -22,6 +22,7 @@ public class ContestPopularityService extends BaseMySQLService {
 
     public Map<String, Integer> listContestPopularityByRank(String contestId) {
         Map<String, Integer> map = new HashMap<>();
+        if (Integer.parseInt(contestId) > 5) contestId = "5";
         Tableclass tc = ByteUtil.getTableclass(contestId);
         try {
             String sql = "SELECT rank, count(distinct user.handle) as number FROM "+tc.submission+", "+tc.party+", user WHERE "+tc.submission+".contestId = "
@@ -41,6 +42,7 @@ public class ContestPopularityService extends BaseMySQLService {
     }
 
     public List<Pair<String, Integer>> listContestPopularityByCountry(String contestId) {
+        if (Integer.parseInt(contestId) > 5) contestId = "5";
         List<Pair<String, Integer>> ret = new ArrayList<>();
         Tableclass tc = ByteUtil.getTableclass(contestId);
 

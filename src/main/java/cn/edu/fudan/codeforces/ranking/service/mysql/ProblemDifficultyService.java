@@ -19,6 +19,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
     private static final Logger logger = LoggerFactory.getLogger(ProblemDifficultyService.class.getName());
 
     public Map<String, Float> listProblemDifficultyByRank(String contestId, String index) throws IOException {
+        if (Integer.parseInt(contestId) > 5) contestId = "5";
         Map<String, Float> map = new HashMap<>();
         Tableclass tc= ByteUtil.getTableclass(contestId);
         try {
@@ -32,10 +33,10 @@ public class ProblemDifficultyService extends BaseMySQLService {
                 int number = selectRes.getInt("number");
                 map.put(rank, (float) number);
             }
-            sql = "SELECT rank, count(distinct submission.id) as number FROM submission, user, party, problem WHERE submission.contestid="
+            sql = "SELECT rank, count(distinct "+tc.submission+".id) as number FROM "+tc.submission+", user, "+tc.party+", "+tc.problem+" WHERE "+tc.submission+".contestid="
                     + contestId
-                    + " and submission.problem = problem.id and problem.numindex = '" + index
-                    + "' and submission.author=party.id and party.members = user.handle GROUP BY user.rank";
+                    + " and "+tc.submission+".problem = "+tc.problem+".id and "+tc.problem+".numindex = '" + index
+                    + "' and "+tc.submission+".author="+tc.party+".id and "+tc.party+".members = user.handle GROUP BY user.rank";
             selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
@@ -52,6 +53,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
     
     public List<Pair<String, Float>> listProblemDifficultyByCountry(String contestId, String index) throws IOException {
         Map<String, Float> map = new HashMap<>();
+        if (Integer.parseInt(contestId) > 5) contestId = "5";
         List<Pair<String, Float>> ret = new ArrayList<>();
         Tableclass tc= ByteUtil.getTableclass(contestId);
         try {
