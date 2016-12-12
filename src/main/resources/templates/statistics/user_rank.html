@@ -75,7 +75,7 @@
             <h3 class="panel-title">Users per rank</h3>
         </div>
         <div class="panel-body">
-            <div id="container_rank"></div>
+            <div id="container"></div>
         </div>
     </div>
 
@@ -96,13 +96,10 @@
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script th:src="@{/js/ie10-viewport-bug-workaround.js}"></script>
 <script th:src="@{/js/highcharts.js}"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script th:src="@{/js/exporting.js}"></script>
 <script th:inline="javascript" th:if="${not #lists.isEmpty(value)}">
     $(function () {
-        Highcharts.chart('container_rank', {
+        Highcharts.chart('container', {
             chart: {
                 zoomType: 'x'
             },

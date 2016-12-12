@@ -4,6 +4,7 @@ import cn.edu.fudan.codeforces.ranking.service.mysql.ContestPopularityService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.DevelopmentService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.ProblemDifficultyService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.UserNumberService;
+import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +63,14 @@ public class StatisticsController {
     @RequestMapping("/statistics/user/time")
     public String statisticsUserTime() {
         return "statistics/user_time";
+    }
+
+    @RequestMapping("/statistics/user/country")
+    public ModelAndView statisticsUserCountry() {
+        ModelAndView mav = new ModelAndView("statistics/user_country");
+        List<Pair<String, Integer>> counts = userNumberService.listUsersByCountry();
+        mav.addObject("counts", counts);
+        return mav;
     }
 
     @RequestMapping("/statistics/problem")

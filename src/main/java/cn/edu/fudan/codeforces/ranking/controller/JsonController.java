@@ -5,6 +5,7 @@ import cn.edu.fudan.codeforces.ranking.service.mysql.DevelopmentService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.ProblemDifficultyService;
 import cn.edu.fudan.codeforces.ranking.service.mysql.UserNumberService;
 import com.google.gson.Gson;
+import org.apache.hadoop.hbase.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,8 +41,8 @@ public class JsonController {
     @RequestMapping("/json/user/country")
     public String usersByCountry() {
         Gson gson = new Gson();
-        Map<String, Integer> map = userNumberService.listUsersByCountry();
-        return gson.toJson(map);
+        List<Pair<String, Integer>> counts = userNumberService.listUsersByCountry();
+        return gson.toJson(counts);
     }
 
     @RequestMapping("/json/user/rank")
@@ -53,6 +55,19 @@ public class JsonController {
     @RequestMapping("/json/user/year")
     public String usersByYear() {
         Map<Date, Integer> map = developmentService.getDevelopmentByYear();
+        String ret = "[";
+        int cnt = 0;
+        for (Map.Entry<Date, Integer> e : map.entrySet()) {
+            if (++cnt > 1) ret += ",";
+            ret = ret + "[Date.UTC(" + String.valueOf(e.getKey().getYear()+1900) + "," + String.valueOf(e.getKey().getMonth()+1) + ",1)," + e.getValue() + "]";
+        }
+        ret += "]";
+        return ret;
+    }
+
+    @RequestMapping("/json/user/year/{country}")
+    public String usersByYearAndCountry(@PathVariable String country) {
+        Map<Date, Integer> map = developmentService.getDevelopmentByYearAndCountry(country);
         String ret = "[";
         int cnt = 0;
         for (Map.Entry<Date, Integer> e : map.entrySet()) {

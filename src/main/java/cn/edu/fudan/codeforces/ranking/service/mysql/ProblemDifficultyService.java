@@ -19,21 +19,21 @@ public class ProblemDifficultyService extends BaseMySQLService {
         Map<String, Float> map = new HashMap<>();
 
         try {
-            String sql = "SELECT rank, count(*) as number FROM submission, user, party, problem WHERE submission.contestid="
+            String sql = "SELECT rank, count(distinct user.handle) as number FROM submission, user, party, problem WHERE submission.contestid="
                     + contestId
                     + " and submission.problem = problem.id and problem.numindex = '" + index
                     + "' and submission.author=party.id and party.members = user.handle and verdict = 'OK' GROUP BY user.rank";
-            ResultSet selectRes = stmt.executeQuery(sql);
+            ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
                 map.put(rank, (float) number);
             }
-            sql = "SELECT rank, count(*) as number FROM submission, user, party, problem WHERE submission.contestid="
+            sql = "SELECT rank, count(distinct user.handle) as number FROM submission, user, party, problem WHERE submission.contestid="
                     + contestId
                     + " and submission.problem = problem.id and problem.numindex = '" + index
                     + "' and submission.author=party.id and party.members = user.handle GROUP BY user.rank";
-            selectRes = stmt.executeQuery(sql);
+            selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String rank = selectRes.getString("rank");
                 int number = selectRes.getInt("number");
@@ -54,7 +54,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
                     + contestId
                     + " and submission.problem = problem.id and problem.numindex = '" + index
                     + "' and submission.author=party.id and party.members = user.handle and verdict = 'OK' GROUP BY user.country";
-            ResultSet selectRes = stmt.executeQuery(sql);
+            ResultSet selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String country = selectRes.getString("country");
                 int number = selectRes.getInt("number");
@@ -64,7 +64,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
                     + contestId
                     + " and submission.problem = problem.id and problem.numindex = '" + index
                     + "' and submission.author=party.id and party.members = user.handle GROUP BY user.country";
-            selectRes = stmt.executeQuery(sql);
+            selectRes = getStmt().executeQuery(sql);
             while (selectRes.next()) { // 循环输出结果集
                 String country = selectRes.getString("country");
                 int number = selectRes.getInt("number");
