@@ -19,7 +19,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
         Map<String, Float> map = new HashMap<>();
 
         try {
-            String sql = "SELECT rank, count(*) as number FROM submission, user, party WHERE submission.contestid="
+            String sql = "SELECT rank, count(*) as number FROM submission, user, party, problem WHERE submission.contestid="
                     + contestId
                     + " and submission.problem = problem.id and problem.numindex = '" + index
                     + "' and submission.author=party.id and party.members = user.handle and verdict = 'OK' GROUP BY user.rank";
@@ -29,7 +29,7 @@ public class ProblemDifficultyService extends BaseMySQLService {
                 int number = selectRes.getInt("number");
                 map.put(rank, (float) number);
             }
-            sql = "SELECT rank, count(*) as number FROM submission, user, party WHERE submission.contestid="
+            sql = "SELECT rank, count(*) as number FROM submission, user, party, problem WHERE submission.contestid="
                     + contestId
                     + " and submission.problem = problem.id and problem.numindex = '" + index
                     + "' and submission.author=party.id and party.members = user.handle GROUP BY user.rank";
